@@ -16,14 +16,14 @@ import { PieChart, Pie, Cell, BarChart, Bar, LineChart, Line, XAxis, YAxis,
 // MOCK DATA
 // ═══════════════════════════════════════════════════════
 const MOCK_MEMBERS = [
-  { id: 1, first_name: "Jean", last_name: "Kouadio", gender: "M", phone: "+225 07 08 09 10", email: "jean.k@email.com", status: "actif", role: "pasteur", department: "Direction", join_date: "2020-01-15", photo: null, birthday_day: 15, birthday_month: 3, address: "Cocody, Abidjan" },
-  { id: 2, first_name: "Marie", last_name: "Bamba", gender: "F", phone: "+225 05 12 34 56", email: "marie.b@email.com", status: "actif", role: "tresorier", department: "Finances", join_date: "2021-03-20", photo: null, birthday_day: 8, birthday_month: 7, address: "Plateau, Abidjan" },
-  { id: 3, first_name: "Paul", last_name: "Yao", gender: "M", phone: "+225 01 23 45 67", email: "paul.y@email.com", status: "actif", role: "membre", department: "Louange", join_date: "2022-06-10", photo: null, birthday_day: 22, birthday_month: 11, address: "Yopougon, Abidjan" },
-  { id: 4, first_name: "Esther", last_name: "Koné", gender: "F", phone: "+225 07 98 76 54", email: "esther.k@email.com", status: "actif", role: "secretaire", department: "Administration", join_date: "2021-09-05", photo: null, birthday_day: 3, birthday_month: 1, address: "Marcory, Abidjan" },
-  { id: 5, first_name: "David", last_name: "Tra", gender: "M", phone: "+225 05 55 66 77", email: "david.t@email.com", status: "inactif", role: "membre", department: "Jeunesse", join_date: "2023-01-12", photo: null, birthday_day: 19, birthday_month: 5, address: "Treichville, Abidjan" },
-  { id: 6, first_name: "Ruth", last_name: "Diallo", gender: "F", phone: "+225 01 44 55 66", email: "ruth.d@email.com", status: "actif", role: "membre", department: "Enfants", join_date: "2022-11-30", photo: null, birthday_day: 28, birthday_month: 9, address: "Abobo, Abidjan" },
-  { id: 7, first_name: "Samuel", last_name: "Ouattara", gender: "M", phone: "+225 07 11 22 33", email: "samuel.o@email.com", status: "actif", role: "responsable_dept", department: "Intercession", join_date: "2020-08-18", photo: null, birthday_day: 12, birthday_month: 4, address: "Cocody, Abidjan" },
-  { id: 8, first_name: "Grace", last_name: "Achi", gender: "F", phone: "+225 05 99 88 77", email: "grace.a@email.com", status: "actif", role: "membre", department: "Accueil", join_date: "2023-04-22", photo: null, birthday_day: 7, birthday_month: 12, address: "Adjamé, Abidjan" },
+  { id: 1, first_name: "Jean", last_name: "Kouadio", gender: "M", phone: "+225 07 08 09 10", email: "jean.k@email.com", status: "actif", role: "pasteur", department: "Direction", join_date: "2020-01-15", photo: null, birthday_day: 15, birthday_month: 3, address: "Cocody, Abidjan", baptise: true, date_bapteme: "2020-04-12", bapteme_type: "eaux" },
+  { id: 2, first_name: "Marie", last_name: "Bamba", gender: "F", phone: "+225 05 12 34 56", email: "marie.b@email.com", status: "actif", role: "tresorier", department: "Finances", join_date: "2021-03-20", photo: null, birthday_day: 8, birthday_month: 7, address: "Plateau, Abidjan", baptise: true, date_bapteme: "2021-06-20", bapteme_type: "eaux" },
+  { id: 3, first_name: "Paul", last_name: "Yao", gender: "M", phone: "+225 01 23 45 67", email: "paul.y@email.com", status: "actif", role: "membre", department: "Louange", join_date: "2022-06-10", photo: null, birthday_day: 22, birthday_month: 11, address: "Yopougon, Abidjan", baptise: true, date_bapteme: "2022-09-04", bapteme_type: "eaux" },
+  { id: 4, first_name: "Esther", last_name: "Koné", gender: "F", phone: "+225 07 98 76 54", email: "esther.k@email.com", status: "actif", role: "secretaire", department: "Administration", join_date: "2021-09-05", photo: null, birthday_day: 3, birthday_month: 1, address: "Marcory, Abidjan", baptise: false, date_bapteme: "", bapteme_type: "" },
+  { id: 5, first_name: "David", last_name: "Tra", gender: "M", phone: "+225 05 55 66 77", email: "david.t@email.com", status: "inactif", role: "membre", department: "Jeunesse", join_date: "2023-01-12", photo: null, birthday_day: 19, birthday_month: 5, address: "Treichville, Abidjan", baptise: false, date_bapteme: "", bapteme_type: "" },
+  { id: 6, first_name: "Ruth", last_name: "Diallo", gender: "F", phone: "+225 01 44 55 66", email: "ruth.d@email.com", status: "actif", role: "membre", department: "Enfants", join_date: "2022-11-30", photo: null, birthday_day: 28, birthday_month: 9, address: "Abobo, Abidjan", baptise: true, date_bapteme: "2023-01-08", bapteme_type: "eaux" },
+  { id: 7, first_name: "Samuel", last_name: "Ouattara", gender: "M", phone: "+225 07 11 22 33", email: "samuel.o@email.com", status: "actif", role: "responsable_dept", department: "Intercession", join_date: "2020-08-18", photo: null, birthday_day: 12, birthday_month: 4, address: "Cocody, Abidjan", baptise: true, date_bapteme: "2020-10-18", bapteme_type: "eaux" },
+  { id: 8, first_name: "Grace", last_name: "Achi", gender: "F", phone: "+225 05 99 88 77", email: "grace.a@email.com", status: "actif", role: "membre", department: "Accueil", join_date: "2023-04-22", photo: null, birthday_day: 7, birthday_month: 12, address: "Adjamé, Abidjan", baptise: false, date_bapteme: "", bapteme_type: "" },
 ];
 
 const MOCK_VISITORS = [
@@ -61,6 +61,20 @@ const MOCK_DEPARTMENTS = [
   { id: 6, name: "Diaconie", members_count: 12, leader: "Esther Koné", color: "#ef4444" },
 ];
 
+const INITIAL_CAROUSEL_SLIDES = [
+  { id: 1, title: "Conférence de Pâques 2026", subtitle: "5 Avril — Temple principal · Invité spécial Pasteur Abraham", gradient: "linear-gradient(135deg, #0d9488, #065f46)", emoji: "✝️", cta: "Voir le programme" },
+  { id: 2, title: "Campagne de dons — Bâtir ensemble", subtitle: "Objectif : 10 000 000 FCFA pour la nouvelle salle", gradient: "linear-gradient(135deg, #3b82f6, #1e40af)", emoji: "🏗️", cta: "Participer" },
+  { id: 3, title: "Baptême des eaux — 12 Avril", subtitle: "Inscriptions ouvertes · Contactez le secrétariat", gradient: "linear-gradient(135deg, #8b5cf6, #6d28d9)", emoji: "💧", cta: "S'inscrire" },
+  { id: 4, title: "Nuit de louange & adoration", subtitle: "Vendredi 4 Avril à 21h · Venez comme vous êtes", gradient: "linear-gradient(135deg, #ec4899, #be185d)", emoji: "🎵", cta: "En savoir plus" },
+];
+
+const MOCK_CELLS = [
+  { id: 1, name: "Cellule Cocody-Angré", quartier: "Cocody", leader: "Jean Kouadio", members: ["Paul Yao", "Grace Achi", "David Tra"], day: "Mardi", time: "19h00", members_count: 12, presences: [{ date: "2026-03-18", present: 9, absent: 3 }, { date: "2026-03-11", present: 11, absent: 1 }] },
+  { id: 2, name: "Cellule Yopougon-Selmer", quartier: "Yopougon", leader: "Samuel Ouattara", members: ["Ruth Diallo", "Marie Bamba"], day: "Jeudi", time: "18h30", members_count: 10, presences: [{ date: "2026-03-20", present: 8, absent: 2 }] },
+  { id: 3, name: "Cellule Marcory-Zone 4", quartier: "Marcory", leader: "Esther Koné", members: ["Grace Achi"], day: "Mercredi", time: "19h30", members_count: 8, presences: [{ date: "2026-03-19", present: 6, absent: 2 }] },
+  { id: 4, name: "Cellule Abobo-Baoulé", quartier: "Abobo", leader: "Ruth Diallo", members: [], day: "Vendredi", time: "18h00", members_count: 15, presences: [] },
+];
+
 const MONTHS_FR = ["Jan", "Fév", "Mar", "Avr", "Mai", "Jun", "Jul", "Aoû", "Sep", "Oct", "Nov", "Déc"];
 const DAYS_FR = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 
@@ -77,6 +91,67 @@ const FINANCE_CHART = MONTHS_FR.slice(0, 6).map((m, i) => ({
 const ATTENDANCE_DATA = ["Sem 1", "Sem 2", "Sem 3", "Sem 4"].map((s, i) => ({
   semaine: s, presences: 180 + Math.floor(Math.random() * 60), objectif: 250
 }));
+
+// ═══════════════════════════════════════════════════════
+// SUPABASE SERVICE LAYER
+// ═══════════════════════════════════════════════════════
+const SUPABASE_URL = import.meta.env?.VITE_SUPABASE_URL || "";
+const SUPABASE_KEY = import.meta.env?.VITE_SUPABASE_ANON_KEY || "";
+
+const supabase = (() => {
+  if (!SUPABASE_URL || !SUPABASE_KEY) return null;
+  const headers = { "Content-Type": "application/json", apikey: SUPABASE_KEY, Authorization: `Bearer ${SUPABASE_KEY}` };
+  const req = async (path, opts = {}) => {
+    const res = await fetch(`${SUPABASE_URL}/rest/v1/${path}`, { headers: { ...headers, ...(opts.headers||{}) }, ...opts });
+    if (!res.ok) throw new Error(await res.text());
+    return res.status === 204 ? null : res.json();
+  };
+  return {
+    from: (table) => ({
+      select: (cols = "*") => req(`${table}?select=${cols}&order=created_at.desc`),
+      insert: (data) => req(`${table}`, { method: "POST", headers: { Prefer: "return=representation" }, body: JSON.stringify(data) }),
+      update: (id, data) => req(`${table}?id=eq.${id}`, { method: "PATCH", headers: { Prefer: "return=representation" }, body: JSON.stringify(data) }),
+      delete: (id) => req(`${table}?id=eq.${id}`, { method: "DELETE" }),
+      upsert: (data) => req(`${table}`, { method: "POST", headers: { Prefer: "resolution=merge-duplicates,return=representation" }, body: JSON.stringify(data) }),
+    }),
+    isReady: true,
+  };
+})();
+
+// Hook: use Supabase if configured, fallback to mock data
+const useSupabaseTable = (table, mockData, transform = x => x) => {
+  const [data, setData] = useState(mockData.map(transform));
+  const [loading, setLoading] = useState(false);
+  const [synced, setSynced] = useState(false);
+
+  useEffect(() => {
+    if (!supabase) return;
+    setLoading(true);
+    supabase.from(table).select()
+      .then(rows => { if (rows?.length) { setData(rows.map(transform)); setSynced(true); } })
+      .catch(() => {})
+      .finally(() => setLoading(false));
+  }, [table]);
+
+  const save = async (item) => {
+    if (!supabase) return item;
+    try {
+      const [result] = await (item.id ? supabase.from(table).update(item.id, item) : supabase.from(table).insert(item));
+      return result || item;
+    } catch { return item; }
+  };
+
+  const remove = async (id) => {
+    if (supabase) { try { await supabase.from(table).delete(id); } catch {} }
+  };
+
+  return { data, setData, loading, synced, save, remove };
+};
+
+// ── BAPTISM CONSTANTS ──
+const BAPTEME_TYPES = {
+  eaux: { label: "Baptême des eaux", emoji: "💧", color: "#3b82f6" },
+};
 
 // ═══════════════════════════════════════════════════════
 // THEME & STYLES
@@ -246,7 +321,7 @@ const TabBar = ({ tabs, active, onChange }) => (
 // ═══════════════════════════════════════════════════════
 
 // DASHBOARD PAGE
-const DashboardPage = ({ onNavigate }) => {
+const DashboardPage = ({ onNavigate, carouselSlides: propSlides }) => {
   const [period, setPeriod] = useState("month");
   const totalEntrees = MOCK_FINANCES.filter(f => f.type === "entree").reduce((s, f) => s + f.amount, 0);
   const totalSorties = MOCK_FINANCES.filter(f => f.type === "sortie").reduce((s, f) => s + f.amount, 0);
@@ -260,14 +335,9 @@ const DashboardPage = ({ onNavigate }) => {
     { name: "Enfants", value: 25, color: "#10b981" },
   ];
 
-  // Carousel state
+  // Carousel state — use props if provided, else fallback
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const carouselSlides = [
-    { id: 1, title: "Conférence de Pâques 2026", subtitle: "5 Avril — Temple principal · Invité spécial Pasteur Abraham", gradient: "linear-gradient(135deg, #0d9488, #065f46)", emoji: "✝️", cta: "Voir le programme" },
-    { id: 2, title: "Campagne de dons — Bâtir ensemble", subtitle: "Objectif : 10 000 000 FCFA pour la nouvelle salle", gradient: "linear-gradient(135deg, #3b82f6, #1e40af)", emoji: "🏗️", cta: "Participer" },
-    { id: 3, title: "Baptême des eaux — 12 Avril", subtitle: "Inscriptions ouvertes · Contactez le secrétariat", gradient: "linear-gradient(135deg, #8b5cf6, #6d28d9)", emoji: "💧", cta: "S'inscrire" },
-    { id: 4, title: "Nuit de louange & adoration", subtitle: "Vendredi 4 Avril à 21h · Venez comme vous êtes", gradient: "linear-gradient(135deg, #ec4899, #be185d)", emoji: "🎵", cta: "En savoir plus" },
-  ];
+  const carouselSlides = (propSlides && propSlides.length > 0) ? propSlides : INITIAL_CAROUSEL_SLIDES;
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -497,41 +567,209 @@ const DashboardPage = ({ onNavigate }) => {
 };
 
 // MEMBERS PAGE
-const MembersPage = ({ userRole }) => {
+const MembersPage = ({ userRole, churchName }) => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [deptFilter, setDeptFilter] = useState("all");
   const [showModal, setShowModal] = useState(false);
-  const [members, setMembers] = useState(MOCK_MEMBERS.map(m => ({...m, category: m.gender === "F" ? "femme" : "homme", status: m.status || "actif" })));
+  const [showProfile, setShowProfile] = useState(null);
+  const [notification, setNotification] = useState(null);
+
+  const transformMember = m => ({
+    ...m,
+    category: m.category || (m.gender === "F" ? "femme" : "homme"),
+    status: m.status || "actif",
+    departments: m.departments || [m.department].filter(Boolean),
+    committees: m.committees || [],
+    groups: m.groups || [],
+    parcours: m.parcours || "actif",
+    baptise: m.baptise ?? false,
+    date_bapteme: m.date_bapteme || "",
+    bapteme_type: m.bapteme_type || "",
+  });
+
+  const { data: members, setData: setMembers, loading: membersLoading, synced, save: saveMember, remove: removeMember } = useSupabaseTable("members", MOCK_MEMBERS, transformMember);
+
   const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState({ first_name: "", last_name: "", gender: "M", phone: "", email: "", department: "", status: "actif", category: "homme", birth_date: "" });
+  const emptyForm = { first_name: "", last_name: "", gender: "M", phone: "", email: "", departments: [], committees: [], groups: [], status: "actif", category: "homme", birth_date: "", parcours: "nouveau", baptise: false, date_bapteme: "", bapteme_type: "" };
+  const [form, setForm] = useState(emptyForm);
+  const parcoursSteps = ["nouveau", "integration", "actif", "serviteur", "leader"];
+  const parcoursLabels = { nouveau: "Nouveau converti", integration: "En intégration", actif: "Membre actif", serviteur: "Serviteur", leader: "Leader" };
+  const parcoursColors = { nouveau: "#3b82f6", integration: "#f59e0b", actif: "#10b981", serviteur: "#8b5cf6", leader: "#ec4899" };
+  const mockDepts = MOCK_DEPARTMENTS.map(d => d.name);
+  const mockComites = ["Comité d'organisation", "Service d'ordre", "Équipe média", "Secrétariat"];
+  const mockGroups = ["Groupe Alpha", "Groupe Béthel", "Groupe Cana"];
 
   const filtered = members.filter(m => {
     const matchSearch = `${m.first_name} ${m.last_name}`.toLowerCase().includes(search.toLowerCase());
-    const matchFilter = filter === "all" || m.status === filter;
-    const matchDept = deptFilter === "all" || m.department === deptFilter;
+    const matchFilter = filter === "all" || m.status === filter || m.parcours === filter;
+    const matchDept = deptFilter === "all" || (m.departments||[]).includes(deptFilter);
     return matchSearch && matchFilter && matchDept;
   });
 
-  const openNew = () => { setEditing(null); setForm({ first_name: "", last_name: "", gender: "M", phone: "", email: "", department: "", status: "actif", category: "homme", birth_date: "" }); setShowModal(true); };
-  const openEdit = (m) => { setEditing(m); setForm({ ...m }); setShowModal(true); };
-  const handleSave = () => {
+  const statusOptions = ["actif", "passif", "sympathisant", "nouveau_converti"];
+  const openNew = () => { setEditing(null); setForm(emptyForm); setShowModal(true); };
+  const openEdit = (m) => { setEditing(m); setForm({ ...emptyForm, ...m, departments: m.departments||[], committees: m.committees||[], groups: m.groups||[] }); setShowModal(true); };
+
+  const handleSave = async () => {
+    const payload = { ...form, id: editing?.id || Date.now(), join_date: editing?.join_date || new Date().toISOString().split("T")[0], role: editing?.role || "membre" };
+    const saved = await saveMember(payload);
+    const final = { ...payload, ...saved };
     if (editing) {
-      setMembers(prev => prev.map(m => m.id === editing.id ? { ...m, ...form } : m));
+      setMembers(prev => prev.map(m => m.id === editing.id ? final : m));
     } else {
-      setMembers(prev => [...prev, { ...form, id: Date.now(), join_date: new Date().toISOString().split("T")[0], role: "membre" }]);
+      setMembers(prev => [...prev, final]);
+      setNotification(`✅ ${form.first_name} ${form.last_name} a été ajouté(e) avec succès !`);
+      setTimeout(() => setNotification(null), 4000);
     }
     setShowModal(false);
   };
-  const canDelete = userRole === "pasteur" || userRole === "admin" || userRole === "super_admin";
-  const handleDelete = (id) => { if (canDelete) setMembers(prev => prev.filter(m => m.id !== id)); };
-  const changeStatus = (id, newStatus) => setMembers(prev => prev.map(m => m.id === id ? { ...m, status: newStatus } : m));
 
-  const statusColors = { actif: "success", passif: "warning", sympathisant: "info", nouveau: "purple" };
-  const statusOptions = ["actif", "passif", "sympathisant"];
+  const canDelete = userRole === "pasteur" || userRole === "admin" || userRole === "super_admin";
+  const handleDelete = async (id) => {
+    if (!canDelete || !confirm("Supprimer ce membre ?")) return;
+    await removeMember(id);
+    setMembers(prev => prev.filter(m => m.id !== id));
+  };
+
+  const changeStatus = async (id, newStatus) => {
+    setMembers(prev => prev.map(m => m.id === id ? { ...m, status: newStatus } : m));
+    await saveMember({ id, status: newStatus });
+  };
+
+  // Photo upload → base64
+  const handlePhotoUpload = (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) { alert("Photo trop lourde (max 2 Mo)"); return; }
+    const reader = new FileReader();
+    reader.onload = (ev) => setForm(f => ({ ...f, photo: ev.target.result }));
+    reader.readAsDataURL(file);
+  };
+
+  const toggleArray = (arr, value) => arr.includes(value) ? arr.filter(v => v !== value) : [...arr, value];
+  const statusColors = { actif: "success", passif: "warning", sympathisant: "info", nouveau_converti: "purple" };
+
+  // Baptism badge mini component
+  const BaptismBadge = ({ m }) => {
+    if (!m.baptise) return null;
+    const bt = BAPTEME_TYPES[m.bapteme_type] || BAPTEME_TYPES.eaux;
+    return (
+      <span title={`${bt.label}${m.date_bapteme ? " · " + new Date(m.date_bapteme).toLocaleDateString("fr") : ""}`}
+        style={{ display: "inline-flex", alignItems: "center", gap: 3, padding: "1px 7px", borderRadius: 20, fontSize: 10, fontWeight: 700, background: `${bt.color}15`, color: bt.color, border: `1px solid ${bt.color}30`, cursor: "default" }}>
+        {bt.emoji} Baptisé{m.gender === "F" ? "e" : ""}
+      </span>
+    );
+  };
+
+  // Avatar with photo support
+  const MemberAvatar = ({ m, size = 36 }) => {
+    if (m.photo) return (
+      <img src={m.photo} alt={m.first_name} style={{ width: size, height: size, borderRadius: "50%", objectFit: "cover", flexShrink: 0 }} />
+    );
+    return <Avatar name={m.first_name} size={size} color={m.gender === "F" ? "#ec4899" : "#0d9488"} />;
+  };
 
   return (
     <div>
+      {/* Supabase sync indicator */}
+      {synced && (
+        <div style={{ padding: "8px 14px", background: "#f0fdfa", border: "1px solid #0d948830", borderRadius: 10, marginBottom: 12, display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#0d9488", fontWeight: 600 }}>
+          <span>🔄</span> Données synchronisées avec Supabase
+        </div>
+      )}
+
+      {notification && (
+        <div style={{ padding: "12px 20px", background: "#f0fdfa", border: "1px solid #0d948830", borderRadius: 12, marginBottom: 16, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: "#0d9488" }}>{notification}</span>
+          <button onClick={() => setNotification(null)} style={{ background: "none", border: "none", cursor: "pointer", color: "#94a3b8" }}><X size={14} /></button>
+        </div>
+      )}
+
+      {/* ── STATS BAPTÊME ── */}
+      {(() => {
+        const total = members.length;
+        const baptises = members.filter(m => m.baptise);
+        const nonBaptises = members.filter(m => !m.baptise);
+        const pct = total ? Math.round((baptises.length / total) * 100) : 0;
+        return (
+          <div style={{ background: "#fff", borderRadius: 16, padding: 20, border: "1px solid #f1f5f9", marginBottom: 20 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>💧 Baptêmes des eaux</h3>
+              <button onClick={() => setFilter(filter === "baptise" ? "all" : "baptise")} style={{
+                padding: "5px 14px", borderRadius: 8, border: "1px solid #3b82f640",
+                background: filter === "baptise" ? "#3b82f6" : "#eff6ff",
+                color: filter === "baptise" ? "#fff" : "#2563eb", fontSize: 11, fontWeight: 700, cursor: "pointer"
+              }}>
+                {filter === "baptise" ? "✓ Filtre actif" : "Voir les baptisés →"}
+              </button>
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: 24, marginBottom: 14 }}>
+              <div style={{ textAlign: "center" }}>
+                <div style={{ fontSize: 36, fontWeight: 900, color: "#0f172a", lineHeight: 1 }}>{baptises.length}</div>
+                <div style={{ fontSize: 11, color: "#94a3b8", marginTop: 2 }}>baptisés</div>
+              </div>
+              <div style={{ flex: 1 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 12, color: "#64748b", marginBottom: 6 }}>
+                  <span>{pct}% de l'église</span>
+                  <span>{nonBaptises.length} non baptisés</span>
+                </div>
+                <div style={{ height: 10, background: "#f1f5f9", borderRadius: 5, overflow: "hidden" }}>
+                  <div style={{ height: "100%", width: `${pct}%`, borderRadius: 5, background: "linear-gradient(90deg, #3b82f6, #0d9488)", transition: "width 0.6s ease" }} />
+                </div>
+              </div>
+            </div>
+
+            {/* Derniers baptêmes */}
+            {baptises.filter(m => m.date_bapteme).length > 0 && (
+              <div style={{ paddingTop: 14, borderTop: "1px solid #f1f5f9" }}>
+                <p style={{ margin: "0 0 8px", fontSize: 11, fontWeight: 700, color: "#94a3b8", textTransform: "uppercase", letterSpacing: "0.5px" }}>Derniers baptêmes</p>
+                <div style={{ display: "flex", flexDirection: "column", gap: 7 }}>
+                  {baptises
+                    .filter(m => m.date_bapteme)
+                    .sort((a, b) => new Date(b.date_bapteme) - new Date(a.date_bapteme))
+                    .slice(0, 3)
+                    .map(m => (
+                      <div key={m.id} style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <MemberAvatar m={m} size={28} />
+                        <span style={{ fontSize: 12, fontWeight: 600, color: "#0f172a", flex: 1 }}>{m.first_name} {m.last_name}</span>
+                        <span style={{ fontSize: 11, color: "#94a3b8" }}>{new Date(m.date_bapteme).toLocaleDateString("fr")}</span>
+                      </div>
+                    ))}
+                </div>
+              </div>
+            )}
+          </div>
+        );
+      })()}
+
+      {/* Parcours member bar */}
+      <div style={{ display: "flex", gap: 8, marginBottom: 16, flexWrap: "wrap" }}>
+        {parcoursSteps.map(p => {
+          const count = members.filter(m => m.parcours === p).length;
+          return (
+            <div key={p} onClick={() => setFilter(filter === p ? "all" : p)} style={{
+              padding: "6px 14px", borderRadius: 8, cursor: "pointer", fontSize: 11, fontWeight: 600,
+              background: filter === p ? `${parcoursColors[p]}15` : "#f8fafc",
+              border: filter === p ? `1px solid ${parcoursColors[p]}40` : "1px solid #f1f5f9",
+              color: filter === p ? parcoursColors[p] : "#64748b"
+            }}>
+              {parcoursLabels[p]} ({count})
+            </div>
+          );
+        })}
+        {/* Baptism filter shortcut */}
+        <div onClick={() => setFilter(filter === "baptise" ? "all" : "baptise")} style={{
+          padding: "6px 14px", borderRadius: 8, cursor: "pointer", fontSize: 11, fontWeight: 600,
+          background: filter === "baptise" ? "#3b82f615" : "#f8fafc",
+          border: filter === "baptise" ? "1px solid #3b82f640" : "1px solid #f1f5f9",
+          color: filter === "baptise" ? "#3b82f6" : "#64748b"
+        }}>
+          💧 Baptisés ({members.filter(m => m.baptise).length})
+        </div>
+      </div>
+
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
         <div>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Membres</h2>
@@ -539,12 +777,12 @@ const MembersPage = ({ userRole }) => {
         </div>
         <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
           <Btn variant="secondary" size="sm" icon={Download} onClick={() => {
-            const csv = "\uFEFFN°,Prénom,Nom,Genre,Téléphone,Email,Département,Statut,Catégorie,Date inscription\n" + filtered.map((m,i) => `${i+1},${m.first_name},${m.last_name},${m.gender === "F" ? "Femme" : "Homme"},${m.phone},${m.email},${m.department || ""},${m.status},${m.category || ""},${m.join_date}`).join("\n");
+            const csv = "\uFEFFN°,Prénom,Nom,Genre,Téléphone,Email,Départements,Comités,Groupes,Statut,Parcours,Baptisé,Date Baptême,Date inscription\n" + filtered.map((m,i) => `${i+1},${m.first_name},${m.last_name},${m.gender === "F" ? "Femme" : "Homme"},${m.phone},${m.email},"${(m.departments||[]).join(";")}","${(m.committees||[]).join(";")}","${(m.groups||[]).join(";")}",${m.status},${m.parcours||""},${m.baptise?"Oui":"Non"},${m.date_bapteme||""},${m.join_date}`).join("\n");
             const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
-            const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `membres_${filter === "all" ? "tous" : filter}.csv`; a.click();
+            const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `membres.csv`; a.click();
           }}>Excel/CSV</Btn>
           <Btn variant="secondary" size="sm" icon={Download} onClick={() => {
-            const text = `LISTE DES MEMBRES — ${filtered.length} membres\n${"=".repeat(60)}\nFiltre: ${filter === "all" ? "Tous" : filter}${deptFilter !== "all" ? ` | Département: ${deptFilter}` : ""}\nDate: ${new Date().toLocaleDateString("fr")}\n${"─".repeat(60)}\n\n` + filtered.map((m,i) => `${String(i+1).padStart(3)}. ${m.first_name} ${m.last_name}\n     Tél: ${m.phone} | Email: ${m.email || "—"}\n     Dept: ${m.department || "—"} | Statut: ${m.status} | Depuis: ${m.join_date}\n`).join("\n") + `\n${"─".repeat(60)}\nTotal: ${filtered.length} membres`;
+            const text = `LISTE DES MEMBRES — ${filtered.length} membres\n${"=".repeat(60)}\nDate: ${new Date().toLocaleDateString("fr")}\n${"─".repeat(60)}\n\n` + filtered.map((m,i) => `${String(i+1).padStart(3)}. ${m.first_name} ${m.last_name}${m.baptise ? " 💧" : ""}\n     Tél: ${m.phone} | Parcours: ${parcoursLabels[m.parcours]||""}\n     Dept: ${(m.departments||[]).join(", ")||"—"}\n`).join("\n");
             const blob = new Blob([text], { type: "text/plain" }); const url = URL.createObjectURL(blob); const a = document.createElement("a"); a.href = url; a.download = `rapport_membres.txt`; a.click();
           }}>Rapport</Btn>
           <Btn icon={Plus} onClick={openNew}>Nouveau membre</Btn>
@@ -562,6 +800,7 @@ const MembersPage = ({ userRole }) => {
           <option value="actif">Actifs</option>
           <option value="passif">Passifs</option>
           <option value="sympathisant">Sympathisants</option>
+          <option value="baptise">💧 Baptisés</option>
         </select>
         <select value={deptFilter} onChange={e => setDeptFilter(e.target.value)} style={{ ...selectStyle, width: 180 }}>
           <option value="all">Tous les départements</option>
@@ -573,21 +812,21 @@ const MembersPage = ({ userRole }) => {
         <div style={{ overflowX: "auto" }}>
           <table style={{ width: "100%", borderCollapse: "collapse" }}>
             <thead><tr style={{ background: "#f8fafc" }}>
-              {["Membre", "Contact", "Département", "Statut", "Actions"].map(h => (
+              {["Membre", "Contact", "Département", "Badges", "Statut", "Actions"].map(h => (
                 <th key={h} style={{ padding: "12px 16px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>{h}</th>
               ))}
             </tr></thead>
             <tbody>
-              {filtered.map(m => (
+              {filtered.filter(m => filter === "baptise" ? m.baptise : true).map(m => (
                 <tr key={m.id} style={{ borderTop: "1px solid #f1f5f9" }}
                   onMouseEnter={e => e.currentTarget.style.background = "#fafbfc"}
                   onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
                   <td style={{ padding: "12px 16px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <Avatar name={m.first_name} size={36} color={m.gender === "F" ? "#ec4899" : "#0d9488"} />
+                      <MemberAvatar m={m} size={38} />
                       <div>
                         <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{m.first_name} {m.last_name}</p>
-                        <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>Depuis {new Date(m.join_date).toLocaleDateString("fr")}</p>
+                        <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>Depuis {new Date(m.join_date).toLocaleDateString("fr")} · {parcoursLabels[m.parcours] || ""}</p>
                       </div>
                     </div>
                   </td>
@@ -597,7 +836,15 @@ const MembersPage = ({ userRole }) => {
                       <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 2 }}><Mail size={11} />{m.email}</div>
                     </div>
                   </td>
-                  <td style={{ padding: "12px 16px" }}><Badge variant="purple">{m.department || "—"}</Badge></td>
+                  <td style={{ padding: "12px 16px" }}>
+                    <div style={{ display: "flex", flexWrap: "wrap", gap: 3 }}>
+                      {(m.departments||[m.department]).filter(Boolean).map((d,i) => <Badge key={i} variant="purple">{d}</Badge>)}
+                      {!(m.departments||[m.department]).filter(Boolean).length && <span style={{ color: "#94a3b8", fontSize: 12 }}>—</span>}
+                    </div>
+                  </td>
+                  <td style={{ padding: "12px 16px" }}>
+                    <BaptismBadge m={m} />
+                  </td>
                   <td style={{ padding: "12px 16px" }}>
                     <select value={m.status} onChange={e => changeStatus(m.id, e.target.value)} style={{ ...selectStyle, width: 130, fontSize: 11, padding: "4px 8px" }}>
                       {statusOptions.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
@@ -617,14 +864,39 @@ const MembersPage = ({ userRole }) => {
         {filtered.length === 0 && <EmptyState icon={Users} title="Aucun membre trouvé" description="Modifiez vos critères de recherche" />}
         <div style={{ padding: "12px 16px", borderTop: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12, color: "#94a3b8" }}>
           <span>{filtered.length} membre{filtered.length > 1 ? "s" : ""} affiché{filtered.length > 1 ? "s" : ""}</span>
-          <span>Actifs: {members.filter(m => m.status === "actif").length} · Passifs: {members.filter(m => m.status === "passif").length} · Sympathisants: {members.filter(m => m.status === "sympathisant").length}</span>
+          <span>Actifs: {members.filter(m => m.status === "actif").length} · Baptisés: {members.filter(m => m.baptise).length} 💧</span>
         </div>
       </div>
 
-      <Modal open={showModal} onClose={() => setShowModal(false)} title={editing ? "Modifier le membre" : "Nouveau membre"}>
+      {/* ── MODAL NOUVEAU/MODIFIER MEMBRE ── */}
+      <Modal open={showModal} onClose={() => setShowModal(false)} title={editing ? "Modifier le membre" : "Nouveau membre"} width={620}>
+
+        {/* Photo de profil */}
+        <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20, padding: 16, background: "#f8fafc", borderRadius: 12 }}>
+          <div style={{ position: "relative" }}>
+            {form.photo
+              ? <img src={form.photo} alt="Photo" style={{ width: 72, height: 72, borderRadius: "50%", objectFit: "cover", border: "3px solid #0d9488" }} />
+              : <div style={{ width: 72, height: 72, borderRadius: "50%", background: form.gender === "F" ? "#ec489920" : "#0d948820", border: "3px dashed #d1d5db", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 28 }}>
+                  {form.gender === "F" ? "👩" : "👨"}
+                </div>
+            }
+          </div>
+          <div>
+            <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Photo de profil</p>
+            <p style={{ margin: "0 0 8px", fontSize: 11, color: "#94a3b8" }}>JPG, PNG · max 2 Mo</p>
+            <div style={{ display: "flex", gap: 6 }}>
+              <label style={{ padding: "6px 12px", borderRadius: 8, background: "#0d9488", color: "#fff", fontSize: 11, fontWeight: 600, cursor: "pointer" }}>
+                📷 Choisir une photo
+                <input type="file" accept="image/*" onChange={handlePhotoUpload} style={{ display: "none" }} />
+              </label>
+              {form.photo && <Btn variant="secondary" size="sm" onClick={() => setForm(f => ({ ...f, photo: null }))}>Supprimer</Btn>}
+            </div>
+          </div>
+        </div>
+
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-          <FormField label="Prénom" required><input style={inputStyle} value={form.first_name} onChange={e => setForm({ ...form, first_name: e.target.value })} /></FormField>
-          <FormField label="Nom" required><input style={inputStyle} value={form.last_name} onChange={e => setForm({ ...form, last_name: e.target.value })} /></FormField>
+          <FormField label="Prénom *"><input style={inputStyle} value={form.first_name} onChange={e => setForm({ ...form, first_name: e.target.value })} /></FormField>
+          <FormField label="Nom *"><input style={inputStyle} value={form.last_name} onChange={e => setForm({ ...form, last_name: e.target.value })} /></FormField>
           <FormField label="Genre">
             <select style={selectStyle} value={form.gender} onChange={e => setForm({ ...form, gender: e.target.value })}>
               <option value="M">Homme</option><option value="F">Femme</option>
@@ -637,22 +909,87 @@ const MembersPage = ({ userRole }) => {
           </FormField>
           <FormField label="Téléphone"><input style={inputStyle} value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} /></FormField>
           <FormField label="Email"><input style={inputStyle} type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></FormField>
-          <FormField label="Département">
-            <select style={selectStyle} value={form.department} onChange={e => setForm({ ...form, department: e.target.value })}>
-              <option value="">— Sélectionner —</option>
-              {MOCK_DEPARTMENTS.map(d => <option key={d.id} value={d.name}>{d.name}</option>)}
-            </select>
-          </FormField>
-          <FormField label="Statut">
-            <select style={selectStyle} value={form.status} onChange={e => setForm({ ...form, status: e.target.value })}>
-              {statusOptions.map(s => <option key={s} value={s}>{s.charAt(0).toUpperCase() + s.slice(1)}</option>)}
-            </select>
-          </FormField>
           <FormField label="Date de naissance"><input style={inputStyle} type="date" value={form.birth_date} onChange={e => setForm({ ...form, birth_date: e.target.value })} /></FormField>
+          <FormField label="Parcours membre">
+            <select style={selectStyle} value={form.parcours} onChange={e => setForm({ ...form, parcours: e.target.value })}>
+              {parcoursSteps.map(p => <option key={p} value={p}>{parcoursLabels[p]}</option>)}
+            </select>
+          </FormField>
         </div>
+
+        {/* ── SECTION BAPTÊME ── */}
+        <div style={{ marginTop: 16, padding: 16, background: "#eff6ff", borderRadius: 12, border: "1px solid #bfdbfe" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: form.baptise ? 14 : 0 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ fontSize: 18 }}>💧</span>
+              <div>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Baptême des eaux</p>
+                <p style={{ margin: 0, fontSize: 11, color: "#64748b" }}>Marquer ce membre comme baptisé</p>
+              </div>
+            </div>
+            <div onClick={() => setForm(f => ({ ...f, baptise: !f.baptise, bapteme_type: "eaux" }))} style={{
+              width: 44, height: 24, borderRadius: 12, padding: 3, cursor: "pointer", transition: "all 0.2s",
+              background: form.baptise ? "#3b82f6" : "#e2e8f0", display: "flex", alignItems: "center",
+              justifyContent: form.baptise ? "flex-end" : "flex-start"
+            }}>
+              <div style={{ width: 18, height: 18, borderRadius: "50%", background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.15)" }} />
+            </div>
+          </div>
+          {form.baptise && (
+            <FormField label="Date du baptême">
+              <input style={inputStyle} type="date" value={form.date_bapteme} onChange={e => setForm({ ...form, date_bapteme: e.target.value })} />
+            </FormField>
+          )}
+        </div>
+
+        {/* Multi-select departments */}
+        <div style={{ marginTop: 12, padding: 16, background: "#f8fafc", borderRadius: 12 }}>
+          <p style={{ margin: "0 0 8px", fontSize: 12, fontWeight: 700, color: "#0f172a" }}>Départements (plusieurs possibles)</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {mockDepts.map(d => (
+              <label key={d} onClick={() => setForm({...form, departments: toggleArray(form.departments||[], d)})} style={{
+                padding: "5px 12px", borderRadius: 8, cursor: "pointer", fontSize: 11, fontWeight: 600,
+                background: (form.departments||[]).includes(d) ? "#0d948815" : "#fff",
+                border: (form.departments||[]).includes(d) ? "1px solid #0d948840" : "1px solid #e2e8f0",
+                color: (form.departments||[]).includes(d) ? "#0d9488" : "#94a3b8"
+              }}>{(form.departments||[]).includes(d) ? "✓ " : ""}{d}</label>
+            ))}
+          </div>
+        </div>
+
+        {/* Multi-select committees */}
+        <div style={{ marginTop: 10, padding: 16, background: "#f8fafc", borderRadius: 12 }}>
+          <p style={{ margin: "0 0 8px", fontSize: 12, fontWeight: 700, color: "#0f172a" }}>Comités</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {mockComites.map(c => (
+              <label key={c} onClick={() => setForm({...form, committees: toggleArray(form.committees||[], c)})} style={{
+                padding: "5px 12px", borderRadius: 8, cursor: "pointer", fontSize: 11, fontWeight: 600,
+                background: (form.committees||[]).includes(c) ? "#8b5cf615" : "#fff",
+                border: (form.committees||[]).includes(c) ? "1px solid #8b5cf640" : "1px solid #e2e8f0",
+                color: (form.committees||[]).includes(c) ? "#8b5cf6" : "#94a3b8"
+              }}>{(form.committees||[]).includes(c) ? "✓ " : ""}{c}</label>
+            ))}
+          </div>
+        </div>
+
+        {/* Multi-select groups */}
+        <div style={{ marginTop: 10, padding: 16, background: "#f8fafc", borderRadius: 12 }}>
+          <p style={{ margin: "0 0 8px", fontSize: 12, fontWeight: 700, color: "#0f172a" }}>Groupes</p>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
+            {mockGroups.map(g => (
+              <label key={g} onClick={() => setForm({...form, groups: toggleArray(form.groups||[], g)})} style={{
+                padding: "5px 12px", borderRadius: 8, cursor: "pointer", fontSize: 11, fontWeight: 600,
+                background: (form.groups||[]).includes(g) ? "#3b82f615" : "#fff",
+                border: (form.groups||[]).includes(g) ? "1px solid #3b82f640" : "1px solid #e2e8f0",
+                color: (form.groups||[]).includes(g) ? "#3b82f6" : "#94a3b8"
+              }}>{(form.groups||[]).includes(g) ? "✓ " : ""}{g}</label>
+            ))}
+          </div>
+        </div>
+
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 20 }}>
           <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
-          <Btn onClick={handleSave}>{editing ? "Enregistrer" : "Ajouter"}</Btn>
+          <Btn onClick={handleSave} disabled={!form.first_name || !form.last_name}>{editing ? "Enregistrer" : "Ajouter"}</Btn>
         </div>
       </Modal>
     </div>
@@ -661,78 +998,148 @@ const MembersPage = ({ userRole }) => {
 
 // VISITORS PAGE
 const VisitorsPage = () => {
-  const [visitors, setVisitors] = useState(MOCK_VISITORS);
+  const [visitors, setVisitors] = useState(MOCK_VISITORS.map(v => ({...v, email: "", address: "", followups: [], status: v.status || "nouveau" })));
   const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({ first_name: "", last_name: "", phone: "", source: "", notes: "" });
-  const statusMap = { nouveau: { label: "Nouveau", variant: "info" }, suivi: { label: "En suivi", variant: "warning" }, converti: { label: "Converti", variant: "success" } };
+  const [showDetail, setShowDetail] = useState(null);
+  const [showFollowup, setShowFollowup] = useState(false);
+  const [editing, setEditing] = useState(null);
+  const [form, setForm] = useState({ first_name: "", last_name: "", phone: "", email: "", address: "", source: "", notes: "" });
+  const [followForm, setFollowForm] = useState({ type: "Appel téléphonique", notes: "", next_date: "" });
+  const statusMap = { nouveau: { label: "Nouveau", variant: "info" }, suivi: { label: "En suivi", variant: "warning" }, regulier: { label: "Régulier", variant: "purple" }, converti: { label: "Converti", variant: "success" } };
+  const statusFlow = ["nouveau", "suivi", "regulier", "converti"];
 
   const handleSave = () => {
-    setVisitors(prev => [...prev, { ...form, id: Date.now(), visit_date: new Date().toISOString().split("T")[0], status: "nouveau" }]);
-    setShowModal(false);
-    setForm({ first_name: "", last_name: "", phone: "", source: "", notes: "" });
+    if (editing) { setVisitors(prev => prev.map(v => v.id === editing.id ? {...v, ...form} : v)); }
+    else { setVisitors(prev => [...prev, { ...form, id: Date.now(), visit_date: new Date().toISOString().split("T")[0], status: "nouveau", followups: [] }]); }
+    setShowModal(false); setEditing(null);
+  };
+  const addFollowup = () => {
+    if (!showDetail) return;
+    setVisitors(prev => prev.map(v => v.id === showDetail.id ? {...v, followups: [...(v.followups||[]), { ...followForm, date: new Date().toISOString().split("T")[0], id: Date.now() }]} : v));
+    setShowDetail(prev => ({...prev, followups: [...(prev.followups||[]), { ...followForm, date: new Date().toISOString().split("T")[0], id: Date.now() }]}));
+    setShowFollowup(false); setFollowForm({ type: "Appel téléphonique", notes: "", next_date: "" });
   };
 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <div>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Visiteurs</h2>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{visitors.length} visiteurs enregistrés</p>
-        </div>
-        <Btn icon={Plus} onClick={() => setShowModal(true)}>Nouveau visiteur</Btn>
+        <div><h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Fiche Visiteur et Suivi</h2>
+        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{visitors.length} visiteurs · {visitors.filter(v=>v.status==="converti").length} convertis</p></div>
+        <Btn icon={Plus} onClick={() => { setEditing(null); setForm({ first_name: "", last_name: "", phone: "", email: "", address: "", source: "", notes: "" }); setShowModal(true); }}>Nouveau visiteur</Btn>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
-        {visitors.map(v => (
-          <div key={v.id} style={{
-            background: "#fff", borderRadius: 16, padding: 20, border: "1px solid #f1f5f9",
-            transition: "all 0.2s"
-          }}
-          onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.06)"; }}
-          onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
-          >
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+      <div style={{ display: "grid", gridTemplateColumns: showDetail ? "1fr 1fr" : "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {visitors.map(v => (
+            <div key={v.id} onClick={() => setShowDetail(v)} style={{ background: "#fff", borderRadius: 14, padding: 18, border: showDetail?.id === v.id ? "2px solid #0d9488" : "1px solid #f1f5f9", cursor: "pointer", transition: "all 0.15s" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <Avatar name={v.first_name} size={36} color="#3b82f6" />
+                  <div>
+                    <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{v.first_name} {v.last_name}</p>
+                    <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{v.phone} · {new Date(v.visit_date).toLocaleDateString("fr")}</p>
+                  </div>
+                </div>
+                <Badge variant={statusMap[v.status]?.variant}>{statusMap[v.status]?.label}</Badge>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Detail panel */}
+        {showDetail && (
+          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 24, position: "sticky", top: 20 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
               <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <Avatar name={v.first_name} size={40} color="#3b82f6" />
+                <Avatar name={showDetail.first_name} size={48} color="#3b82f6" />
                 <div>
-                  <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{v.first_name} {v.last_name}</p>
-                  <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>Visite: {new Date(v.visit_date).toLocaleDateString("fr")}</p>
+                  <h3 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#0f172a" }}>{showDetail.first_name} {showDetail.last_name}</h3>
+                  <Badge variant={statusMap[showDetail.status]?.variant}>{statusMap[showDetail.status]?.label}</Badge>
                 </div>
               </div>
-              <Badge variant={statusMap[v.status]?.variant}>{statusMap[v.status]?.label}</Badge>
+              <div style={{ display: "flex", gap: 4 }}>
+                <Btn variant="ghost" size="sm" icon={Edit} onClick={() => { setEditing(showDetail); setForm({...showDetail}); setShowModal(true); }} />
+                <Btn variant="ghost" size="sm" icon={X} onClick={() => setShowDetail(null)} />
+              </div>
             </div>
-            <div style={{ fontSize: 12, color: "#64748b", display: "flex", flexDirection: "column", gap: 6 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}><Phone size={12} />{v.phone}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}><MapPin size={12} />Source: {v.source}</div>
-              {v.notes && <p style={{ margin: "6px 0 0", padding: "8px 12px", background: "#f8fafc", borderRadius: 8, fontSize: 12, color: "#475569", fontStyle: "italic" }}>{v.notes}</p>}
+
+            {/* Status change */}
+            <FormField label="Changer le statut">
+              <select style={selectStyle} value={showDetail.status} onChange={e => { const ns = e.target.value; setVisitors(prev => prev.map(v => v.id === showDetail.id ? {...v, status: ns} : v)); setShowDetail(prev => ({...prev, status: ns})); }}>
+                {statusFlow.map(s => <option key={s} value={s}>{statusMap[s]?.label}</option>)}
+              </select>
+            </FormField>
+            <p style={{ fontSize: 10, color: "#94a3b8", margin: "-8px 0 12px" }}>Nouveau → En suivi → Régulier → Converti</p>
+
+            {/* Infos */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, padding: 14, background: "#f8fafc", borderRadius: 10 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#475569" }}><Phone size={12} />{showDetail.phone || "—"}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#475569" }}><Mail size={12} />{showDetail.email || "—"}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#475569" }}><MapPin size={12} />{showDetail.address || "—"}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#475569" }}><Calendar size={12} />Première visite : {showDetail.visit_date ? new Date(showDetail.visit_date).toLocaleDateString("fr") : "Inconnue"}</div>
+              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#475569" }}><Users size={12} />Source : {showDetail.source || "—"}</div>
             </div>
-            <div style={{ display: "flex", gap: 8, marginTop: 14 }}>
-              {v.status === "nouveau" && <Btn variant="secondary" size="sm" icon={UserCheck} onClick={() => setVisitors(prev => prev.map(x => x.id === v.id ? {...x, status: "suivi"} : x))}>Suivre</Btn>}
-              {v.status === "suivi" && <Btn size="sm" icon={Heart} onClick={() => setVisitors(prev => prev.map(x => x.id === v.id ? {...x, status: "converti"} : x))}>Convertir</Btn>}
-              {v.status === "converti" && <Badge variant="success">✓ Converti</Badge>}
-              <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => setVisitors(prev => prev.filter(x => x.id !== v.id))} />
+            {showDetail.notes && <p style={{ padding: 12, background: "#fffbeb", borderRadius: 8, fontSize: 12, color: "#92400e", margin: "0 0 16px" }}>📝 {showDetail.notes}</p>}
+
+            {/* Followup history */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+              <h4 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>Historique de suivi ({(showDetail.followups||[]).length})</h4>
+              <Btn size="sm" icon={Plus} onClick={() => setShowFollowup(true)}>Ajouter</Btn>
             </div>
+            {(showDetail.followups||[]).length === 0 && <p style={{ fontSize: 12, color: "#94a3b8", fontStyle: "italic" }}>Aucune action de suivi enregistrée</p>}
+            {(showDetail.followups||[]).map(f => (
+              <div key={f.id} style={{ padding: 10, borderLeft: "3px solid #0d9488", background: "#f8fafc", borderRadius: "0 8px 8px 0", marginBottom: 6 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11 }}>
+                  <span style={{ fontWeight: 700, color: "#0d9488" }}>{f.type}</span>
+                  <span style={{ color: "#94a3b8" }}>{f.date}</span>
+                </div>
+                {f.notes && <p style={{ margin: "4px 0 0", fontSize: 11, color: "#475569" }}>{f.notes}</p>}
+                {f.next_date && <p style={{ margin: "2px 0 0", fontSize: 10, color: "#f59e0b" }}>Prochaine action : {f.next_date}</p>}
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
 
-      <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouveau visiteur">
+      {/* New/Edit visitor modal */}
+      <Modal open={showModal} onClose={() => { setShowModal(false); setEditing(null); }} title={editing ? "Modifier le visiteur" : "Nouveau visiteur"}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-          <FormField label="Prénom" required><input style={inputStyle} value={form.first_name} onChange={e => setForm({ ...form, first_name: e.target.value })} /></FormField>
-          <FormField label="Nom" required><input style={inputStyle} value={form.last_name} onChange={e => setForm({ ...form, last_name: e.target.value })} /></FormField>
-          <FormField label="Téléphone"><input style={inputStyle} value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} /></FormField>
-          <FormField label="Source">
-            <select style={selectStyle} value={form.source} onChange={e => setForm({ ...form, source: e.target.value })}>
-              <option value="">— Choisir —</option>
-              <option value="Invitation">Invitation</option><option value="En ligne">En ligne</option>
-              <option value="Voisinage">Voisinage</option><option value="Autre">Autre</option>
-            </select>
-          </FormField>
+          <FormField label="Prénom *"><input style={inputStyle} value={form.first_name} onChange={e => setForm({...form, first_name: e.target.value})} /></FormField>
+          <FormField label="Nom *"><input style={inputStyle} value={form.last_name} onChange={e => setForm({...form, last_name: e.target.value})} /></FormField>
+          <FormField label="Téléphone"><input style={inputStyle} value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} /></FormField>
+          <FormField label="Email"><input style={inputStyle} value={form.email} onChange={e => setForm({...form, email: e.target.value})} /></FormField>
         </div>
-        <FormField label="Notes"><textarea style={{ ...inputStyle, minHeight: 70, resize: "vertical" }} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} /></FormField>
+        <FormField label="Adresse"><input style={inputStyle} value={form.address} onChange={e => setForm({...form, address: e.target.value})} /></FormField>
+        <FormField label="Source / Comment nous a-t-il connu ?">
+          <select style={selectStyle} value={form.source} onChange={e => setForm({...form, source: e.target.value})}>
+            <option value="">— Sélectionner —</option>
+            <option value="Bouche à oreille">Bouche à oreille</option>
+            <option value="Invitation d'un membre">Invitation d'un membre</option>
+            <option value="Réseaux sociaux">Réseaux sociaux</option>
+            <option value="Événement">Événement</option>
+            <option value="Passage devant l'église">Passage devant l'église</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </FormField>
+        <FormField label="Notes"><textarea style={{...inputStyle, minHeight: 60, resize: "vertical"}} value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} /></FormField>
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
-          <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
-          <Btn onClick={handleSave}>Enregistrer</Btn>
+          <Btn variant="secondary" onClick={() => { setShowModal(false); setEditing(null); }}>Annuler</Btn>
+          <Btn onClick={handleSave}>{editing ? "Enregistrer" : "Ajouter"}</Btn>
+        </div>
+      </Modal>
+
+      {/* Followup modal */}
+      <Modal open={showFollowup} onClose={() => setShowFollowup(false)} title="Ajouter une action de suivi">
+        <FormField label="Type d'action">
+          <select style={selectStyle} value={followForm.type} onChange={e => setFollowForm({...followForm, type: e.target.value})}>
+            <option>Appel téléphonique</option><option>Visite à domicile</option><option>Email</option><option>SMS</option><option>WhatsApp</option>
+          </select>
+        </FormField>
+        <FormField label="Notes / Commentaires"><textarea style={{...inputStyle, minHeight: 60, resize: "vertical"}} value={followForm.notes} onChange={e => setFollowForm({...followForm, notes: e.target.value})} /></FormField>
+        <FormField label="Prochaine action prévue (optionnel)"><input style={inputStyle} type="date" value={followForm.next_date} onChange={e => setFollowForm({...followForm, next_date: e.target.value})} /></FormField>
+        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
+          <Btn variant="secondary" onClick={() => setShowFollowup(false)}>Annuler</Btn>
+          <Btn onClick={addFollowup}>Enregistrer</Btn>
         </div>
       </Modal>
     </div>
@@ -745,7 +1152,7 @@ const FinancesPage = () => {
   const [period, setPeriod] = useState("month");
   const [showModal, setShowModal] = useState(false);
   const [transactions, setTransactions] = useState(MOCK_FINANCES);
-  const [form, setForm] = useState({ type: "entree", category: "dimes", amount: "", description: "", method: "especes" });
+  const [form, setForm] = useState({ type: "entree", category: "dimes", subcategory: "", amount: "", description: "", method: "especes" });
 
   const totalEntrees = transactions.filter(t => t.type === "entree").reduce((s, t) => s + t.amount, 0);
   const totalSorties = transactions.filter(t => t.type === "sortie").reduce((s, t) => s + t.amount, 0);
@@ -755,7 +1162,13 @@ const FinancesPage = () => {
     dimes: "Dîmes", offrandes_culte: "Offrandes culte", offrandes_speciales: "Offrandes spéciales",
     dons: "Dons", loyer: "Loyer", electricite_eau: "Électricité/Eau", salaires: "Salaires",
     equipements: "Équipements", quete: "Quête", transport: "Transport", entretien: "Entretien",
-    fournitures: "Fournitures", oeuvres_sociales: "Œuvres sociales", autres_depenses: "Autres"
+    fournitures: "Fournitures", oeuvres_sociales: "Œuvres sociales", construction: "Construction",
+    projet_special: "Projet spécial", communication: "Communication", autres_depenses: "Autres"
+  };
+  const subcategories = {
+    construction: ["Terrain", "Fondation", "Murs", "Toiture", "Finition", "Peinture"],
+    equipements: ["Sonorisation", "Instruments", "Mobilier", "Informatique", "Véhicule"],
+    projet_special: ["Évangélisation", "Camp de jeunes", "Convention", "Mission"],
   };
 
   const periodLabels = { day: "Aujourd'hui", week: "Cette semaine", month: "Ce mois", year: "Cette année" };
@@ -763,11 +1176,11 @@ const FinancesPage = () => {
   const handleSave = () => {
     setTransactions(prev => [...prev, { ...form, id: Date.now(), amount: parseInt(form.amount) || 0, date: new Date().toISOString().split("T")[0] }]);
     setShowModal(false);
-    setForm({ type: "entree", category: "dimes", amount: "", description: "", method: "especes" });
+    setForm({ type: "entree", category: "dimes", subcategory: "", amount: "", description: "", method: "especes" });
   };
 
   const exportCSV = () => {
-    const csv = "\uFEFFDate,Type,Catégorie,Description,Montant,Méthode\n" + transactions.map(t => `${t.date},${t.type},${categoryLabels[t.category]||t.category},${t.description||""},${t.amount},${t.method||""}`).join("\n");
+    const csv = "\uFEFFDate,Type,Catégorie,Sous-catégorie,Description,Montant,Méthode\n" + transactions.map(t => `${t.date},${t.type},${categoryLabels[t.category]||t.category},${t.subcategory||""},${t.description||""},${t.amount},${t.method||""}`).join("\n");
     const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" }); const url = URL.createObjectURL(blob);
     const a = document.createElement("a"); a.href = url; a.download = `finances_${period}.csv`; a.click();
   };
@@ -899,26 +1312,37 @@ const FinancesPage = () => {
         </FormField>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
           <FormField label="Catégorie">
-            <select style={selectStyle} value={form.category} onChange={e => setForm({ ...form, category: e.target.value })}>
+            <select style={selectStyle} value={form.category} onChange={e => setForm({ ...form, category: e.target.value, subcategory: "" })}>
               {form.type === "entree" ? (
                 <>
                   <option value="dimes">Dîmes</option><option value="offrandes_culte">Offrandes culte</option>
                   <option value="offrandes_speciales">Offrandes spéciales</option><option value="dons">Dons</option>
-                  <option value="quete">Quête</option>
+                  <option value="quete">Quête</option><option value="projet_special">Projet spécial</option>
                 </>
               ) : (
                 <>
                   <option value="loyer">Loyer</option><option value="electricite_eau">Électricité/Eau</option>
                   <option value="salaires">Salaires</option><option value="equipements">Équipements</option>
-                  <option value="transport">Transport</option><option value="autres_depenses">Autres</option>
+                  <option value="construction">Construction</option><option value="transport">Transport</option>
+                  <option value="entretien">Entretien</option><option value="fournitures">Fournitures</option>
+                  <option value="communication">Communication</option><option value="oeuvres_sociales">Œuvres sociales</option>
+                  <option value="projet_special">Projet spécial</option><option value="autres_depenses">Autres</option>
                 </>
               )}
             </select>
           </FormField>
-          <FormField label="Montant (F CFA)" required>
+          <FormField label="Montant (F CFA) *">
             <input style={inputStyle} type="number" value={form.amount} onChange={e => setForm({ ...form, amount: e.target.value })} />
           </FormField>
         </div>
+        {subcategories[form.category] && (
+          <FormField label="Sous-catégorie">
+            <select style={selectStyle} value={form.subcategory} onChange={e => setForm({ ...form, subcategory: e.target.value })}>
+              <option value="">— Sélectionner —</option>
+              {subcategories[form.category].map(sc => <option key={sc} value={sc}>{sc}</option>)}
+            </select>
+          </FormField>
+        )}
         <FormField label="Description"><input style={inputStyle} value={form.description} onChange={e => setForm({ ...form, description: e.target.value })} /></FormField>
         <FormField label="Mode de paiement">
           <select style={selectStyle} value={form.method} onChange={e => setForm({ ...form, method: e.target.value })}>
@@ -937,19 +1361,26 @@ const FinancesPage = () => {
 
 // EVENTS / AGENDA PAGE
 const AgendaPage = () => {
-  const [events, setEvents] = useState(MOCK_EVENTS);
+  const [events, setEvents] = useState([...MOCK_EVENTS.map(e => ({...e, scope: "eglise"})),
+    { id: 901, title: "RDV Pasteur Bamba", date: "2026-03-25", time: "10:00", type: "evenement", location: "Bureau", scope: "pasteur", description: "Discussion partenariat" },
+    { id: 902, title: "Invitation conférence Bouaké", date: "2026-03-28", time: "08:00", type: "evenement", location: "Bouaké", scope: "pasteur", description: "" },
+  ]);
   const [showModal, setShowModal] = useState(false);
   const [viewMode, setViewMode] = useState("calendar");
+  const [agendaScope, setAgendaScope] = useState("eglise");
   const [currentMonth, setCurrentMonth] = useState(new Date(2026, 2, 1));
   const [selectedDate, setSelectedDate] = useState("2026-03-21");
   const [editingEvent, setEditingEvent] = useState(null);
-  const [form, setForm] = useState({ title: "", date: "", time: "", type: "culte", location: "", description: "" });
+  const [form, setForm] = useState({ title: "", date: "", time: "", type: "culte", location: "", description: "", scope: "eglise" });
   const typeColors = { culte: "#0d9488", priere: "#3b82f6", etude: "#8b5cf6", repetition: "#f59e0b", evenement: "#ec4899" };
   const typeLabels = { culte: "Culte", priere: "Prière", etude: "Étude", repetition: "Répétition", evenement: "Événement" };
   const typeIcons = { culte: "⛪", priere: "🙏", etude: "📖", repetition: "🎵", evenement: "🎉" };
   const MONTHS_FULL = ["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"];
   const weekDayHeaders = ["Lun","Mar","Mer","Jeu","Ven","Sam","Dim"];
   const todayStr = "2026-03-21";
+
+  // Filter events by scope
+  const scopedEvents = events.filter(e => e.scope === agendaScope);
 
   const handleSave = () => {
     if (editingEvent) {
@@ -958,11 +1389,11 @@ const AgendaPage = () => {
       setEvents(prev => [...prev, { ...form, id: Date.now() }]);
     }
     setShowModal(false); setEditingEvent(null);
-    setForm({ title: "", date: "", time: "", type: "culte", location: "", description: "" });
+    setForm({ title: "", date: "", time: "", type: "culte", location: "", description: "", scope: agendaScope });
   };
-  const handleDelete = (id) => setEvents(prev => prev.filter(ev => ev.id !== id));
-  const openNewOnDate = (d) => { setEditingEvent(null); setForm({ title:"", date:d, time:"09:00", type:"culte", location:"", description:"" }); setShowModal(true); };
-  const openEdit = (ev) => { setEditingEvent(ev); setForm({ title:ev.title, date:ev.date, time:ev.time, type:ev.type, location:ev.location, description:ev.description||"" }); setShowModal(true); };
+  const handleDelete = (id) => { if(confirm("Supprimer cet événement ?")) setEvents(prev => prev.filter(ev => ev.id !== id)); };
+  const openNewOnDate = (d) => { setEditingEvent(null); setForm({ title:"", date:d, time:"09:00", type:"culte", location:"", description:"", scope: agendaScope }); setShowModal(true); };
+  const openEdit = (ev) => { setEditingEvent(ev); setForm({ title:ev.title, date:ev.date, time:ev.time, type:ev.type, location:ev.location, description:ev.description||"", scope: ev.scope||"eglise" }); setShowModal(true); };
 
   const calendarCells = useMemo(() => {
     const y = currentMonth.getFullYear(), m = currentMonth.getMonth();
@@ -977,12 +1408,12 @@ const AgendaPage = () => {
     return cells;
   }, [currentMonth]);
 
-  const evMap = useMemo(() => { const m = {}; events.forEach(e => { if(!m[e.date]) m[e.date]=[]; m[e.date].push(e); }); return m; }, [events]);
+  const evMap = useMemo(() => { const m = {}; scopedEvents.forEach(e => { if(!m[e.date]) m[e.date]=[]; m[e.date].push(e); }); return m; }, [scopedEvents]);
 
   const grouped = useMemo(() => {
-    const sorted = [...events].sort((a,b) => new Date(a.date)-new Date(b.date));
+    const sorted = [...scopedEvents].sort((a,b) => new Date(a.date)-new Date(b.date));
     const g = {}; sorted.forEach(e => { const d = new Date(e.date); const k = `${DAYS_FR[d.getDay()]} ${d.getDate()} ${MONTHS_FR[d.getMonth()]}`; if(!g[k]) g[k]=[]; g[k].push(e); }); return g;
-  }, [events]);
+  }, [scopedEvents]);
 
   const goP = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth()-1, 1));
   const goN = () => setCurrentMonth(new Date(currentMonth.getFullYear(), currentMonth.getMonth()+1, 1));
@@ -990,11 +1421,25 @@ const AgendaPage = () => {
 
   return (
     <div>
+      {/* Scope tabs */}
+      <div style={{ display: "flex", gap: 8, marginBottom: 16 }}>
+        {[{key:"eglise", label:"⛪ Agenda Église", desc:"Visible par tous"}, {key:"pasteur", label:"🔒 Agenda Pasteur", desc:"RDVs, invitations, privé"}].map(s => (
+          <div key={s.key} onClick={() => setAgendaScope(s.key)} style={{
+            padding: "10px 18px", borderRadius: 12, cursor: "pointer", flex: 1, textAlign: "center",
+            background: agendaScope === s.key ? (s.key === "pasteur" ? "#eff6ff" : "#f0fdfa") : "#fafbfc",
+            border: agendaScope === s.key ? (s.key === "pasteur" ? "2px solid #3b82f6" : "2px solid #0d9488") : "1px solid #f1f5f9"
+          }}>
+            <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: agendaScope === s.key ? "#0f172a" : "#94a3b8" }}>{s.label}</p>
+            <p style={{ margin: 0, fontSize: 10, color: "#94a3b8" }}>{s.desc}</p>
+          </div>
+        ))}
+      </div>
+
       {/* HEADER */}
       <div style={{ display:"flex", justifyContent:"space-between", alignItems:"center", marginBottom:24, flexWrap:"wrap", gap:12 }}>
         <div>
-          <h2 style={{ fontSize:22, fontWeight:800, color:"#0f172a", margin:0 }}>Agenda</h2>
-          <p style={{ fontSize:13, color:"#94a3b8", margin:"4px 0 0" }}>{events.length} événements programmés</p>
+          <h2 style={{ fontSize:22, fontWeight:800, color:"#0f172a", margin:0 }}>{agendaScope === "pasteur" ? "Agenda Pasteur" : "Agenda Église"}</h2>
+          <p style={{ fontSize:13, color:"#94a3b8", margin:"4px 0 0" }}>{scopedEvents.length} événements</p>
         </div>
         <div style={{ display:"flex", gap:8 }}>
           <div style={{ display:"flex", background:"#f1f5f9", borderRadius:10, padding:3 }}>
@@ -1216,6 +1661,12 @@ const AgendaPage = () => {
             </select>
           </FormField>
           <FormField label="Lieu"><input style={inputStyle} placeholder="Ex: Temple principal" value={form.location} onChange={e=>setForm({...form,location:e.target.value})}/></FormField>
+          <FormField label="Visibilité">
+            <select style={selectStyle} value={form.scope} onChange={e=>setForm({...form,scope:e.target.value})}>
+              <option value="eglise">⛪ Agenda Église (visible par tous)</option>
+              <option value="pasteur">🔒 Agenda Pasteur (privé)</option>
+            </select>
+          </FormField>
         </div>
         <FormField label="Description (optionnel)">
           <textarea style={{...inputStyle,minHeight:65,resize:"vertical"}} placeholder="Détails supplémentaires..." value={form.description} onChange={e=>setForm({...form,description:e.target.value})}/>
@@ -1243,10 +1694,19 @@ const AgendaPage = () => {
 
 // DEPARTMENTS PAGE
 const DepartmentsPage = () => {
-  const [departments, setDepartments] = useState(MOCK_DEPARTMENTS);
+  const [departments, setDepartments] = useState(MOCK_DEPARTMENTS.map(d => ({...d, members: ["Jean Kouadio", "Marie Bamba", "Grace Achi"].slice(0, Math.min(3, d.members_count)) })));
   const [showModal, setShowModal] = useState(false);
+  const [selectedDept, setSelectedDept] = useState(null);
   const [form, setForm] = useState({ name: "", leader: "", color: "#0d9488" });
   const totalMembers = departments.reduce((s, d) => s + d.members_count, 0);
+
+  const moveDept = (idx, dir) => {
+    const arr = [...departments];
+    const swap = idx + dir;
+    if (swap < 0 || swap >= arr.length) return;
+    [arr[idx], arr[swap]] = [arr[swap], arr[idx]];
+    setDepartments(arr);
+  };
 
   return (
     <div>
@@ -1255,135 +1715,334 @@ const DepartmentsPage = () => {
           <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Départements</h2>
           <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{departments.length} départements · {totalMembers} membres</p>
         </div>
-        <Btn icon={Plus} onClick={() => setShowModal(true)}>Nouveau département</Btn>
+        <div style={{ display: "flex", gap: 8 }}>
+          <Btn variant="secondary" size="sm" icon={Download} onClick={() => {
+            const csv = "\uFEFFDépartement,Responsable,Membres\n" + departments.map(d => `${d.name},${d.leader},${d.members_count}`).join("\n");
+            const b = new Blob([csv], {type:"text/csv;charset=utf-8;"}); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href=u; a.download="departements.csv"; a.click();
+          }}>Exporter</Btn>
+          <Btn icon={Plus} onClick={() => { setForm({ name: "", leader: "", color: "#0d9488" }); setShowModal(true); }}>Nouveau département</Btn>
+        </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
-        {departments.map(d => (
-          <div key={d.id} style={{
-            background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9",
-            transition: "all 0.2s", position: "relative", overflow: "hidden"
-          }}
-          onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.06)"; }}
-          onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}
-          >
-            <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 4, background: `linear-gradient(90deg, ${d.color}, ${d.color}88)` }} />
-            <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 16 }}>
-              <div style={{
-                width: 48, height: 48, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center",
-                background: `${d.color}15`
-              }}>
-                <Building2 size={22} color={d.color} />
-              </div>
-              <div>
-                <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{d.name}</h3>
-                <p style={{ margin: "2px 0 0", fontSize: 12, color: "#94a3b8" }}>Resp: {d.leader}</p>
+      <div style={{ display: "grid", gridTemplateColumns: selectedDept ? "1fr 1fr" : "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: selectedDept ? "1fr" : "repeat(auto-fill, minmax(280px, 1fr))", gap: 12 }}>
+          {departments.map((d, idx) => (
+            <div key={d.id} onClick={() => setSelectedDept(d)} style={{
+              background: "#fff", borderRadius: 14, padding: 20, cursor: "pointer",
+              border: selectedDept?.id === d.id ? `2px solid ${d.color}` : "1px solid #f1f5f9",
+              borderTop: `4px solid ${d.color}`, transition: "all 0.15s"
+            }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <div style={{ width: 42, height: 42, borderRadius: 12, background: `${d.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><Building2 size={20} color={d.color} /></div>
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{d.name}</h3>
+                    <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>Resp: {d.leader} · {d.members_count} membres</p>
+                  </div>
+                </div>
+                <div style={{ display: "flex", gap: 2 }} onClick={e => e.stopPropagation()}>
+                  <button onClick={() => moveDept(idx, -1)} disabled={idx === 0} style={{ width: 26, height: 26, borderRadius: 6, border: "1px solid #e2e8f0", background: "#f8fafc", cursor: idx === 0 ? "not-allowed" : "pointer", opacity: idx === 0 ? 0.3 : 1, fontSize: 10 }}>▲</button>
+                  <button onClick={() => moveDept(idx, 1)} disabled={idx === departments.length - 1} style={{ width: 26, height: 26, borderRadius: 6, border: "1px solid #e2e8f0", background: "#f8fafc", cursor: idx === departments.length - 1 ? "not-allowed" : "pointer", opacity: idx === departments.length - 1 ? 0.3 : 1, fontSize: 10 }}>▼</button>
+                  <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer ${d.name} ?`)) setDepartments(prev => prev.filter(x => x.id !== d.id)); }} />
+                </div>
               </div>
             </div>
-            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 0", borderTop: "1px solid #f1f5f9" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                <Users size={14} color="#64748b" />
-                <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{d.members_count}</span>
-                <span style={{ fontSize: 12, color: "#94a3b8" }}>membres</span>
+          ))}
+        </div>
+        {selectedDept && (
+          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 24 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <div style={{ width: 36, height: 36, borderRadius: 10, background: `${selectedDept.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><Building2 size={18} color={selectedDept.color} /></div>
+                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedDept.name}</h3>
               </div>
-              <Btn variant="ghost" size="sm" icon={ChevronRight} />
+              <Btn variant="ghost" size="sm" icon={X} onClick={() => setSelectedDept(null)} />
+            </div>
+            <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 16px" }}>Responsable : {selectedDept.leader} · {selectedDept.members_count} membres</p>
+            <h4 style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 700 }}>Membres du département</h4>
+            {(selectedDept.members||[]).map((m, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #f8fafc" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <Avatar name={m} size={28} color={selectedDept.color} />
+                  <span style={{ fontSize: 13, color: "#0f172a" }}>{m}</span>
+                </div>
+                <Badge variant="success">Actif</Badge>
+              </div>
+            ))}
+            <div style={{ marginTop: 16 }}>
+              <Btn variant="secondary" size="sm" icon={Download} onClick={() => {
+                const csv = `Département: ${selectedDept.name}\nResponsable: ${selectedDept.leader}\n\nMembres:\n` + (selectedDept.members||[]).map((m,i) => `${i+1}. ${m}`).join("\n");
+                const b = new Blob([csv], {type:"text/plain"}); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href=u; a.download=`dept_${selectedDept.name}.txt`; a.click();
+              }}>Exporter ce département</Btn>
             </div>
           </div>
-        ))}
+        )}
       </div>
 
       <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouveau département">
-        <FormField label="Nom du département" required><input style={inputStyle} value={form.name} onChange={e => setForm({ ...form, name: e.target.value })} /></FormField>
-        <FormField label="Responsable"><input style={inputStyle} value={form.leader} onChange={e => setForm({ ...form, leader: e.target.value })} /></FormField>
-        <FormField label="Couleur"><input type="color" value={form.color} onChange={e => setForm({ ...form, color: e.target.value })} style={{ width: 50, height: 36, border: "none", cursor: "pointer", borderRadius: 8 }} /></FormField>
+        <FormField label="Nom *"><input style={inputStyle} value={form.name} onChange={e => setForm({...form, name: e.target.value})} /></FormField>
+        <FormField label="Responsable"><input style={inputStyle} value={form.leader} onChange={e => setForm({...form, leader: e.target.value})} /></FormField>
+        <FormField label="Couleur"><input type="color" value={form.color} onChange={e => setForm({...form, color: e.target.value})} style={{ width: 50, height: 36, border: "none", cursor: "pointer", borderRadius: 8 }} /></FormField>
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
           <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
-          <Btn onClick={() => {
-            setDepartments(prev => [...prev, { ...form, id: Date.now(), members_count: 0 }]);
-            setShowModal(false);
-          }}>Créer</Btn>
+          <Btn onClick={() => { if(form.name) { setDepartments(prev => [...prev, { ...form, id: Date.now(), members_count: 0, members: [] }]); setShowModal(false); } }}>Créer</Btn>
         </div>
       </Modal>
     </div>
   );
 };
 
-// CULTES PAGE (Church Services)
+// CULTES PAGE (Church Services) — with nominal attendance roll call
 const CultesPage = () => {
-  const [cultes] = useState([
-    { id: 1, date: "2026-03-22", type: "Culte dominical", presences: 215, offrande: 180000, theme: "La foi qui déplace les montagnes", predicateur: "Pasteur Kouadio" },
-    { id: 2, date: "2026-03-15", type: "Culte dominical", presences: 198, offrande: 165000, theme: "Marcher dans la lumière", predicateur: "Pasteur Kouadio" },
-    { id: 3, date: "2026-03-08", type: "Culte dominical", presences: 223, offrande: 210000, theme: "L'amour inconditionnel", predicateur: "Pasteur assistant Bamba" },
-    { id: 4, date: "2026-03-01", type: "Culte dominical", presences: 189, offrande: 145000, theme: "Renouveau spirituel", predicateur: "Pasteur Kouadio" },
+  const [cultes, setCultes] = useState([
+    { id: 1, date: "2026-03-22", type: "Culte dominical", hommes: 82, femmes: 95, jeunes: 28, enfants: 10, offrande: 180000, theme: "La foi qui déplace les montagnes", predicateur: "Pasteur Kouadio" },
+    { id: 2, date: "2026-03-15", type: "Culte dominical", hommes: 75, femmes: 88, jeunes: 25, enfants: 10, offrande: 165000, theme: "Marcher dans la lumière", predicateur: "Pasteur Kouadio" },
+    { id: 3, date: "2026-03-19", type: "Culte du soir", hommes: 35, femmes: 42, jeunes: 15, enfants: 0, offrande: 45000, theme: "La prière efficace", predicateur: "Pasteur assistant Bamba" },
+    { id: 4, date: "2026-03-12", type: "Culte du soir", hommes: 30, femmes: 38, jeunes: 12, enfants: 0, offrande: 38000, theme: "La puissance du Saint-Esprit", predicateur: "Pasteur Kouadio" },
   ]);
+  const [culteTypes, setCulteTypes] = useState(["Culte dominical", "Culte du soir", "Prière du matin", "Veillée de prière", "Culte d'action de grâce"]);
+  const [showModal, setShowModal] = useState(false);
+  const [showTypeModal, setShowTypeModal] = useState(false);
+  const [showAppelModal, setShowAppelModal] = useState(false);
+  const [newType, setNewType] = useState("");
+  const [filter, setFilter] = useState("all");
+  const [form, setForm] = useState({ date: "", type: "Culte dominical", hommes: "", femmes: "", jeunes: "", enfants: "", offrande: "", theme: "", predicateur: "" });
+  const [appelSearch, setAppelSearch] = useState("");
+  const [appelDept, setAppelDept] = useState("all");
+  const [appelList, setAppelList] = useState([]);
+
+  const filtered = filter === "all" ? cultes : cultes.filter(c => c.type === filter);
+  const totalPres = (c) => (c.hommes||0) + (c.femmes||0) + (c.jeunes||0) + (c.enfants||0);
+
+  const openAppel = () => {
+    setAppelList(MOCK_MEMBERS.map(m => ({ ...m, present: true })));
+    setAppelSearch("");
+    setAppelDept("all");
+    setShowAppelModal(true);
+  };
+
+  const filteredAppel = appelList.filter(m => {
+    const matchSearch = `${m.first_name} ${m.last_name}`.toLowerCase().includes(appelSearch.toLowerCase());
+    const matchDept = appelDept === "all" || m.department === appelDept;
+    return matchSearch && matchDept;
+  });
+
+  const nbPresents = appelList.filter(m => m.present).length;
+  const nbAbsents = appelList.filter(m => !m.present).length;
+  const autoCountFromAppel = () => {
+    const hommes = appelList.filter(m => m.present && m.gender === "M").length;
+    const femmes = appelList.filter(m => m.present && m.gender === "F").length;
+    setForm(f => ({ ...f, hommes: String(hommes), femmes: String(femmes) }));
+    setShowAppelModal(false);
+    setShowModal(true);
+  };
+
+  const depts = [...new Set(MOCK_MEMBERS.map(m => m.department).filter(Boolean))];
 
   return (
     <div>
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Cultes</h2>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Historique et statistiques des cultes</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Cultes</h2>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Enregistrement des présences et finances</p>
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <Btn variant="secondary" size="sm" icon={Settings} onClick={() => setShowTypeModal(true)}>Types de culte</Btn>
+          <Btn variant="secondary" size="sm" icon={UserCheck} onClick={openAppel}>Appel nominal</Btn>
+          <Btn icon={Plus} onClick={() => { setForm({ date: new Date().toISOString().split("T")[0], type: culteTypes[0], hommes: "", femmes: "", jeunes: "", enfants: "", offrande: "", theme: "", predicateur: "" }); setShowModal(true); }}>Enregistrer un culte</Btn>
+        </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 24 }}>
-        <StatCard icon={Users} title="Moy. présences" value="206" change="+8%" positive color="#0d9488" />
-        <StatCard icon={DollarSign} title="Moy. offrandes" value="175k F" change="+12%" positive color="#10b981" />
-        <StatCard icon={Calendar} title="Cultes ce mois" value="4" color="#3b82f6" />
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
+        <StatCard icon={Users} title="Moy. présences" value={cultes.length ? Math.round(cultes.reduce((s,c) => s+totalPres(c), 0)/cultes.length) : 0} color="#0d9488" />
+        <StatCard icon={DollarSign} title="Moy. offrandes" value={cultes.length ? `${Math.round(cultes.reduce((s,c) => s+c.offrande, 0)/cultes.length/1000)}k F` : "0"} color="#10b981" />
+        <StatCard icon={Calendar} title="Cultes enregistrés" value={cultes.length} color="#3b82f6" />
+        <StatCard icon={TrendingUp} title="Total offrandes" value={`${(cultes.reduce((s,c) => s+c.offrande, 0)/1000).toFixed(0)}k F`} color="#8b5cf6" />
       </div>
 
-      <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9", marginBottom: 20 }}>
-        <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 20px" }}>Fréquentation des cultes</h3>
-        <ResponsiveContainer width="100%" height={220}>
-          <BarChart data={ATTENDANCE_DATA}>
-            <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-            <XAxis dataKey="semaine" tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} />
-            <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} />
-            <Tooltip contentStyle={{ borderRadius: 10, border: "none", fontSize: 12 }} />
-            <Bar dataKey="presences" name="Présences" fill="#0d9488" radius={[8, 8, 0, 0]} />
-            <Bar dataKey="objectif" name="Objectif" fill="#e2e8f0" radius={[8, 8, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+      <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+        <select style={{ ...selectStyle, width: 200 }} value={filter} onChange={e => setFilter(e.target.value)}>
+          <option value="all">Tous les types</option>
+          {culteTypes.map(t => <option key={t} value={t}>{t}</option>)}
+        </select>
+        <Btn variant="secondary" size="sm" icon={Download} onClick={() => {
+          const csv = "\uFEFFDate,Type,Thème,Prédicateur,Hommes,Femmes,Jeunes,Enfants,Total,Offrande\n" + filtered.map(c => `${c.date},${c.type},${c.theme},${c.predicateur},${c.hommes},${c.femmes},${c.jeunes},${c.enfants},${totalPres(c)},${c.offrande}`).join("\n");
+          const b = new Blob([csv], {type:"text/csv;charset=utf-8;"}); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href=u; a.download="cultes.csv"; a.click();
+        }}>Exporter</Btn>
       </div>
 
-      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-        {cultes.map(c => (
-          <div key={c.id} style={{
-            background: "#fff", borderRadius: 14, padding: "18px 22px", border: "1px solid #f1f5f9",
-            display: "grid", gridTemplateColumns: "auto 1fr auto", gap: 20, alignItems: "center"
-          }}>
-            <div style={{
-              width: 52, height: 52, borderRadius: 14, background: "#0d948810",
-              display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"
-            }}>
-              <span style={{ fontSize: 10, fontWeight: 700, color: "#0d9488" }}>{MONTHS_FR[new Date(c.date).getMonth()]}</span>
-              <span style={{ fontSize: 18, fontWeight: 800, color: "#0d9488" }}>{new Date(c.date).getDate()}</span>
+      <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", overflow: "hidden" }}>
+        <table style={{ width: "100%", borderCollapse: "collapse" }}>
+          <thead><tr style={{ background: "#f8fafc" }}>
+            {["Date", "Type", "Thème", "H", "F", "J", "E", "Total", "Offrande"].map(h => (
+              <th key={h} style={{ padding: "10px 12px", textAlign: "left", fontSize: 10, fontWeight: 700, color: "#64748b", textTransform: "uppercase" }}>{h}</th>
+            ))}
+          </tr></thead>
+          <tbody>
+            {filtered.sort((a,b) => b.date.localeCompare(a.date)).map(c => (
+              <tr key={c.id} style={{ borderTop: "1px solid #f1f5f9" }}>
+                <td style={{ padding: "10px 12px", fontSize: 12, fontWeight: 600, color: "#0f172a" }}>{new Date(c.date).toLocaleDateString("fr")}</td>
+                <td style={{ padding: "10px 12px" }}><Badge variant="default">{c.type}</Badge></td>
+                <td style={{ padding: "10px 12px", fontSize: 12, color: "#475569" }}>{c.theme}<br/><span style={{ fontSize: 10, color: "#94a3b8" }}>{c.predicateur}</span></td>
+                <td style={{ padding: "10px 12px", fontSize: 12, color: "#3b82f6", fontWeight: 600 }}>{c.hommes}</td>
+                <td style={{ padding: "10px 12px", fontSize: 12, color: "#ec4899", fontWeight: 600 }}>{c.femmes}</td>
+                <td style={{ padding: "10px 12px", fontSize: 12, color: "#f59e0b", fontWeight: 600 }}>{c.jeunes}</td>
+                <td style={{ padding: "10px 12px", fontSize: 12, color: "#10b981", fontWeight: 600 }}>{c.enfants}</td>
+                <td style={{ padding: "10px 12px", fontSize: 13, fontWeight: 800, color: "#0f172a" }}>{totalPres(c)}</td>
+                <td style={{ padding: "10px 12px", fontSize: 12, fontWeight: 700, color: "#10b981" }}>{c.offrande.toLocaleString()} F</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
+      {/* APPEL NOMINAL MODAL */}
+      <Modal open={showAppelModal} onClose={() => setShowAppelModal(false)} title="Appel nominal du culte" width={620}>
+        {/* Sticky header with counters */}
+        <div style={{ padding: "14px 16px", background: "#f0fdfa", borderRadius: 12, marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
+          <div style={{ display: "flex", gap: 16 }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 22, fontWeight: 800, color: "#0d9488" }}>{nbPresents}</div>
+              <div style={{ fontSize: 10, color: "#64748b", fontWeight: 600 }}>PRÉSENTS</div>
             </div>
-            <div>
-              <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{c.theme}</p>
-              <p style={{ margin: "3px 0 0", fontSize: 12, color: "#94a3b8" }}>{c.predicateur} · {c.type}</p>
+            <div style={{ width: 1, background: "#e2e8f0" }} />
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 22, fontWeight: 800, color: "#ef4444" }}>{nbAbsents}</div>
+              <div style={{ fontSize: 10, color: "#64748b", fontWeight: 600 }}>ABSENTS</div>
             </div>
-            <div style={{ display: "flex", gap: 20, alignItems: "center" }}>
-              <div style={{ textAlign: "center" }}>
-                <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#0f172a" }}>{c.presences}</p>
-                <p style={{ margin: 0, fontSize: 10, color: "#94a3b8" }}>présences</p>
-              </div>
-              <div style={{ textAlign: "center" }}>
-                <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#10b981" }}>{(c.offrande / 1000).toFixed(0)}k</p>
-                <p style={{ margin: 0, fontSize: 10, color: "#94a3b8" }}>offrande</p>
-              </div>
+            <div style={{ width: 1, background: "#e2e8f0" }} />
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 22, fontWeight: 800, color: "#0f172a" }}>{appelList.length}</div>
+              <div style={{ fontSize: 10, color: "#64748b", fontWeight: 600 }}>TOTAL</div>
             </div>
           </div>
+          <div style={{ display: "flex", gap: 6 }}>
+            <Btn size="sm" variant="secondary" onClick={() => setAppelList(l => l.map(m => ({ ...m, present: true })))}>Tout cocher ✓</Btn>
+            <Btn size="sm" variant="secondary" onClick={() => setAppelList(l => l.map(m => ({ ...m, present: false })))}>Tout décocher</Btn>
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+          <div style={{ flex: 1, position: "relative" }}>
+            <Search size={14} color="#94a3b8" style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)" }} />
+            <input value={appelSearch} onChange={e => setAppelSearch(e.target.value)} placeholder="Rechercher un membre..."
+              style={{ ...inputStyle, paddingLeft: 32, fontSize: 12 }} />
+          </div>
+          <select value={appelDept} onChange={e => setAppelDept(e.target.value)} style={{ ...selectStyle, width: 160, fontSize: 12 }}>
+            <option value="all">Tous les depts</option>
+            {depts.map(d => <option key={d} value={d}>{d}</option>)}
+          </select>
+        </div>
+
+        {/* Members list — all checked by default, uncheck absents */}
+        <div style={{ maxHeight: 340, overflowY: "auto", display: "flex", flexDirection: "column", gap: 2 }}>
+          {filteredAppel.map(m => (
+            <div key={m.id} onClick={() => setAppelList(l => l.map(x => x.id === m.id ? { ...x, present: !x.present } : x))}
+              style={{
+                display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", borderRadius: 10, cursor: "pointer",
+                background: m.present ? "#f0fdfa" : "#fff8f8",
+                border: `1px solid ${m.present ? "#0d948820" : "#ef444420"}`,
+                transition: "all 0.15s"
+              }}>
+              {/* Checkbox */}
+              <div style={{
+                width: 22, height: 22, borderRadius: 6, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center",
+                background: m.present ? "#0d9488" : "#fff", border: m.present ? "none" : "2px solid #d1d5db",
+                transition: "all 0.15s"
+              }}>
+                {m.present && <Check size={13} color="#fff" />}
+              </div>
+              <Avatar name={m.first_name} size={32} color={m.present ? "#0d9488" : "#94a3b8"} />
+              <div style={{ flex: 1 }}>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: m.present ? "#0f172a" : "#94a3b8" }}>
+                  {m.first_name} {m.last_name}
+                </p>
+                <p style={{ margin: 0, fontSize: 10, color: "#94a3b8" }}>{m.department} · {m.gender === "F" ? "Femme" : "Homme"}</p>
+              </div>
+              <Badge variant={m.present ? "success" : "danger"}>{m.present ? "Présent" : "Absent"}</Badge>
+            </div>
+          ))}
+        </div>
+
+        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16, paddingTop: 16, borderTop: "1px solid #f1f5f9" }}>
+          <Btn variant="secondary" onClick={() => setShowAppelModal(false)}>Annuler</Btn>
+          <Btn onClick={autoCountFromAppel}>Valider et enregistrer le culte →</Btn>
+        </div>
+      </Modal>
+
+      <Modal open={showModal} onClose={() => setShowModal(false)} title="Enregistrer un culte" width={550}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
+          <FormField label="Date *"><input style={inputStyle} type="date" value={form.date} onChange={e => setForm({...form, date: e.target.value})} /></FormField>
+          <FormField label="Type de culte">
+            <select style={selectStyle} value={form.type} onChange={e => setForm({...form, type: e.target.value})}>
+              {culteTypes.map(t => <option key={t} value={t}>{t}</option>)}
+            </select>
+          </FormField>
+        </div>
+        <FormField label="Thème / Sujet"><input style={inputStyle} value={form.theme} onChange={e => setForm({...form, theme: e.target.value})} /></FormField>
+        <FormField label="Prédicateur"><input style={inputStyle} value={form.predicateur} onChange={e => setForm({...form, predicateur: e.target.value})} /></FormField>
+        <div style={{ padding: "12px 16px", background: "#f8fafc", borderRadius: 10, marginBottom: 12 }}>
+          <p style={{ margin: "0 0 8px", fontSize: 12, fontWeight: 700, color: "#0f172a" }}>Présences par catégorie</p>
+          {form.hommes && <p style={{ margin: "0 0 8px", fontSize: 11, color: "#0d9488" }}>✓ Pré-rempli depuis l'appel nominal</p>}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 10 }}>
+            <FormField label="Hommes"><input style={inputStyle} type="number" value={form.hommes} onChange={e => setForm({...form, hommes: e.target.value})} /></FormField>
+            <FormField label="Femmes"><input style={inputStyle} type="number" value={form.femmes} onChange={e => setForm({...form, femmes: e.target.value})} /></FormField>
+            <FormField label="Jeunes"><input style={inputStyle} type="number" value={form.jeunes} onChange={e => setForm({...form, jeunes: e.target.value})} /></FormField>
+            <FormField label="Enfants"><input style={inputStyle} type="number" value={form.enfants} onChange={e => setForm({...form, enfants: e.target.value})} /></FormField>
+          </div>
+        </div>
+        <FormField label="Offrande (FCFA)"><input style={inputStyle} type="number" value={form.offrande} onChange={e => setForm({...form, offrande: e.target.value})} /></FormField>
+        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
+          <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
+          <Btn onClick={() => { if(form.date) { setCultes(prev => [...prev, { ...form, id: Date.now(), hommes: parseInt(form.hommes)||0, femmes: parseInt(form.femmes)||0, jeunes: parseInt(form.jeunes)||0, enfants: parseInt(form.enfants)||0, offrande: parseInt(form.offrande)||0 }]); setShowModal(false); } }}>Enregistrer</Btn>
+        </div>
+      </Modal>
+
+      <Modal open={showTypeModal} onClose={() => setShowTypeModal(false)} title="Types de culte personnalisables">
+        <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 12px" }}>Définissez les types de culte de votre église</p>
+        {culteTypes.map((t, i) => (
+          <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", background: "#f8fafc", borderRadius: 8, marginBottom: 6 }}>
+            <span style={{ fontSize: 13, color: "#0f172a" }}>{t}</span>
+            <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => setCulteTypes(prev => prev.filter(x => x !== t))} />
+          </div>
         ))}
-      </div>
+        <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+          <input style={{ ...inputStyle, flex: 1 }} value={newType} onChange={e => setNewType(e.target.value)} placeholder="Ex: Nuit de prière" />
+          <Btn onClick={() => { if(newType.trim()) { setCulteTypes(prev => [...prev, newType.trim()]); setNewType(""); } }}>Ajouter</Btn>
+        </div>
+      </Modal>
     </div>
   );
 };
 
 // SETTINGS PAGE
-const SettingsPage = () => {
+const SettingsPage = ({ seasons, setSeasons, terminology, setTerminology, carouselSlides: propSlides, setCarouselSlides: propSetSlides }) => {
   const [churchName, setChurchName] = useState("Église Foursquare Lumière");
   const [denomination, setDenomination] = useState("Foursquare");
   const [pasteur, setPasteur] = useState("Jean Kouadio");
   const [saved, setSaved] = useState(false);
+  const ss = seasons || []; const setS = setSeasons || (() => {});
+  const tm = terminology || { departments: "Départements", committees: "Comités & Services" }; const setT = setTerminology || (() => {});
+  const slides = propSlides || INITIAL_CAROUSEL_SLIDES;
+  const setSlides = propSetSlides || (() => {});
+  const [showSlideModal, setShowSlideModal] = useState(false);
+  const [slideForm, setSlideForm] = useState({ title: "", subtitle: "", emoji: "✝️", gradient: "linear-gradient(135deg, #0d9488, #065f46)", cta: "En savoir plus" });
+  const gradientPresets = [
+    { label: "Vert Émeraude", value: "linear-gradient(135deg, #0d9488, #065f46)" },
+    { label: "Bleu Royal", value: "linear-gradient(135deg, #3b82f6, #1e40af)" },
+    { label: "Violet Mystique", value: "linear-gradient(135deg, #8b5cf6, #6d28d9)" },
+    { label: "Rose Vif", value: "linear-gradient(135deg, #ec4899, #be185d)" },
+    { label: "Orange Ardent", value: "linear-gradient(135deg, #f59e0b, #b45309)" },
+    { label: "Rouge Feu", value: "linear-gradient(135deg, #ef4444, #b91c1c)" },
+  ];
+  const moveSlide = (idx, dir) => {
+    const arr = [...slides];
+    const swapIdx = idx + dir;
+    if (swapIdx < 0 || swapIdx >= arr.length) return;
+    [arr[idx], arr[swapIdx]] = [arr[swapIdx], arr[idx]];
+    setSlides(arr);
+  };
 
   return (
     <div>
@@ -1418,10 +2077,10 @@ const SettingsPage = () => {
           <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 16px" }}>Adaptez les noms des modules selon les appellations utilisées dans votre église.</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             <FormField label="Nom pour 'Départements'">
-              <input style={inputStyle} value={terminology.departments} onChange={e => setTerminology(prev => ({...prev, departments: e.target.value}))} placeholder="Ex: Départements, Ministères, Commissions..." />
+              <input style={inputStyle} value={tm.departments} onChange={e => setT(prev => ({...prev, departments: e.target.value}))} placeholder="Ex: Départements, Ministères, Commissions..." />
             </FormField>
             <FormField label="Nom pour 'Comités & Services'">
-              <input style={inputStyle} value={terminology.committees} onChange={e => setTerminology(prev => ({...prev, committees: e.target.value}))} placeholder="Ex: Comités, Services, Équipes..." />
+              <input style={inputStyle} value={tm.committees} onChange={e => setT(prev => ({...prev, committees: e.target.value}))} placeholder="Ex: Comités, Services, Équipes..." />
             </FormField>
           </div>
           <p style={{ margin: "8px 0 0", fontSize: 11, color: "#94a3b8" }}>Ces noms apparaîtront dans la sidebar et les pages correspondantes.</p>
@@ -1433,7 +2092,7 @@ const SettingsPage = () => {
           </h3>
           <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 16px" }}>Personnalisez les saisons et périodes liturgiques de votre église. Elles apparaîtront dans la gamification et le tableau de bord.</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
-            {seasons.map((s, i) => (
+            {ss.map((s, i) => (
               <div key={s.id} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 14px", background: s.active ? "#f0fdfa" : "#f8fafc", borderRadius: 10, border: s.active ? "1px solid #0d948830" : "1px solid #f1f5f9" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                   <span style={{ fontSize: 16 }}>{s.emoji}</span>
@@ -1444,10 +2103,10 @@ const SettingsPage = () => {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                   {s.active && <Badge variant="success">Active</Badge>}
-                  <button onClick={() => setSeasons(prev => prev.map(x => ({...x, active: x.id === s.id})))} style={{ padding: "4px 10px", borderRadius: 6, border: "1px solid #e2e8f0", background: s.active ? "#0d9488" : "#fff", color: s.active ? "#fff" : "#64748b", fontSize: 10, fontWeight: 600, cursor: "pointer" }}>
+                  <button onClick={() => setS(prev => prev.map(x => ({...x, active: x.id === s.id})))} style={{ padding: "4px 10px", borderRadius: 6, border: "1px solid #e2e8f0", background: s.active ? "#0d9488" : "#fff", color: s.active ? "#fff" : "#64748b", fontSize: 10, fontWeight: 600, cursor: "pointer" }}>
                     {s.active ? "✓ Active" : "Activer"}
                   </button>
-                  {s.custom && <button onClick={() => setSeasons(prev => prev.filter(x => x.id !== s.id))} style={{ background: "none", border: "none", cursor: "pointer", opacity: 0.4 }}><Trash2 size={14} /></button>}
+                  {s.custom && <button onClick={() => setS(prev => prev.filter(x => x.id !== s.id))} style={{ background: "none", border: "none", cursor: "pointer", opacity: 0.4 }}><Trash2 size={14} /></button>}
                 </div>
               </div>
             ))}
@@ -1459,13 +2118,71 @@ const SettingsPage = () => {
               const name = document.getElementById("newSeason").value;
               const emoji = document.getElementById("newSeasonEmoji").value || "🗓️";
               if (name.trim()) {
-                setSeasons(prev => [...prev, { id: Date.now(), name: name.trim(), emoji, start: "", end: "", active: false, custom: true }]);
+                setS(prev => [...prev, { id: Date.now(), name: name.trim(), emoji, start: "", end: "", active: false, custom: true }]);
                 document.getElementById("newSeason").value = "";
                 document.getElementById("newSeasonEmoji").value = "";
               }
             }}>Ajouter</Btn>
           </div>
         </div>
+
+        {/* ═══ CAROUSEL ADMIN ═══ */}
+        <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9", marginBottom: 20 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: 0, display: "flex", alignItems: "center", gap: 8 }}>
+              🎠 Carrousel du tableau de bord
+            </h3>
+            <Btn size="sm" icon={Plus} onClick={() => { setSlideForm({ title: "", subtitle: "", emoji: "✝️", gradient: gradientPresets[0].value, cta: "En savoir plus" }); setShowSlideModal(true); }}>Ajouter un slide</Btn>
+          </div>
+          <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 16px" }}>Gérez les annonces affichées sur le tableau de bord. Utilisez ▲▼ pour réordonner.</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {slides.map((s, i) => (
+              <div key={s.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "12px 14px", borderRadius: 12, background: "#f8fafc", border: "1px solid #f1f5f9" }}>
+                {/* Mini preview */}
+                <div style={{ width: 52, height: 36, borderRadius: 8, background: s.gradient, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18, flexShrink: 0 }}>{s.emoji}</div>
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{s.title}</p>
+                  <p style={{ margin: 0, fontSize: 11, color: "#94a3b8", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{s.subtitle}</p>
+                </div>
+                <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
+                  <button onClick={() => moveSlide(i, -1)} disabled={i === 0} style={{ width: 26, height: 26, borderRadius: 6, border: "1px solid #e2e8f0", background: "#fff", cursor: i === 0 ? "not-allowed" : "pointer", opacity: i === 0 ? 0.3 : 1, fontSize: 11 }}>▲</button>
+                  <button onClick={() => moveSlide(i, 1)} disabled={i === slides.length - 1} style={{ width: 26, height: 26, borderRadius: 6, border: "1px solid #e2e8f0", background: "#fff", cursor: i === slides.length - 1 ? "not-allowed" : "pointer", opacity: i === slides.length - 1 ? 0.3 : 1, fontSize: 11 }}>▼</button>
+                  <button onClick={() => setSlides(prev => prev.filter(x => x.id !== s.id))} style={{ width: 26, height: 26, borderRadius: 6, border: "1px solid #fecaca", background: "#fef2f2", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center" }}><Trash2 size={12} color="#ef4444" /></button>
+                </div>
+              </div>
+            ))}
+            {slides.length === 0 && <p style={{ fontSize: 12, color: "#94a3b8", textAlign: "center", padding: "20px 0" }}>Aucun slide. Ajoutez-en un !</p>}
+          </div>
+        </div>
+
+        <Modal open={showSlideModal} onClose={() => setShowSlideModal(false)} title="Nouveau slide du carrousel">
+          <FormField label="Titre *"><input style={inputStyle} value={slideForm.title} onChange={e => setSlideForm({...slideForm, title: e.target.value})} placeholder="Ex: Conférence de Pâques 2026" /></FormField>
+          <FormField label="Sous-titre"><input style={inputStyle} value={slideForm.subtitle} onChange={e => setSlideForm({...slideForm, subtitle: e.target.value})} placeholder="Ex: 5 Avril — Temple principal" /></FormField>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+            <FormField label="Emoji"><input style={inputStyle} value={slideForm.emoji} onChange={e => setSlideForm({...slideForm, emoji: e.target.value})} placeholder="✝️" /></FormField>
+            <FormField label="Texte du bouton"><input style={inputStyle} value={slideForm.cta} onChange={e => setSlideForm({...slideForm, cta: e.target.value})} placeholder="En savoir plus" /></FormField>
+          </div>
+          <FormField label="Couleur de fond">
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginTop: 4 }}>
+              {gradientPresets.map(g => (
+                <button key={g.value} onClick={() => setSlideForm({...slideForm, gradient: g.value})} style={{
+                  width: 40, height: 28, borderRadius: 8, background: g.value, border: slideForm.gradient === g.value ? "3px solid #0f172a" : "2px solid transparent", cursor: "pointer", transition: "all 0.15s"
+                }} title={g.label} />
+              ))}
+            </div>
+          </FormField>
+          {/* Live preview */}
+          <div style={{ marginTop: 14, borderRadius: 12, overflow: "hidden", background: slideForm.gradient, padding: "18px 20px", textAlign: "center" }}>
+            <div style={{ fontSize: 28, marginBottom: 6 }}>{slideForm.emoji || "✝️"}</div>
+            <p style={{ margin: "0 0 4px", fontSize: 14, fontWeight: 800, color: "#fff" }}>{slideForm.title || "Titre du slide"}</p>
+            <p style={{ margin: "0 0 10px", fontSize: 11, color: "rgba(255,255,255,0.8)" }}>{slideForm.subtitle || "Sous-titre"}</p>
+            <span style={{ padding: "6px 14px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.4)", background: "rgba(255,255,255,0.15)", color: "#fff", fontSize: 11, fontWeight: 600 }}>{slideForm.cta || "Bouton"}</span>
+          </div>
+          <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
+            <Btn variant="secondary" onClick={() => setShowSlideModal(false)}>Annuler</Btn>
+            <Btn onClick={() => { if(slideForm.title.trim()) { setSlides(prev => [...prev, { ...slideForm, id: Date.now() }]); setShowSlideModal(false); } }}>Ajouter</Btn>
+          </div>
+        </Modal>
 
         <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9", marginBottom: 20 }}>
           <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 20px", display: "flex", alignItems: "center", gap: 8 }}>
@@ -1509,6 +2226,63 @@ const SettingsPage = () => {
                 <ChevronRight size={16} color="#94a3b8" />
               </div>
             ))}
+          </div>
+        </div>
+
+        <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9", marginTop: 20 }}>
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 8px", display: "flex", alignItems: "center", gap: 8 }}>
+            🔧 Fonctionnalités
+          </h3>
+          <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 16px" }}>Activez ou désactivez des fonctionnalités spécifiques</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {[
+              { key: "subdivisions", label: "Subdivisions de départements", desc: "Permet de créer des sous-groupes dans les départements (ex: Jeunesse → Ados, Jeunes Adultes)", default: false },
+              { key: "attendance", label: "Suivi des présences", desc: "Active le suivi automatique des présences dans les cultes", default: true },
+              { key: "gamification", label: "Gamification & Badges", desc: "Active le système de badges et récompenses pour l'engagement", default: true },
+              { key: "formations", label: "Parcours de formation", desc: "Active les parcours de formation personnalisés", default: true },
+              { key: "quiz", label: "Quiz & Concours", desc: "Active les quiz bibliques et le classement", default: true },
+              { key: "testimonials_media", label: "Témoignages vidéo/audio", desc: "Permet d'ajouter des liens vidéo et audio aux témoignages", default: true },
+            ].map(feat => {
+              const [on, setOn] = useState(feat.default);
+              return (
+                <div key={feat.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", background: "#f8fafc", borderRadius: 10 }}>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{feat.label}</p>
+                    <p style={{ margin: "2px 0 0", fontSize: 11, color: "#94a3b8" }}>{feat.desc}</p>
+                  </div>
+                  <div onClick={() => setOn(!on)} style={{
+                    width: 44, height: 24, borderRadius: 12, padding: 3, cursor: "pointer", transition: "all 0.2s",
+                    background: on ? "#0d9488" : "#e2e8f0", display: "flex", alignItems: "center",
+                    justifyContent: on ? "flex-end" : "flex-start"
+                  }}>
+                    <div style={{ width: 18, height: 18, borderRadius: "50%", background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.15)" }} />
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+
+        <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9", marginTop: 20 }}>
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 8px", display: "flex", alignItems: "center", gap: 8 }}>
+            📋 Qui peut marquer les présences ?
+          </h3>
+          <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 16px" }}>Définissez qui a le droit de marquer les présences lors des cultes</p>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {["Pasteur", "Administrateur", "Secrétaire", "Responsable Département", "Comité des présences"].map((role, i) => {
+              const [checked, setChecked] = useState(i < 3);
+              return (
+                <label key={role} onClick={() => setChecked(!checked)} style={{
+                  display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 8, cursor: "pointer",
+                  background: checked ? "#f0fdfa" : "#fafbfc", border: checked ? "1px solid #0d948830" : "1px solid #f1f5f9"
+                }}>
+                  <div style={{ width: 18, height: 18, borderRadius: 4, background: checked ? "#0d9488" : "#fff", border: checked ? "none" : "2px solid #d1d5db", display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {checked && <Check size={12} color="#fff" />}
+                  </div>
+                  <span style={{ fontSize: 13, color: checked ? "#0f172a" : "#94a3b8", fontWeight: checked ? 600 : 400 }}>{role}</span>
+                </label>
+              );
+            })}
           </div>
         </div>
 
@@ -1844,45 +2618,57 @@ const FamiliesPage = () => {
     { id: 2, name: "Famille Yao-Koné", description: "", members: ["Paul Yao", "Esther Koné"] },
     { id: 3, name: "Famille Tra-Diallo", description: "", members: ["David Tra", "Ruth Diallo"] },
     { id: 4, name: "Famille Ouattara-Achi", description: "", members: ["Samuel Ouattara", "Grace Achi"] },
-    { id: 5, name: "Famille Konan-Aka", description: "", members: ["Daniel Konan", "Priscille Aka"] },
   ]);
   const [showModal, setShowModal] = useState(false);
+  const [selectedFam, setSelectedFam] = useState(null);
   const [form, setForm] = useState({ name: "", description: "" });
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <div><h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Familles Spirituelles</h2>
+        <div><h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Familles</h2>
         <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{families.length} familles</p></div>
-        <Btn icon={Plus} onClick={() => setShowModal(true)}>Nouvelle famille</Btn>
+        <Btn icon={Plus} onClick={() => { setForm({ name: "", description: "" }); setShowModal(true); }}>Nouvelle famille</Btn>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
-        {families.map(f => (
-          <div key={f.id} style={{ background: "#fff", borderRadius: 16, padding: 22, border: "1px solid #f1f5f9", transition: "all 0.2s" }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.06)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
-              <div style={{ width: 46, height: 46, borderRadius: 14, background: "#ec489915", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <Heart size={22} color="#ec4899" />
-              </div>
-              <div><h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{f.name}</h3>
-              {f.description && <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{f.description}</p>}</div>
-            </div>
-            <div style={{ borderTop: "1px solid #f1f5f9", paddingTop: 12, display: "flex", flexDirection: "column", gap: 6 }}>
-              {f.members.map((m, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#475569" }}>
-                  <Avatar name={m} size={24} color={i === 0 ? "#0d9488" : "#ec4899"} />{m}
+      <div style={{ display: "grid", gridTemplateColumns: selectedFam ? "1fr 1fr" : "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {families.map(f => (
+            <div key={f.id} onClick={() => setSelectedFam(f)} style={{ background: "#fff", borderRadius: 14, padding: 20, border: selectedFam?.id === f.id ? "2px solid #ec4899" : "1px solid #f1f5f9", cursor: "pointer" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                  <div style={{ width: 40, height: 40, borderRadius: 12, background: "#ec489915", display: "flex", alignItems: "center", justifyContent: "center" }}><Heart size={18} color="#ec4899" /></div>
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{f.name}</h3>
+                    <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{f.members.length} membres{f.description ? ` · ${f.description}` : ""}</p>
+                  </div>
                 </div>
-              ))}
+                <Btn variant="ghost" size="sm" icon={Trash2} onClick={(e) => { e.stopPropagation(); if(confirm(`Supprimer ${f.name} ?`)) setFamilies(prev => prev.filter(x => x.id !== f.id)); }} />
+              </div>
             </div>
+          ))}
+        </div>
+        {selectedFam && (
+          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 24 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedFam.name}</h3>
+              <Btn variant="ghost" size="sm" icon={X} onClick={() => setSelectedFam(null)} />
+            </div>
+            {selectedFam.description && <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 16px" }}>{selectedFam.description}</p>}
+            <h4 style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 700 }}>Membres ({selectedFam.members.length})</h4>
+            {selectedFam.members.map((m, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 0", borderBottom: "1px solid #f8fafc" }}>
+                <Avatar name={m} size={28} color={i === 0 ? "#0d9488" : "#ec4899"} />
+                <span style={{ fontSize: 13, color: "#0f172a" }}>{m}</span>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
       <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouvelle famille">
         <FormField label="Nom" required><input style={inputStyle} value={form.name} onChange={e => setForm({...form, name: e.target.value})} /></FormField>
         <FormField label="Description"><textarea style={{...inputStyle, minHeight: 60, resize: "vertical"}} value={form.description} onChange={e => setForm({...form, description: e.target.value})} /></FormField>
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
           <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
-          <Btn onClick={() => { setFamilies(prev => [...prev, { ...form, id: Date.now(), members: [] }]); setShowModal(false); setForm({ name: "", description: "" }); }}>Créer</Btn>
+          <Btn onClick={() => { if(form.name) { setFamilies(prev => [...prev, { ...form, id: Date.now(), members: [] }]); setShowModal(false); } }}>Créer</Btn>
         </div>
       </Modal>
     </div>
@@ -1894,52 +2680,69 @@ const FamiliesPage = () => {
 // ═══════════════════════════════════════════════════════
 const GroupsPage = () => {
   const [groups, setGroups] = useState([
-    { id: 1, name: "Groupe Alpha", description: "Croissance spirituelle", day: "Mercredi", time: "19:00", leader: "Jean Kouadio", members_count: 15 },
-    { id: 2, name: "Groupe Béthel", description: "Prière et partage", day: "Jeudi", time: "18:30", leader: "Marie Bamba", members_count: 12 },
-    { id: 3, name: "Groupe Cana", description: "Groupe de couples", day: "Vendredi", time: "19:00", leader: "Samuel Ouattara", members_count: 18 },
+    { id: 1, name: "Groupe Alpha", description: "Croissance spirituelle", leader: "Jean Kouadio", members: ["David Tra", "Grace Achi", "Paul Yao"], members_count: 15 },
+    { id: 2, name: "Groupe Béthel", description: "Prière et partage", leader: "Marie Bamba", members: ["Sarah Touré", "Ruth Diallo"], members_count: 12 },
+    { id: 3, name: "Groupe Cana", description: "Groupe de couples", leader: "Samuel Ouattara", members: ["Moïse Dembélé", "Esther Koné"], members_count: 18 },
   ]);
   const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({ name: "", description: "", day: "", time: "", leader: "" });
+  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [form, setForm] = useState({ name: "", description: "", leader: "" });
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <div><h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Groupes de maison</h2>
+        <div><h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Groupes</h2>
         <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{groups.length} groupes actifs</p></div>
-        <Btn icon={Plus} onClick={() => setShowModal(true)}>Nouveau groupe</Btn>
+        <Btn icon={Plus} onClick={() => { setForm({ name: "", description: "", leader: "" }); setShowModal(true); }}>Nouveau groupe</Btn>
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
-        {groups.map(g => (
-          <div key={g.id} style={{ background: "#fff", borderRadius: 16, padding: 22, border: "1px solid #f1f5f9", transition: "all 0.2s" }}
-            onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.06)"; }}
-            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
-              <div style={{ width: 46, height: 46, borderRadius: 14, background: "#3b82f615", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                <UsersRound size={22} color="#3b82f6" />
+      <div style={{ display: "grid", gridTemplateColumns: selectedGroup ? "1fr 1fr" : "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          {groups.map(g => (
+            <div key={g.id} onClick={() => setSelectedGroup(g)} style={{ background: "#fff", borderRadius: 14, padding: 20, border: selectedGroup?.id === g.id ? "2px solid #3b82f6" : "1px solid #f1f5f9", cursor: "pointer" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <div style={{ width: 42, height: 42, borderRadius: 12, background: "#3b82f615", display: "flex", alignItems: "center", justifyContent: "center" }}><UsersRound size={20} color="#3b82f6" /></div>
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{g.name}</h3>
+                    <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{g.description} · {g.members_count} membres</p>
+                  </div>
+                </div>
+                <div style={{ display: "flex", gap: 4 }}>
+                  <Btn variant="ghost" size="sm" icon={Trash2} onClick={(e) => { e.stopPropagation(); if(confirm(`Supprimer ${g.name} ?`)) setGroups(prev => prev.filter(x => x.id !== g.id)); }} />
+                </div>
               </div>
-              <div><h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{g.name}</h3>
-              <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{g.description}</p></div>
+              <div style={{ padding: "8px 0 0", fontSize: 12, color: "#64748b", display: "flex", alignItems: "center", gap: 6 }}>
+                <Avatar name={g.leader} size={20} color="#3b82f6" />Responsable : {g.leader}
+              </div>
             </div>
-            <div style={{ display: "flex", gap: 16, fontSize: 12, color: "#475569", marginBottom: 10 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 4 }}><Calendar size={12} />{g.day} {g.time}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 4 }}><Users size={12} />{g.members_count} membres</div>
+          ))}
+        </div>
+        {selectedGroup && (
+          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 24 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedGroup.name}</h3>
+              <Btn variant="ghost" size="sm" icon={X} onClick={() => setSelectedGroup(null)} />
             </div>
-            <div style={{ padding: "10px 0", borderTop: "1px solid #f1f5f9", display: "flex", alignItems: "center", gap: 8, fontSize: 12, color: "#64748b" }}>
-              <Avatar name={g.leader} size={22} color="#3b82f6" />Responsable: {g.leader}
-            </div>
+            <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 16px" }}>Responsable : {selectedGroup.leader} · {selectedGroup.members_count} membres</p>
+            <h4 style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Membres du groupe</h4>
+            {(selectedGroup.members||[]).map((m, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #f8fafc" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                  <Avatar name={m} size={28} color="#3b82f6" />
+                  <span style={{ fontSize: 13, color: "#0f172a", cursor: "pointer" }}>{m}</span>
+                </div>
+                <Badge variant="success">Actif</Badge>
+              </div>
+            ))}
           </div>
-        ))}
+        )}
       </div>
       <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouveau groupe">
         <FormField label="Nom" required><input style={inputStyle} value={form.name} onChange={e => setForm({...form, name: e.target.value})} /></FormField>
         <FormField label="Description"><input style={inputStyle} value={form.description} onChange={e => setForm({...form, description: e.target.value})} /></FormField>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-          <FormField label="Jour"><input style={inputStyle} value={form.day} placeholder="Ex: Mercredi" onChange={e => setForm({...form, day: e.target.value})} /></FormField>
-          <FormField label="Heure"><input style={inputStyle} type="time" value={form.time} onChange={e => setForm({...form, time: e.target.value})} /></FormField>
-        </div>
         <FormField label="Responsable"><input style={inputStyle} value={form.leader} onChange={e => setForm({...form, leader: e.target.value})} /></FormField>
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
           <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
-          <Btn onClick={() => { setGroups(prev => [...prev, { ...form, id: Date.now(), members_count: 0 }]); setShowModal(false); }}>Créer</Btn>
+          <Btn onClick={() => { if(form.name) { setGroups(prev => [...prev, { ...form, id: Date.now(), members_count: 0, members: [] }]); setShowModal(false); } }}>Créer</Btn>
         </div>
       </Modal>
     </div>
@@ -1947,245 +2750,496 @@ const GroupsPage = () => {
 };
 
 // ═══════════════════════════════════════════════════════
-// ANNEXES (Cells/Structure) PAGE
-// ═══════════════════════════════════════════════════════
+// ANNEXES (Cells/Structure) PAGE — with separate Cellules tab
 const AnnexesPage = () => {
+  const [mainTab, setMainTab] = useState("cellules");
   const [tab, setTab] = useState("carte");
+  const [cells, setCells] = useState(MOCK_CELLS);
   const [units, setUnits] = useState([
-    { id: 1, name: "Cellule Cocody", type: "Cellule", address: "Cocody, Angré", leader: "Jean Kouadio", members_count: 25, lat: 5.359, lng: -3.987, finances: { entrees: 180000, sorties: 45000 }, presences: [{ date: "2026-03-20", present: 18, absent: 7 }, { date: "2026-03-13", present: 22, absent: 3 }] },
-    { id: 2, name: "Cellule Yopougon", type: "Cellule", address: "Yopougon, Selmer", leader: "Paul Yao", members_count: 20, lat: 5.339, lng: -4.067, finances: { entrees: 120000, sorties: 30000 }, presences: [{ date: "2026-03-20", present: 15, absent: 5 }] },
-    { id: 3, name: "Cellule Marcory", type: "Cellule", address: "Marcory, Zone 4", leader: "Samuel Ouattara", members_count: 18, lat: 5.306, lng: -3.982, finances: { entrees: 95000, sorties: 25000 }, presences: [{ date: "2026-03-20", present: 14, absent: 4 }] },
     { id: 4, name: "Annexe Bouaké", type: "Annexe", address: "Bouaké, Centre", leader: "Daniel Konan", members_count: 45, lat: 7.694, lng: -5.030, finances: { entrees: 350000, sorties: 120000 }, presences: [] },
     { id: 5, name: "Église fille Yamoussoukro", type: "Église fille", address: "Yamoussoukro", leader: "Moïse Dembélé", members_count: 60, lat: 6.827, lng: -5.276, finances: { entrees: 520000, sorties: 180000 }, presences: [] },
   ]);
-  const [unitTypes, setUnitTypes] = useState(["Cellule", "Annexe", "Église fille", "Point de prière"]);
+  const [unitTypes, setUnitTypes] = useState(["Annexe", "Église fille", "Point de prière"]);
   const [showModal, setShowModal] = useState(false);
+  const [showCellModal, setShowCellModal] = useState(false);
   const [showTypeModal, setShowTypeModal] = useState(false);
   const [selectedUnit, setSelectedUnit] = useState(null);
+  const [selectedCell, setSelectedCell] = useState(null);
   const [newType, setNewType] = useState("");
-  const [form, setForm] = useState({ name: "", type: "Cellule", address: "", leader: "" });
-  const [showPresenceModal, setShowPresenceModal] = useState(false);
+  const [form, setForm] = useState({ name: "", type: "Annexe", address: "", leader: "" });
+  const [cellForm, setCellForm] = useState({ name: "", quartier: "", leader: "", day: "Mardi", time: "19h00" });
+  const [showCellPresenceModal, setShowCellPresenceModal] = useState(false);
   const [presenceForm, setPresenceForm] = useState({ present: "", absent: "" });
+  const [showPresenceModal, setShowPresenceModal] = useState(false);
 
+  const typeColors = { "Annexe": "#3b82f6", "Église fille": "#8b5cf6", "Point de prière": "#f59e0b" };
+  const cellColor = "#0d9488";
+  const days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
+
+  const totalCellMembers = cells.reduce((s, c) => s + c.members_count, 0);
   const totalMembers = units.reduce((s, u) => s + u.members_count, 0);
   const totalEntrees = units.reduce((s, u) => s + u.finances.entrees, 0);
   const totalSorties = units.reduce((s, u) => s + u.finances.sorties, 0);
-  const typeColors = { "Cellule": "#0d9488", "Annexe": "#3b82f6", "Église fille": "#8b5cf6", "Point de prière": "#f59e0b" };
+
+  const moveCell = (idx, dir) => {
+    const arr = [...cells];
+    const swapIdx = idx + dir;
+    if (swapIdx < 0 || swapIdx >= arr.length) return;
+    [arr[idx], arr[swapIdx]] = [arr[swapIdx], arr[idx]];
+    setCells(arr);
+  };
+  const moveUnit = (idx, dir) => {
+    const arr = [...units];
+    const swapIdx = idx + dir;
+    if (swapIdx < 0 || swapIdx >= arr.length) return;
+    [arr[idx], arr[swapIdx]] = [arr[swapIdx], arr[idx]];
+    setUnits(arr);
+  };
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
         <div>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Structure & Cartographie</h2>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{units.length} unités · {totalMembers} membres</p>
+          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Structure & Réseau</h2>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>
+            {cells.length} cellules ({totalCellMembers} membres) · {units.length} annexes ({totalMembers} membres)
+          </p>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
-          <Btn variant="secondary" size="sm" icon={Settings} onClick={() => setShowTypeModal(true)}>Types d'unités</Btn>
-          <Btn icon={Plus} onClick={() => { setForm({ name: "", type: "Cellule", address: "", leader: "" }); setShowModal(true); }}>Nouvelle unité</Btn>
+          {mainTab === "cellules" && <Btn icon={Plus} onClick={() => { setCellForm({ name: "", quartier: "", leader: "", day: "Mardi", time: "19h00" }); setShowCellModal(true); }}>Nouvelle cellule</Btn>}
+          {mainTab === "annexes" && (
+            <>
+              <Btn variant="secondary" size="sm" icon={Settings} onClick={() => setShowTypeModal(true)}>Types</Btn>
+              <Btn icon={Plus} onClick={() => { setForm({ name: "", type: "Annexe", address: "", leader: "" }); setShowModal(true); }}>Nouvelle annexe</Btn>
+            </>
+          )}
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
-        <StatCard icon={Network} title="Unités" value={units.length} color="#0d9488" />
-        <StatCard icon={Users} title="Membres total" value={totalMembers} color="#3b82f6" />
-        <StatCard icon={ArrowUpCircle} title="Entrées" value={`${(totalEntrees/1000).toFixed(0)}k F`} color="#10b981" />
-        <StatCard icon={Wallet} title="Solde" value={`${((totalEntrees-totalSorties)/1000).toFixed(0)}k F`} color="#8b5cf6" />
+      {/* Main Tab — Cellules vs Annexes */}
+      <div style={{ display: "flex", gap: 4, marginBottom: 20 }}>
+        {[
+          { key: "cellules", label: `🏘️ Cellules (${cells.length})` },
+          { key: "annexes", label: `⛪ Annexes & Églises filles (${units.length})` },
+        ].map(t => (
+          <button key={t.key} onClick={() => setMainTab(t.key)} style={{
+            padding: "10px 20px", borderRadius: 10, border: "none", cursor: "pointer", fontSize: 13, fontWeight: mainTab === t.key ? 700 : 500,
+            background: mainTab === t.key ? "#0d9488" : "#f1f5f9",
+            color: mainTab === t.key ? "#fff" : "#64748b", transition: "all 0.2s"
+          }}>{t.label}</button>
+        ))}
       </div>
 
-      <TabBar tabs={[{ key: "carte", label: "Cartographie" }, { key: "liste", label: "Liste" }, { key: "finances", label: "Finances" }]} active={tab} onChange={setTab} />
+      {/* ═══ CELLULES TAB ═══ */}
+      {mainTab === "cellules" && (
+        <div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 20 }}>
+            <StatCard icon={Home} title="Cellules actives" value={cells.length} color="#0d9488" />
+            <StatCard icon={Users} title="Membres en cellules" value={totalCellMembers} color="#3b82f6" />
+            <StatCard icon={Activity} title="Taux moyen de présence" value={(() => {
+              const allPres = cells.flatMap(c => c.presences);
+              if (!allPres.length) return "—";
+              const moy = allPres.reduce((s, p) => s + (p.present / (p.present + p.absent || 1)), 0) / allPres.length;
+              return `${Math.round(moy * 100)}%`;
+            })()} color="#8b5cf6" />
+          </div>
 
-      {/* CARTOGRAPHIE */}
-      {tab === "carte" && (
-        <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", overflow: "hidden" }}>
-          <div style={{ position: "relative", height: 420, background: "linear-gradient(135deg, #f0fdfa, #eff6ff, #faf5ff)", display: "flex", alignItems: "center", justifyContent: "center" }}>
-            {/* Simplified map visualization */}
-            <div style={{ position: "absolute", inset: 20, borderRadius: 12, border: "2px dashed #e2e8f0", display: "flex", alignItems: "center", justifyContent: "center" }}>
-              <div style={{ position: "relative", width: "100%", height: "100%" }}>
-                {units.map((u, i) => {
-                  const col = typeColors[u.type] || "#64748b";
-                  // Distribute pins across the map area
-                  const x = 15 + (i % 3) * 30 + Math.random() * 10;
-                  const y = 15 + Math.floor(i / 3) * 35 + Math.random() * 10;
-                  return (
-                    <div key={u.id} onClick={() => setSelectedUnit(u)} style={{
-                      position: "absolute", left: `${x}%`, top: `${y}%`, cursor: "pointer", transition: "transform 0.2s", zIndex: selectedUnit?.id === u.id ? 10 : 1
-                    }}
-                    onMouseEnter={e => e.currentTarget.style.transform = "scale(1.2)"}
-                    onMouseLeave={e => e.currentTarget.style.transform = "scale(1)"}
-                    >
-                      <div style={{ width: 40, height: 40, borderRadius: "50%", background: `${col}20`, border: `3px solid ${col}`, display: "flex", alignItems: "center", justifyContent: "center", boxShadow: selectedUnit?.id === u.id ? `0 0 0 4px ${col}30` : "none" }}>
-                        <MapPin size={18} color={col} />
+          <div style={{ display: "grid", gridTemplateColumns: selectedCell ? "1fr 1fr" : "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {cells.map((c, idx) => (
+                <div key={c.id} onClick={() => setSelectedCell(c)} style={{
+                  background: "#fff", borderRadius: 14, padding: 18, border: selectedCell?.id === c.id ? `2px solid ${cellColor}` : "1px solid #f1f5f9",
+                  borderLeft: `4px solid ${cellColor}`, cursor: "pointer", transition: "all 0.15s"
+                }}>
+                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                    <div style={{ flex: 1 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+                        <span style={{ fontSize: 16 }}>🏘️</span>
+                        <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{c.name}</h3>
                       </div>
-                      <div style={{ position: "absolute", top: -30, left: "50%", transform: "translateX(-50%)", whiteSpace: "nowrap", background: "#fff", padding: "3px 8px", borderRadius: 6, fontSize: 10, fontWeight: 700, color: "#0f172a", boxShadow: "0 2px 8px rgba(0,0,0,0.1)", border: "1px solid #f1f5f9" }}>
-                        {u.name}
+                      <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>
+                        {c.quartier} · {c.day} {c.time} · Resp: {c.leader}
+                      </p>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8 }}>
+                        <Badge variant="default">{c.members_count} membres</Badge>
+                        {c.presences.length > 0 && (
+                          <span style={{ fontSize: 10, color: "#0d9488", fontWeight: 600 }}>
+                            Dernière réunion: {c.presences[0].present} présents
+                          </span>
+                        )}
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-            {/* Legend */}
-            <div style={{ position: "absolute", bottom: 16, left: 16, display: "flex", gap: 10, flexWrap: "wrap" }}>
-              {unitTypes.map(t => (
-                <div key={t} style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 10, fontWeight: 600, color: typeColors[t] || "#64748b", background: "#fff", padding: "4px 10px", borderRadius: 12, border: "1px solid #f1f5f9" }}>
-                  <div style={{ width: 8, height: 8, borderRadius: "50%", background: typeColors[t] || "#64748b" }} />{t} ({units.filter(u => u.type === t).length})
+                    <div style={{ display: "flex", flexDirection: "column", gap: 2, marginLeft: 8 }}>
+                      <button onClick={(e) => { e.stopPropagation(); moveCell(idx, -1); }} style={{ background: "#f1f5f9", border: "none", borderRadius: 4, width: 24, height: 20, cursor: "pointer", fontSize: 10 }}>▲</button>
+                      <button onClick={(e) => { e.stopPropagation(); moveCell(idx, 1); }} style={{ background: "#f1f5f9", border: "none", borderRadius: 4, width: 24, height: 20, cursor: "pointer", fontSize: 10 }}>▼</button>
+                    </div>
+                  </div>
                 </div>
               ))}
             </div>
-          </div>
-          {/* Selected unit detail panel */}
-          {selectedUnit && (
-            <div style={{ padding: 22, borderTop: "1px solid #f1f5f9" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 14 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{ width: 44, height: 44, borderRadius: 12, background: `${typeColors[selectedUnit.type]}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><MapPin size={20} color={typeColors[selectedUnit.type]} /></div>
+
+            {selectedCell && (
+              <div style={{ background: "#fff", borderRadius: 16, border: `2px solid ${cellColor}`, padding: 24 }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
                   <div>
-                    <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedUnit.name}</h3>
-                    <p style={{ margin: 0, fontSize: 12, color: "#94a3b8" }}>{selectedUnit.type} · {selectedUnit.address} · Resp: {selectedUnit.leader}</p>
+                    <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedCell.name}</h3>
+                    <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{selectedCell.quartier} · {selectedCell.day} à {selectedCell.time}</p>
+                  </div>
+                  <Btn variant="ghost" size="sm" icon={X} onClick={() => setSelectedCell(null)} />
+                </div>
+
+                <div style={{ padding: "10px 14px", background: "#f0fdfa", borderRadius: 10, marginBottom: 14, display: "flex", justifyContent: "space-between" }}>
+                  <div><p style={{ margin: 0, fontSize: 11, color: "#64748b" }}>Responsable</p><p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{selectedCell.leader}</p></div>
+                  <div><p style={{ margin: 0, fontSize: 11, color: "#64748b" }}>Membres</p><p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0d9488" }}>{selectedCell.members_count}</p></div>
+                </div>
+
+                <h4 style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Membres ({selectedCell.members.length})</h4>
+                {selectedCell.members.length === 0 && <p style={{ fontSize: 12, color: "#94a3b8" }}>Aucun membre assigné</p>}
+                {selectedCell.members.map((m, i) => (
+                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, padding: "7px 0", borderBottom: "1px solid #f8fafc" }}>
+                    <Avatar name={m} size={28} color={cellColor} />
+                    <span style={{ fontSize: 13, color: "#0f172a" }}>{m}</span>
+                  </div>
+                ))}
+
+                <h4 style={{ margin: "14px 0 10px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Historique des présences</h4>
+                {selectedCell.presences.length === 0 && <p style={{ fontSize: 12, color: "#94a3b8" }}>Aucune réunion enregistrée</p>}
+                {selectedCell.presences.map((p, i) => (
+                  <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #f8fafc" }}>
+                    <span style={{ fontSize: 12, color: "#475569" }}>{new Date(p.date).toLocaleDateString("fr")}</span>
+                    <div style={{ display: "flex", gap: 8 }}>
+                      <Badge variant="success">{p.present} présents</Badge>
+                      <Badge variant="danger">{p.absent} absents</Badge>
+                    </div>
+                  </div>
+                ))}
+
+                <div style={{ marginTop: 16, display: "flex", gap: 8 }}>
+                  <Btn size="sm" icon={Check} onClick={() => { setShowCellPresenceModal(true); setPresenceForm({ present: "", absent: "" }); }}>Marquer présence</Btn>
+                  <Btn size="sm" variant="danger" onClick={() => { if(confirm(`Promouvoir "${selectedCell.name}" en annexe ?`)) { setUnits(prev => [...prev, { id: Date.now(), name: selectedCell.name, type: "Annexe", address: selectedCell.quartier, leader: selectedCell.leader, members_count: selectedCell.members_count, finances: { entrees: 0, sorties: 0 }, presences: [] }]); setCells(prev => prev.filter(x => x.id !== selectedCell.id)); setSelectedCell(null); setMainTab("annexes"); } }}>↑ Promouvoir en annexe</Btn>
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
+      {/* ═══ ANNEXES TAB ═══ */}
+      {mainTab === "annexes" && (
+        <div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
+            <StatCard icon={Network} title="Annexes" value={units.length} color="#3b82f6" />
+            <StatCard icon={Users} title="Membres total" value={totalMembers} color="#8b5cf6" />
+            <StatCard icon={ArrowUpCircle} title="Entrées" value={`${(totalEntrees/1000).toFixed(0)}k F`} color="#10b981" />
+            <StatCard icon={Wallet} title="Solde" value={`${((totalEntrees-totalSorties)/1000).toFixed(0)}k F`} color="#0d9488" />
+          </div>
+
+          <TabBar tabs={[{ key: "carte", label: "Cartographie" }, { key: "liste", label: "Liste & Priorité" }, { key: "finances", label: "Finances" }]} active={tab} onChange={setTab} />
+
+          {tab === "liste" && (
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 8px" }}>Utilisez les flèches ▲▼ pour réordonner la priorité d'affichage</p>
+              {units.map((u, idx) => (
+                <div key={u.id} style={{ background: "#fff", borderRadius: 14, padding: 18, border: "1px solid #f1f5f9", display: "flex", alignItems: "center", gap: 14 }}>
+                  <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
+                    <button onClick={() => moveUnit(idx, -1)} style={{ background: "#f1f5f9", border: "none", borderRadius: 4, width: 28, height: 22, cursor: "pointer", fontSize: 11 }}>▲</button>
+                    <button onClick={() => moveUnit(idx, 1)} style={{ background: "#f1f5f9", border: "none", borderRadius: 4, width: 28, height: 22, cursor: "pointer", fontSize: 11 }}>▼</button>
+                  </div>
+                  <div style={{ width: 8, height: 40, borderRadius: 4, background: typeColors[u.type] || "#64748b", flexShrink: 0 }} />
+                  <div style={{ flex: 1 }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{u.name}</h3>
+                      <Badge variant="info">{u.type}</Badge>
+                    </div>
+                    <p style={{ margin: "2px 0 0", fontSize: 11, color: "#94a3b8" }}>{u.address} · Resp: {u.leader} · {u.members_count} membres</p>
+                  </div>
+                  <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer ${u.name} ?`)) setUnits(prev => prev.filter(x => x.id !== u.id)); }} />
+                </div>
+              ))}
+            </div>
+          )}
+
+          {tab === "carte" && (() => {
+            // Leaflet map — rendered via useEffect, markers draggable
+            const mapRef = useRef(null);
+            const leafletMap = useRef(null);
+            const markersRef = useRef({});
+
+            // L'église mère (fixe, marqueur spécial)
+            const EGLISE_MERE = { id: "mere", name: "Église Foursquare Lumière", type: "Église mère", lat: 5.354, lng: -4.008, color: "#0d9488", icon: "⛪" };
+
+            // Tous les points sur la carte = église mère + annexes
+            const allPoints = [EGLISE_MERE, ...units];
+
+            useEffect(() => {
+              if (leafletMap.current || !mapRef.current) return;
+
+              // Inject Leaflet CSS
+              if (!document.getElementById("leaflet-css")) {
+                const link = document.createElement("link");
+                link.id = "leaflet-css";
+                link.rel = "stylesheet";
+                link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
+                document.head.appendChild(link);
+              }
+
+              const initMap = () => {
+                if (typeof L === "undefined") { setTimeout(initMap, 200); return; }
+                const map = L.map(mapRef.current, { center: [6.5, -5.5], zoom: 7 });
+                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+                  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+                }).addTo(map);
+                leafletMap.current = map;
+                renderMarkers();
+              };
+
+              const script = document.createElement("script");
+              script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
+              script.onload = initMap;
+              document.head.appendChild(script);
+
+              return () => { if (leafletMap.current) { leafletMap.current.remove(); leafletMap.current = null; } };
+            }, []);
+
+            const renderMarkers = () => {
+              const map = leafletMap.current;
+              if (!map || typeof L === "undefined") return;
+
+              // Clear existing markers
+              Object.values(markersRef.current).forEach(m => map.removeLayer(m));
+              markersRef.current = {};
+
+              allPoints.forEach(pt => {
+                const color = pt.id === "mere" ? "#0d9488" : (typeColors[pt.type] || "#64748b");
+                const isMere = pt.id === "mere";
+                const icon = L.divIcon({
+                  html: `<div style="
+                    width:${isMere ? 44 : 36}px; height:${isMere ? 44 : 36}px;
+                    border-radius:50%; background:${color};
+                    border:3px solid #fff; box-shadow:0 3px 12px rgba(0,0,0,0.3);
+                    display:flex; align-items:center; justify-content:center;
+                    font-size:${isMere ? 20 : 16}px; cursor:${isMere ? "default" : "grab"};
+                    position:relative;
+                  ">${isMere ? "⛪" : (pt.type === "Annexe" ? "🏛️" : pt.type === "Église fille" ? "⛪" : "🙏")}
+                  <div style="
+                    position:absolute; bottom:-22px; left:50%; transform:translateX(-50%);
+                    white-space:nowrap; background:#fff; padding:2px 7px; border-radius:5px;
+                    font-size:10px; font-weight:700; color:#0f172a;
+                    box-shadow:0 2px 6px rgba(0,0,0,0.15); pointer-events:none;
+                  ">${pt.name.length > 20 ? pt.name.slice(0,18)+"…" : pt.name}</div></div>`,
+                  className: "", iconSize: [isMere ? 44 : 36, 60], iconAnchor: [isMere ? 22 : 18, isMere ? 22 : 18],
+                });
+
+                const marker = L.marker([pt.lat, pt.lng], {
+                  icon, draggable: !isMere, autoPan: true
+                }).addTo(map);
+
+                if (!isMere) {
+                  marker.on("dragend", (e) => {
+                    const { lat, lng } = e.target.getLatLng();
+                    setUnits(prev => prev.map(u => u.id === pt.id ? { ...u, lat, lng } : u));
+                  });
+                  marker.on("click", () => setSelectedUnit(pt));
+                }
+
+                // Draw line from mère to each point
+                if (!isMere) {
+                  L.polyline([[EGLISE_MERE.lat, EGLISE_MERE.lng], [pt.lat, pt.lng]], {
+                    color, weight: 1.5, dashArray: "6 4", opacity: 0.5
+                  }).addTo(map);
+                }
+
+                markersRef.current[pt.id] = marker;
+              });
+            };
+
+            // Re-render markers when units change
+            useEffect(() => { renderMarkers(); }, [units]);
+
+            // Add point by clicking on map
+            const [addMode, setAddMode] = useState(false);
+            useEffect(() => {
+              const map = leafletMap.current;
+              if (!map) return;
+              if (addMode) {
+                map.getContainer().style.cursor = "crosshair";
+                const handler = (e) => {
+                  setForm(f => ({ ...f, lat: e.latlng.lat.toFixed(5), lng: e.latlng.lng.toFixed(5) }));
+                  setShowModal(true);
+                  setAddMode(false);
+                };
+                map.once("click", handler);
+                return () => map.off("click", handler);
+              } else {
+                map.getContainer().style.cursor = "";
+              }
+            }, [addMode]);
+
+            return (
+              <div style={{ borderRadius: 16, overflow: "hidden", border: "1px solid #f1f5f9" }}>
+                {/* Toolbar */}
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", background: "#fff", borderBottom: "1px solid #f1f5f9" }}>
+                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                    {[
+                      { col: "#0d9488", label: "⛪ Église mère" },
+                      ...unitTypes.map(t => ({ col: typeColors[t] || "#64748b", label: t + " (" + units.filter(u => u.type === t).length + ")" }))
+                    ].map(lg => (
+                      <div key={lg.label} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, fontWeight: 600, color: lg.col, background: `${lg.col}12`, padding: "4px 10px", borderRadius: 20, border: `1px solid ${lg.col}25` }}>
+                        <div style={{ width: 7, height: 7, borderRadius: "50%", background: lg.col }} />{lg.label}
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{ display: "flex", gap: 8 }}>
+                    <Btn size="sm" variant={addMode ? "primary" : "secondary"}
+                      onClick={() => setAddMode(a => !a)}>
+                      {addMode ? "🖱️ Cliquer sur la carte..." : "+ Ajouter une unité"}
+                    </Btn>
                   </div>
                 </div>
-                <div style={{ display: "flex", gap: 6 }}>
-                  <Btn variant="secondary" size="sm" icon={Users}>{selectedUnit.members_count} mbrs</Btn>
-                  <Btn size="sm" icon={Check} onClick={() => { setShowPresenceModal(true); setPresenceForm({ present: "", absent: "" }); }}>Marquer présence</Btn>
+
+                {/* Leaflet map container */}
+                <div ref={mapRef} style={{ height: 460, width: "100%", zIndex: 0 }} />
+
+                {/* Drag hint */}
+                <div style={{ padding: "8px 16px", background: "#f8fafc", borderTop: "1px solid #f1f5f9", fontSize: 11, color: "#94a3b8", display: "flex", justifyContent: "space-between" }}>
+                  <span>🖱️ Glissez un marqueur pour changer sa position · Cliquez pour voir le détail</span>
+                  <span>{units.length} unité{units.length > 1 ? "s" : ""} · {cells.length} cellule{cells.length > 1 ? "s" : ""}</span>
                 </div>
+
+                {/* Selected unit detail */}
+                {selectedUnit && selectedUnit.id !== "mere" && (
+                  <div style={{ padding: "16px 20px", background: "#fff", borderTop: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <div style={{ width: 40, height: 40, borderRadius: 12, background: `${typeColors[selectedUnit.type] || "#64748b"}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>🏛️</div>
+                      <div>
+                        <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{selectedUnit.name}</h3>
+                        <p style={{ margin: 0, fontSize: 12, color: "#94a3b8" }}>{selectedUnit.type} · {selectedUnit.address} · Resp: {selectedUnit.leader}</p>
+                        <p style={{ margin: "2px 0 0", fontSize: 10, color: "#cbd5e1" }}>📍 {selectedUnit.lat?.toFixed ? selectedUnit.lat.toFixed(4) : selectedUnit.lat}, {selectedUnit.lng?.toFixed ? selectedUnit.lng.toFixed(4) : selectedUnit.lng}</p>
+                      </div>
+                    </div>
+                    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                      <Badge variant="info">{selectedUnit.members_count} membres</Badge>
+                      <Badge variant="success">{((selectedUnit.finances.entrees - selectedUnit.finances.sorties)/1000).toFixed(0)}k F</Badge>
+                      <Btn size="sm" variant="danger" icon={Trash2} onClick={() => {
+                        if (confirm(`Supprimer ${selectedUnit.name} ?`)) {
+                          setUnits(prev => prev.filter(u => u.id !== selectedUnit.id));
+                          setSelectedUnit(null);
+                        }
+                      }}>Supprimer</Btn>
+                      <Btn variant="ghost" size="sm" icon={X} onClick={() => setSelectedUnit(null)} />
+                    </div>
+                  </div>
+                )}
               </div>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12 }}>
-                <div style={{ padding: 14, background: "#f0fdfa", borderRadius: 10, textAlign: "center" }}>
-                  <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#10b981" }}>{selectedUnit.finances.entrees.toLocaleString()} F</p>
-                  <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>Entrées</p>
-                </div>
-                <div style={{ padding: 14, background: "#fef2f2", borderRadius: 10, textAlign: "center" }}>
-                  <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#ef4444" }}>{selectedUnit.finances.sorties.toLocaleString()} F</p>
-                  <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>Sorties</p>
-                </div>
-                <div style={{ padding: 14, background: "#f8fafc", borderRadius: 10, textAlign: "center" }}>
-                  <p style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#0f172a" }}>{selectedUnit.presences.length > 0 ? `${selectedUnit.presences[0].present}/${selectedUnit.presences[0].present + selectedUnit.presences[0].absent}` : "—"}</p>
-                  <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>Dernière présence</p>
-                </div>
-              </div>
+            );
+          })()}
+
+          {tab === "finances" && (
+            <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", overflow: "hidden" }}>
+              <table style={{ width: "100%", borderCollapse: "collapse" }}>
+                <thead><tr style={{ background: "#f8fafc" }}>
+                  {["Unité", "Type", "Entrées", "Sorties", "Solde"].map(h => (
+                    <th key={h} style={{ padding: "10px 16px", textAlign: "left", fontSize: 10, fontWeight: 700, color: "#64748b", textTransform: "uppercase" }}>{h}</th>
+                  ))}
+                </tr></thead>
+                <tbody>
+                  {units.map(u => (
+                    <tr key={u.id} style={{ borderTop: "1px solid #f1f5f9" }}>
+                      <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{u.name}</td>
+                      <td style={{ padding: "12px 16px" }}><Badge variant="info">{u.type}</Badge></td>
+                      <td style={{ padding: "12px 16px", fontSize: 12, fontWeight: 700, color: "#10b981" }}>{u.finances.entrees.toLocaleString()} F</td>
+                      <td style={{ padding: "12px 16px", fontSize: 12, fontWeight: 700, color: "#ef4444" }}>{u.finances.sorties.toLocaleString()} F</td>
+                      <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 800, color: (u.finances.entrees - u.finances.sorties) >= 0 ? "#10b981" : "#ef4444" }}>{(u.finances.entrees - u.finances.sorties).toLocaleString()} F</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
           )}
         </div>
       )}
 
-      {/* LISTE */}
-      {tab === "liste" && (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
-          {units.map(u => {
-            const col = typeColors[u.type] || "#64748b";
-            return (
-              <div key={u.id} style={{ background: "#fff", borderRadius: 16, padding: 22, border: "1px solid #f1f5f9", borderTop: `4px solid ${col}` }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 14 }}>
-                  <div style={{ width: 46, height: 46, borderRadius: 14, background: `${col}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><MapPin size={22} color={col} /></div>
-                  <div>
-                    <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{u.name}</h3>
-                    <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                      <Badge variant="default" style={{ background: `${col}15`, color: col }}>{u.type}</Badge>
-                      <span style={{ fontSize: 11, color: "#94a3b8" }}>{u.address}</span>
-                    </div>
-                  </div>
-                </div>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12, color: "#64748b", paddingTop: 10, borderTop: "1px solid #f1f5f9" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6 }}><Avatar name={u.leader} size={20} color={col} />{u.leader}</div>
-                  <span style={{ fontWeight: 700, color: "#0f172a" }}>{u.members_count} mbrs</span>
-                </div>
-                <div style={{ display: "flex", gap: 6, marginTop: 10 }}>
-                  <Btn variant="secondary" size="sm" icon={Edit} onClick={() => { setSelectedUnit(u); }}>Gérer</Btn>
-                  <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => setUnits(prev => prev.filter(x => x.id !== u.id))} />
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      )}
-
-      {/* FINANCES PAR UNITÉ */}
-      {tab === "finances" && (
-        <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", overflow: "hidden" }}>
-          <table style={{ width: "100%", borderCollapse: "collapse" }}>
-            <thead><tr style={{ background: "#f8fafc" }}>
-              {["Unité", "Type", "Entrées", "Sorties", "Solde", "Présence moy."].map(h => (
-                <th key={h} style={{ padding: "12px 16px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "#64748b", textTransform: "uppercase" }}>{h}</th>
-              ))}
-            </tr></thead>
-            <tbody>
-              {units.map(u => (
-                <tr key={u.id} style={{ borderTop: "1px solid #f1f5f9" }}>
-                  <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{u.name}</td>
-                  <td style={{ padding: "12px 16px" }}><Badge variant="default" style={{ background: `${typeColors[u.type]}15`, color: typeColors[u.type] }}>{u.type}</Badge></td>
-                  <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 700, color: "#10b981" }}>+{u.finances.entrees.toLocaleString()} F</td>
-                  <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 700, color: "#ef4444" }}>-{u.finances.sorties.toLocaleString()} F</td>
-                  <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{(u.finances.entrees - u.finances.sorties).toLocaleString()} F</td>
-                  <td style={{ padding: "12px 16px", fontSize: 12, color: "#64748b" }}>{u.presences.length > 0 ? `${Math.round(u.presences.reduce((s,p) => s+p.present, 0)/u.presences.length)}/${u.members_count}` : "—"}</td>
-                </tr>
-              ))}
-              <tr style={{ borderTop: "2px solid #e2e8f0", background: "#f8fafc" }}>
-                <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 800, color: "#0f172a" }}>TOTAL</td>
-                <td style={{ padding: "12px 16px" }}></td>
-                <td style={{ padding: "12px 16px", fontSize: 14, fontWeight: 800, color: "#10b981" }}>+{totalEntrees.toLocaleString()} F</td>
-                <td style={{ padding: "12px 16px", fontSize: 14, fontWeight: 800, color: "#ef4444" }}>-{totalSorties.toLocaleString()} F</td>
-                <td style={{ padding: "12px 16px", fontSize: 14, fontWeight: 800, color: "#0f172a" }}>{(totalEntrees-totalSorties).toLocaleString()} F</td>
-                <td></td>
-              </tr>
-            </tbody>
-          </table>
-          <div style={{ padding: 16, display: "flex", gap: 8 }}>
-            <Btn variant="secondary" size="sm" icon={Download}>Exporter Excel</Btn>
-            <Btn variant="secondary" size="sm" icon={Download}>Exporter PDF</Btn>
-          </div>
-        </div>
-      )}
-
-      {/* Modals */}
-      <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouvelle unité">
-        <FormField label="Nom" required><input style={inputStyle} value={form.name} onChange={e => setForm({...form, name: e.target.value})} /></FormField>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-          <FormField label="Type">
-            <select style={selectStyle} value={form.type} onChange={e => setForm({...form, type: e.target.value})}>
-              {unitTypes.map(t => <option key={t} value={t}>{t}</option>)}
+      {/* MODALS */}
+      <Modal open={showCellModal} onClose={() => setShowCellModal(false)} title="Nouvelle cellule">
+        <FormField label="Nom de la cellule *"><input style={inputStyle} value={cellForm.name} onChange={e => setCellForm({...cellForm, name: e.target.value})} placeholder="Ex: Cellule Riviera-Golf" /></FormField>
+        <FormField label="Quartier"><input style={inputStyle} value={cellForm.quartier} onChange={e => setCellForm({...cellForm, quartier: e.target.value})} placeholder="Ex: Riviera" /></FormField>
+        <FormField label="Responsable"><input style={inputStyle} value={cellForm.leader} onChange={e => setCellForm({...cellForm, leader: e.target.value})} /></FormField>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+          <FormField label="Jour de réunion">
+            <select style={selectStyle} value={cellForm.day} onChange={e => setCellForm({...cellForm, day: e.target.value})}>
+              {days.map(d => <option key={d} value={d}>{d}</option>)}
             </select>
           </FormField>
-          <FormField label="Responsable"><input style={inputStyle} value={form.leader} onChange={e => setForm({...form, leader: e.target.value})} /></FormField>
+          <FormField label="Heure"><input style={inputStyle} value={cellForm.time} onChange={e => setCellForm({...cellForm, time: e.target.value})} placeholder="19h00" /></FormField>
         </div>
-        <FormField label="Adresse"><input style={inputStyle} value={form.address} onChange={e => setForm({...form, address: e.target.value})} /></FormField>
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
-          <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
-          <Btn onClick={() => { setUnits(prev => [...prev, { ...form, id: Date.now(), members_count: 0, finances: { entrees: 0, sorties: 0 }, presences: [], lat: 5.3 + Math.random()*0.1, lng: -4 + Math.random()*0.1 }]); setShowModal(false); }}>Créer</Btn>
+          <Btn variant="secondary" onClick={() => setShowCellModal(false)}>Annuler</Btn>
+          <Btn onClick={() => { if(cellForm.name) { setCells(prev => [...prev, { ...cellForm, id: Date.now(), members: [], members_count: 0, presences: [] }]); setShowCellModal(false); } }}>Créer</Btn>
         </div>
       </Modal>
 
-      <Modal open={showTypeModal} onClose={() => setShowTypeModal(false)} title="Types d'unités personnalisables">
-        <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 16px" }}>Chaque église peut définir ses propres types d'unités (cellules, annexes, églises filles, etc.)</p>
-        <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16 }}>
-          {unitTypes.map((t, i) => (
-            <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 14px", background: "#f8fafc", borderRadius: 10 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <div style={{ width: 10, height: 10, borderRadius: "50%", background: typeColors[t] || "#64748b" }} />
-                <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{t}</span>
-              </div>
-              <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => setUnitTypes(prev => prev.filter(x => x !== t))} />
-            </div>
-          ))}
-        </div>
-        <div style={{ display: "flex", gap: 8 }}>
-          <input style={{ ...inputStyle, flex: 1 }} value={newType} onChange={e => setNewType(e.target.value)} placeholder="Ex: Groupe de prière" />
-          <Btn onClick={() => { if (newType.trim()) { setUnitTypes(prev => [...prev, newType.trim()]); setNewType(""); } }}>Ajouter</Btn>
-        </div>
-      </Modal>
-
-      <Modal open={showPresenceModal} onClose={() => setShowPresenceModal(false)} title={`Marquer présence — ${selectedUnit?.name || ""}`}>
+      <Modal open={showCellPresenceModal} onClose={() => setShowCellPresenceModal(false)} title={`Présence cellule — ${selectedCell?.name || ""}`}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
           <FormField label="Présents"><input style={inputStyle} type="number" value={presenceForm.present} onChange={e => setPresenceForm({...presenceForm, present: e.target.value})} /></FormField>
           <FormField label="Absents"><input style={inputStyle} type="number" value={presenceForm.absent} onChange={e => setPresenceForm({...presenceForm, absent: e.target.value})} /></FormField>
         </div>
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
-          <Btn variant="secondary" onClick={() => setShowPresenceModal(false)}>Annuler</Btn>
+          <Btn variant="secondary" onClick={() => setShowCellPresenceModal(false)}>Annuler</Btn>
+          <Btn onClick={() => { if(selectedCell && presenceForm.present) { const updated = { ...selectedCell, presences: [{ date: new Date().toISOString().split("T")[0], present: parseInt(presenceForm.present)||0, absent: parseInt(presenceForm.absent)||0 }, ...selectedCell.presences] }; setCells(prev => prev.map(c => c.id === selectedCell.id ? updated : c)); setSelectedCell(updated); setShowCellPresenceModal(false); } }}>Enregistrer</Btn>
+        </div>
+      </Modal>
+
+      <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouvelle annexe">
+        <FormField label="Nom *"><input style={inputStyle} value={form.name} onChange={e => setForm({...form, name: e.target.value})} /></FormField>
+        <FormField label="Type">
+          <select style={selectStyle} value={form.type} onChange={e => setForm({...form, type: e.target.value})}>
+            {unitTypes.map(t => <option key={t} value={t}>{t}</option>)}
+          </select>
+        </FormField>
+        <FormField label="Responsable"><input style={inputStyle} value={form.leader} onChange={e => setForm({...form, leader: e.target.value})} /></FormField>
+        <FormField label="Adresse"><input style={inputStyle} value={form.address} onChange={e => setForm({...form, address: e.target.value})} /></FormField>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+          <FormField label="Latitude">
+            <input style={inputStyle} type="number" step="0.0001" value={form.lat || ""} onChange={e => setForm({...form, lat: parseFloat(e.target.value)})} placeholder="Ex: 5.354" />
+          </FormField>
+          <FormField label="Longitude">
+            <input style={inputStyle} type="number" step="0.0001" value={form.lng || ""} onChange={e => setForm({...form, lng: parseFloat(e.target.value)})} placeholder="Ex: -4.008" />
+          </FormField>
+        </div>
+        {form.lat && <p style={{ fontSize: 11, color: "#0d9488", margin: "0 0 4px" }}>📍 Position sélectionnée sur la carte</p>}
+        <FormField label="Nombre de membres"><input style={inputStyle} type="number" value={form.members_count || ""} onChange={e => setForm({...form, members_count: parseInt(e.target.value)||0})} placeholder="0" /></FormField>
+        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
+          <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
           <Btn onClick={() => {
-            if (selectedUnit && presenceForm.present) {
-              setUnits(prev => prev.map(u => u.id === selectedUnit.id ? { ...u, presences: [{ date: new Date().toISOString().split("T")[0], present: parseInt(presenceForm.present) || 0, absent: parseInt(presenceForm.absent) || 0 }, ...u.presences] } : u));
-              setShowPresenceModal(false);
-            }
-          }}>Enregistrer</Btn>
+            if (!form.name) return;
+            setUnits(prev => [...prev, {
+              ...form,
+              id: Date.now(),
+              members_count: form.members_count || 0,
+              lat: parseFloat(form.lat) || 5.354 + (Math.random()-0.5)*2,
+              lng: parseFloat(form.lng) || -4.008 + (Math.random()-0.5)*2,
+              finances: { entrees: 0, sorties: 0 },
+              presences: []
+            }]);
+            setShowModal(false);
+            setForm({ name: "", type: "Annexe", address: "", leader: "" });
+          }}>Créer</Btn>
+        </div>
+      </Modal>
+
+      <Modal open={showTypeModal} onClose={() => setShowTypeModal(false)} title="Types d'unités">
+        {unitTypes.map((t, i) => (
+          <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", background: "#f8fafc", borderRadius: 8, marginBottom: 6 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+              <div style={{ width: 10, height: 10, borderRadius: "50%", background: typeColors[t] || "#64748b" }} />
+              <span style={{ fontSize: 13, fontWeight: 600 }}>{t}</span>
+            </div>
+            <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => setUnitTypes(prev => prev.filter(x => x !== t))} />
+          </div>
+        ))}
+        <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+          <input style={{ ...inputStyle, flex: 1 }} value={newType} onChange={e => setNewType(e.target.value)} placeholder="Ex: Mission" />
+          <Btn onClick={() => { if(newType.trim()) { setUnitTypes(prev => [...prev, newType.trim()]); setNewType(""); } }}>Ajouter</Btn>
         </div>
       </Modal>
     </div>
@@ -2196,42 +3250,80 @@ const AnnexesPage = () => {
 // COMMITTEES PAGE
 // ═══════════════════════════════════════════════════════
 const CommitteesPage = () => {
-  const [tab, setTab] = useState("comites");
-  const committees = [
-    { id: 1, name: "Comité d'organisation", description: "Organisation des événements", leader: "Esther Koné", members_count: 8, type: "comite" },
-    { id: 2, name: "Service d'ordre", description: "Sécurité pendant les cultes", leader: "Moïse Dembélé", members_count: 10, type: "service_ordre" },
-    { id: 3, name: "Équipe média", description: "Sonorisation, vidéo, réseaux sociaux", leader: "Daniel Konan", members_count: 6, type: "media" },
-    { id: 4, name: "Secrétariat", description: "Administration et documentation", leader: "Esther Koné", members_count: 4, type: "secretariat" },
-  ];
-  const icons = { comite: Briefcase, service_ordre: Shield, media: Globe, secretariat: Receipt };
-  const colors = { comite: "#8b5cf6", service_ordre: "#f59e0b", media: "#3b82f6", secretariat: "#10b981" };
-  const tabs = [{ key: "comites", label: "Comités" }, { key: "service_ordre", label: "Service d'Ordre" }, { key: "media", label: "Média" }, { key: "secretariat", label: "Secrétariat" }];
-  const filtered = tab === "comites" ? committees : committees.filter(c => c.type === tab);
+  const [committees, setCommittees] = useState([
+    { id: 1, name: "Comité d'organisation", description: "Organisation des événements", leader: "Esther Koné", members: ["Grace Achi", "David Tra", "Paul Yao", "Ruth Diallo"], color: "#8b5cf6" },
+    { id: 2, name: "Service d'ordre", description: "Sécurité pendant les cultes", leader: "Moïse Dembélé", members: ["Samuel Ouattara", "Daniel Konan", "Jean Kouadio"], color: "#f59e0b" },
+    { id: 3, name: "Équipe média", description: "Sonorisation, vidéo, réseaux sociaux", leader: "Daniel Konan", members: ["Sarah Touré", "Paul Yao"], color: "#3b82f6" },
+    { id: 4, name: "Secrétariat", description: "Administration et documentation", leader: "Esther Koné", members: ["Marie Bamba", "Grace Achi"], color: "#10b981" },
+  ]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedCom, setSelectedCom] = useState(null);
+  const [form, setForm] = useState({ name: "", description: "", leader: "" });
+  const comColors = ["#8b5cf6", "#f59e0b", "#3b82f6", "#10b981", "#ec4899", "#0d9488"];
+
+  const moveCom = (idx, dir) => {
+    const arr = [...committees];
+    const swap = idx + dir;
+    if (swap < 0 || swap >= arr.length) return;
+    [arr[idx], arr[swap]] = [arr[swap], arr[idx]];
+    setCommittees(arr);
+  };
+
   return (
     <div>
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Comités & Services</h2>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Gérez les comités, le service d'ordre, les médias et le secrétariat</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+        <div><h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Comités & Services</h2>
+        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{committees.length} comités</p></div>
+        <Btn icon={Plus} onClick={() => { setForm({ name: "", description: "", leader: "" }); setShowModal(true); }}>Nouveau comité</Btn>
       </div>
-      <TabBar tabs={tabs} active={tab} onChange={setTab} />
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
-        {filtered.map(c => {
-          const Ic = icons[c.type] || Briefcase;
-          const col = colors[c.type] || "#8b5cf6";
-          return (
-            <div key={c.id} style={{ background: "#fff", borderRadius: 16, padding: 22, border: "1px solid #f1f5f9", borderTop: `4px solid ${col}` }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-                <div style={{ width: 44, height: 44, borderRadius: 12, background: `${col}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><Ic size={20} color={col} /></div>
-                <div><h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{c.name}</h3>
-                <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{c.description}</p></div>
+      <div style={{ display: "grid", gridTemplateColumns: selectedCom ? "1fr 1fr" : "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 12 }}>
+          {committees.map((c, idx) => (
+            <div key={c.id} onClick={() => setSelectedCom(c)} style={{ background: "#fff", borderRadius: 14, padding: 20, border: selectedCom?.id === c.id ? `2px solid ${c.color}` : "1px solid #f1f5f9", borderLeft: `4px solid ${c.color}`, cursor: "pointer" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{c.name}</h3>
+                  <p style={{ margin: "2px 0 0", fontSize: 11, color: "#94a3b8" }}>{c.description}</p>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 4 }} onClick={e => e.stopPropagation()}>
+                  <Badge variant="default">{(c.members||[]).length} membres</Badge>
+                  <button onClick={() => moveCom(idx, -1)} disabled={idx === 0} style={{ width: 24, height: 24, borderRadius: 5, border: "1px solid #e2e8f0", background: "#f8fafc", cursor: idx === 0 ? "not-allowed" : "pointer", opacity: idx === 0 ? 0.3 : 1, fontSize: 10 }}>▲</button>
+                  <button onClick={() => moveCom(idx, 1)} disabled={idx === committees.length - 1} style={{ width: 24, height: 24, borderRadius: 5, border: "1px solid #e2e8f0", background: "#f8fafc", cursor: idx === committees.length - 1 ? "not-allowed" : "pointer", opacity: idx === committees.length - 1 ? 0.3 : 1, fontSize: 10 }}>▼</button>
+                  <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer ${c.name} ?`)) setCommittees(prev => prev.filter(x => x.id !== c.id)); }} />
+                </div>
               </div>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", fontSize: 12, color: "#64748b", paddingTop: 10, borderTop: "1px solid #f1f5f9" }}>
-                <span>Resp: {c.leader}</span><Badge variant="default">{c.members_count} membres</Badge>
+              <div style={{ padding: "8px 0 0", fontSize: 12, color: "#64748b", display: "flex", alignItems: "center", gap: 6 }}>
+                <Avatar name={c.leader} size={20} color={c.color} />Responsable : {c.leader}
               </div>
             </div>
-          );
-        })}
+          ))}
+        </div>
+        {selectedCom && (
+          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 24 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
+              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedCom.name}</h3>
+              <Btn variant="ghost" size="sm" icon={X} onClick={() => setSelectedCom(null)} />
+            </div>
+            <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 16px" }}>{selectedCom.description} · Resp: {selectedCom.leader}</p>
+            <h4 style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Membres ({(selectedCom.members||[]).length})</h4>
+            {(selectedCom.members||[]).map((m, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 0", borderBottom: "1px solid #f8fafc" }}>
+                <Avatar name={m} size={28} color={selectedCom.color} />
+                <span style={{ fontSize: 13, color: "#0f172a" }}>{m}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </div>
+      <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouveau comité">
+        <FormField label="Nom *"><input style={inputStyle} value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Ex: Service d'ordre" /></FormField>
+        <FormField label="Description"><input style={inputStyle} value={form.description} onChange={e => setForm({...form, description: e.target.value})} /></FormField>
+        <FormField label="Responsable"><input style={inputStyle} value={form.leader} onChange={e => setForm({...form, leader: e.target.value})} /></FormField>
+        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
+          <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
+          <Btn onClick={() => { if(form.name) { setCommittees(prev => [...prev, { ...form, id: Date.now(), members: [], color: comColors[prev.length % comColors.length] }]); setShowModal(false); } }}>Créer</Btn>
+        </div>
+      </Modal>
     </div>
   );
 };
@@ -2265,7 +3357,7 @@ const GoalsPage = () => {
           const col = g.color || typeColors[g.goal_type] || "#0d9488";
           return (
             <div key={g.id} style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9", position: "relative" }}>
-              <button onClick={() => setGoals(prev => prev.filter(x => x.id !== g.id))} style={{ position: "absolute", top: 12, right: 12, background: "none", border: "none", cursor: "pointer", opacity: 0.4 }}><Trash2 size={14} color="#ef4444" /></button>
+              <button onClick={() => { if(confirm("Voulez-vous vraiment supprimer cet objectif ?")) setGoals(prev => prev.filter(x => x.id !== g.id)); }} style={{ position: "absolute", top: 12, right: 12, background: "none", border: "none", cursor: "pointer", opacity: 0.4 }}><Trash2 size={14} color="#ef4444" /></button>
               <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 16 }}>
                 <div style={{ width: 46, height: 46, borderRadius: 14, background: `${col}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><Ic size={22} color={col} /></div>
                 <div><h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{g.title}</h3>
@@ -2321,10 +3413,18 @@ const TestimonialsPage = () => {
   ]);
   const [showModal, setShowModal] = useState(false);
   const [editing, setEditing] = useState(null);
+  const [searchT, setSearchT] = useState("");
+  const [periodT, setPeriodT] = useState("all");
   const [form, setForm] = useState({ title: "", content: "", author: "", category: "autre", media: "texte", mediaUrl: "" });
   const catColors = { guerison: "#10b981", provision: "#f59e0b", famille: "#ec4899", autre: "#3b82f6" };
   const catLabels = { guerison: "Guérison", provision: "Provision", famille: "Famille", autre: "Autre" };
   const mediaIcons = { texte: "📝", video: "🎥", audio: "🎙️" };
+
+  const filtered = testimonials.filter(t => {
+    const matchSearch = !searchT || `${t.title} ${t.author}`.toLowerCase().includes(searchT.toLowerCase());
+    const matchPeriod = periodT === "all" || t.category === periodT;
+    return matchSearch && matchPeriod;
+  });
 
   const openNew = () => { setEditing(null); setForm({ title: "", content: "", author: "", category: "autre", media: "texte", mediaUrl: "" }); setShowModal(true); };
   const openEdit = (t) => { setEditing(t); setForm({ title: t.title, content: t.content, author: t.author, category: t.category, media: t.media || "texte", mediaUrl: t.mediaUrl || "" }); setShowModal(true); };
@@ -2336,17 +3436,27 @@ const TestimonialsPage = () => {
     }
     setShowModal(false); setEditing(null);
   };
-  const handleDelete = (id) => setTestimonials(prev => prev.filter(t => t.id !== id));
+  const handleDelete = (id) => { if(confirm("Supprimer ce témoignage ?")) setTestimonials(prev => prev.filter(t => t.id !== id)); };
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
         <div><h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Témoignages</h2>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{testimonials.length} témoignages partagés</p></div>
+        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{filtered.length} témoignages</p></div>
         <Btn icon={Plus} onClick={openNew}>Nouveau témoignage</Btn>
       </div>
+      <div style={{ display: "flex", gap: 12, marginBottom: 16, flexWrap: "wrap" }}>
+        <div style={{ flex: 1, minWidth: 200, position: "relative" }}>
+          <Search size={15} color="#94a3b8" style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)" }} />
+          <input value={searchT} onChange={e => setSearchT(e.target.value)} placeholder="Rechercher par titre ou nom..." style={{ ...inputStyle, paddingLeft: 36 }} />
+        </div>
+        <select value={periodT} onChange={e => setPeriodT(e.target.value)} style={{ ...selectStyle, width: 160 }}>
+          <option value="all">Toutes catégories</option>
+          {Object.entries(catLabels).map(([k,v]) => <option key={k} value={k}>{v}</option>)}
+        </select>
+      </div>
       <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
-        {testimonials.map(t => (
+        {filtered.map(t => (
           <div key={t.id} style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9", borderLeft: `4px solid ${catColors[t.category] || "#3b82f6"}` }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
               <div>
@@ -2486,7 +3596,7 @@ const MentorshipsPage = () => {
             <div key={f.id} style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9", borderTop: `4px solid ${f.color}` }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
                 <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{f.title}</h3>
-                <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => setFormations(prev => prev.filter(x => x.id !== f.id))} />
+                <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer le parcours "${f.title}" ?`)) setFormations(prev => prev.filter(x => x.id !== f.id)); }} />
               </div>
               <p style={{ margin: "0 0 14px", fontSize: 12, color: "#64748b" }}>{f.description}</p>
               <div style={{ marginBottom: 14 }}>
@@ -2680,122 +3790,122 @@ const QuizPage = () => {
 // ROLE MANAGEMENT PAGE
 // ═══════════════════════════════════════════════════════
 const RoleManagementPage = () => {
-  const allPages = [
-    { key: "dashboard", label: "Tableau de bord" }, { key: "members", label: "Membres" },
-    { key: "visitors", label: "Visiteurs" }, { key: "mentorships", label: "Mentorat" },
-    { key: "annexes", label: "Structure/Carte" }, { key: "departments", label: "Départements" },
-    { key: "committees", label: "Comités" }, { key: "families", label: "Familles" },
-    { key: "groups", label: "Groupes" }, { key: "quiz", label: "Quiz" },
-    { key: "agenda", label: "Agenda" }, { key: "finances", label: "Finances" },
-    { key: "goals", label: "Objectifs" }, { key: "cultes", label: "Cultes" },
-    { key: "testimonials", label: "Témoignages" }, { key: "roles", label: "Gestion Rôles" },
-    { key: "users", label: "Utilisateurs" }, { key: "subscription", label: "Abonnement" },
-    { key: "documentation", label: "Documentation" }, { key: "support", label: "Support" },
-    { key: "settings", label: "Paramètres" },
+  const modules = [
+    { key: "members", label: "Membres", actions: ["Voir les membres", "Créer des membres", "Modifier les membres", "Supprimer les membres"] },
+    { key: "finances", label: "Finances", actions: ["Voir les finances", "Créer des transactions", "Modifier les transactions", "Supprimer les transactions"] },
+    { key: "events", label: "Événements", actions: ["Voir les événements", "Créer des événements", "Modifier les événements", "Supprimer les événements"] },
+    { key: "cultes", label: "Cultes", actions: ["Voir les cultes", "Créer des cultes", "Modifier les cultes", "Supprimer les cultes", "Gérer les présences"] },
+    { key: "communication", label: "Communication", actions: ["Gérer le carrousel", "Envoyer des messages"] },
+    { key: "visitors", label: "Visiteurs", actions: ["Voir les visiteurs", "Créer des visiteurs", "Modifier les visiteurs"] },
+    { key: "params", label: "Paramètres", actions: ["Voir les paramètres", "Modifier les paramètres"] },
+    { key: "reports", label: "Rapports", actions: ["Voir les rapports", "Exporter les données"] },
   ];
-  const [permissions, setPermissions] = useState({
-    admin: ["dashboard","members","visitors","mentorships","annexes","departments","committees","families","groups","quiz","agenda","finances","goals","cultes","testimonials","users","subscription","documentation","support","settings"],
-    tresorier: ["dashboard","members","finances","goals","cultes","quiz","settings"],
-    secretaire: ["dashboard","members","visitors","families","groups","agenda","cultes","testimonials","quiz","settings"],
-    responsable_dept: ["dashboard","members","departments","quiz","cultes","settings"],
-    agent_service_ordre: ["dashboard","members","visitors","cultes","quiz"],
-    membre: ["dashboard","quiz","agenda","testimonials","cultes"],
-  });
-  const [selectedRole, setSelectedRole] = useState("admin");
+
+  const [roles, setRoles] = useState([
+    { id: 1, name: "Administrateur", color: "#3b82f6", permissions: modules.reduce((acc, m) => { m.actions.forEach(a => acc[a] = true); return acc; }, {}), custom: false },
+    { id: 2, name: "Trésorier", color: "#10b981", permissions: { "Voir les membres": true, "Voir les finances": true, "Créer des transactions": true, "Modifier les transactions": true, "Voir les cultes": true, "Voir les rapports": true, "Exporter les données": true }, custom: false },
+    { id: 3, name: "Secrétaire", color: "#f59e0b", permissions: { "Voir les membres": true, "Créer des membres": true, "Modifier les membres": true, "Voir les événements": true, "Créer des événements": true, "Modifier les événements": true, "Voir les visiteurs": true, "Créer des visiteurs": true, "Modifier les visiteurs": true, "Voir les paramètres": true, "Voir les rapports": true, "Exporter les données": true, "Envoyer des messages": true }, custom: false },
+    { id: 4, name: "Responsable Département", color: "#0d9488", permissions: { "Voir les membres": true, "Voir les cultes": true, "Gérer les présences": true, "Voir les rapports": true }, custom: false },
+    { id: 5, name: "Membre", color: "#64748b", permissions: { "Voir les cultes": true }, custom: false },
+  ]);
+  const [selectedRole, setSelectedRole] = useState(roles[0]);
+  const [showNewRole, setShowNewRole] = useState(false);
+  const [newRoleName, setNewRoleName] = useState("");
   const [saved, setSaved] = useState(false);
 
-  const roles = [
-    { role: "admin", label: "Administrateur", color: "#3b82f6", count: 1 },
-    { role: "tresorier", label: "Trésorier", color: "#10b981", count: 1 },
-    { role: "secretaire", label: "Secrétaire", color: "#f59e0b", count: 1 },
-    { role: "responsable_dept", label: "Resp. Département", color: "#0d9488", count: 2 },
-    { role: "agent_service_ordre", label: "Agent Service d'Ordre", color: "#ef4444", count: 1 },
-    { role: "membre", label: "Membre", color: "#64748b", count: 5 },
-  ];
-
-  const togglePage = (pageKey) => {
-    setPermissions(prev => {
-      const current = prev[selectedRole] || [];
-      const updated = current.includes(pageKey) ? current.filter(k => k !== pageKey) : [...current, pageKey];
-      return { ...prev, [selectedRole]: updated };
-    });
+  const togglePerm = (action) => {
+    setRoles(prev => prev.map(r => r.id === selectedRole.id ? { ...r, permissions: { ...r.permissions, [action]: !r.permissions[action] } } : r));
+    setSelectedRole(prev => ({ ...prev, permissions: { ...prev.permissions, [action]: !prev.permissions[action] } }));
   };
-
-  const selectedRoleData = roles.find(r => r.role === selectedRole);
-  const currentPerms = permissions[selectedRole] || [];
+  const activeCount = Object.values(selectedRole.permissions || {}).filter(Boolean).length;
+  const roleColors = ["#3b82f6", "#10b981", "#f59e0b", "#0d9488", "#8b5cf6", "#ec4899", "#ef4444"];
 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
         <div>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Gestion des Rôles & Permissions</h2>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Configurez les accès de chaque rôle · Le pasteur a toujours accès à tout</p>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Le pasteur a accès à tout · Configurez les accès par rôle</p>
         </div>
-        <Btn onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000); }}>{saved ? "✓ Sauvegardé" : "Enregistrer les permissions"}</Btn>
+        <div style={{ display: "flex", gap: 8 }}>
+          <Btn variant="secondary" icon={Plus} onClick={() => setShowNewRole(true)}>Créer un rôle</Btn>
+          <Btn onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000); }}>{saved ? "✓ Sauvegardé" : "Enregistrer"}</Btn>
+        </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: 20 }}>
-        {/* Role selector */}
+      <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: 20 }}>
+        {/* Role list */}
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <div style={{ background: "#f0fdfa", borderRadius: 14, padding: 16, border: "2px solid #0d9488", marginBottom: 8 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
+          <div style={{ padding: "14px 16px", background: "#f0fdfa", borderRadius: 12, border: "2px solid #0d9488" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
               <Shield size={16} color="#8b5cf6" />
               <span style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Pasteur</span>
             </div>
-            <p style={{ margin: 0, fontSize: 11, color: "#64748b" }}>Accès complet — non modifiable</p>
+            <p style={{ margin: "4px 0 0", fontSize: 10, color: "#64748b" }}>Accès complet — non modifiable</p>
           </div>
           {roles.map(r => (
-            <div key={r.role} onClick={() => setSelectedRole(r.role)} style={{
-              background: selectedRole === r.role ? "#fff" : "#fafbfc", borderRadius: 14, padding: 16,
-              border: selectedRole === r.role ? `2px solid ${r.color}` : "1px solid #f1f5f9",
-              cursor: "pointer", transition: "all 0.2s"
+            <div key={r.id} onClick={() => setSelectedRole(r)} style={{
+              padding: "14px 16px", borderRadius: 12, cursor: "pointer",
+              background: selectedRole.id === r.id ? "#fff" : "#fafbfc",
+              border: selectedRole.id === r.id ? `2px solid ${r.color}` : "1px solid #f1f5f9"
             }}>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
                 <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <div style={{ width: 32, height: 32, borderRadius: 8, background: `${r.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><Shield size={14} color={r.color} /></div>
-                  <div>
-                    <span style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{r.label}</span>
-                    <p style={{ margin: 0, fontSize: 10, color: "#94a3b8" }}>{r.count} utilisateur{r.count > 1 ? "s" : ""}</p>
-                  </div>
+                  <div style={{ width: 28, height: 28, borderRadius: 8, background: `${r.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><Shield size={13} color={r.color} /></div>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{r.name}</span>
                 </div>
-                <span style={{ fontSize: 11, fontWeight: 700, color: r.color }}>{(permissions[r.role] || []).length}/{allPages.length}</span>
+                {r.custom && <Btn variant="ghost" size="sm" icon={Trash2} onClick={(e) => { e.stopPropagation(); if(confirm(`Supprimer le rôle ${r.name} ?`)) setRoles(prev => prev.filter(x => x.id !== r.id)); }} />}
               </div>
+              <p style={{ margin: "4px 0 0", fontSize: 10, color: "#94a3b8" }}>{Object.values(r.permissions || {}).filter(Boolean).length} permission(s) active(s)</p>
             </div>
           ))}
         </div>
 
-        {/* Permissions toggles */}
-        <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9" }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-            <div style={{ width: 36, height: 36, borderRadius: 10, background: `${selectedRoleData?.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><Shield size={18} color={selectedRoleData?.color} /></div>
+        {/* Permissions detail */}
+        <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 28 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: `${selectedRole.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><Shield size={18} color={selectedRole.color} /></div>
             <div>
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>Permissions : {selectedRoleData?.label}</h3>
-              <p style={{ margin: 0, fontSize: 12, color: "#94a3b8" }}>{currentPerms.length} pages autorisées sur {allPages.length}</p>
+              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedRole.name}</h3>
+              <p style={{ margin: 0, fontSize: 12, color: "#94a3b8" }}>{activeCount} permission(s) active(s)</p>
             </div>
           </div>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
-            {allPages.map(p => {
-              const enabled = currentPerms.includes(p.key);
-              return (
-                <div key={p.key} onClick={() => togglePage(p.key)} style={{
-                  display: "flex", alignItems: "center", justifyContent: "space-between",
-                  padding: "10px 14px", borderRadius: 10, cursor: "pointer", transition: "all 0.15s",
-                  background: enabled ? "#f0fdfa" : "#fafbfc", border: enabled ? "1px solid #0d948830" : "1px solid #f1f5f9"
-                }}>
-                  <span style={{ fontSize: 13, fontWeight: enabled ? 600 : 400, color: enabled ? "#0f172a" : "#94a3b8" }}>{p.label}</span>
-                  <div style={{
-                    width: 36, height: 20, borderRadius: 10, padding: 2, transition: "all 0.2s",
-                    background: enabled ? "#0d9488" : "#e2e8f0", display: "flex", alignItems: enabled ? "center" : "center",
-                    justifyContent: enabled ? "flex-end" : "flex-start"
-                  }}>
-                    <div style={{ width: 16, height: 16, borderRadius: "50%", background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.15)", transition: "all 0.2s" }} />
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+
+          {modules.map(mod => (
+            <div key={mod.key} style={{ marginBottom: 20 }}>
+              <h4 style={{ margin: "0 0 10px", fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{mod.label}</h4>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
+                {mod.actions.map(action => {
+                  const checked = selectedRole.permissions?.[action] || false;
+                  return (
+                    <label key={action} onClick={() => togglePerm(action)} style={{
+                      display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", borderRadius: 8, cursor: "pointer",
+                      background: checked ? "#f0fdfa" : "#fafbfc", border: checked ? "1px solid #0d948830" : "1px solid #f1f5f9"
+                    }}>
+                      <div style={{
+                        width: 18, height: 18, borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center",
+                        background: checked ? "#0d9488" : "#fff", border: checked ? "none" : "2px solid #d1d5db"
+                      }}>
+                        {checked && <Check size={12} color="#fff" />}
+                      </div>
+                      <span style={{ fontSize: 12, color: checked ? "#0f172a" : "#94a3b8", fontWeight: checked ? 600 : 400 }}>{action}</span>
+                    </label>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
         </div>
       </div>
+
+      <Modal open={showNewRole} onClose={() => setShowNewRole(false)} title="Créer un nouveau rôle">
+        <FormField label="Nom du rôle *"><input style={inputStyle} value={newRoleName} onChange={e => setNewRoleName(e.target.value)} placeholder="Ex: Responsable Jeunesse" /></FormField>
+        <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 12px" }}>Le rôle sera créé sans aucune permission. Vous pourrez les configurer ensuite.</p>
+        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+          <Btn variant="secondary" onClick={() => setShowNewRole(false)}>Annuler</Btn>
+          <Btn onClick={() => { if(newRoleName.trim()) { const nr = { id: Date.now(), name: newRoleName.trim(), color: roleColors[roles.length % roleColors.length], permissions: {}, custom: true }; setRoles(prev => [...prev, nr]); setSelectedRole(nr); setNewRoleName(""); setShowNewRole(false); } }}>Créer</Btn>
+        </div>
+      </Modal>
     </div>
   );
 };
@@ -2804,13 +3914,40 @@ const RoleManagementPage = () => {
 // USER MANAGEMENT PAGE
 // ═══════════════════════════════════════════════════════
 const UserManagementPage = () => {
-  const users = MOCK_MEMBERS.filter(m => m.role !== "membre").map(m => ({ ...m, last_login: "2026-03-20" }));
+  const [users, setUsers] = useState(MOCK_MEMBERS.filter(m => m.role !== "membre").map(m => ({ ...m, last_login: "2026-03-20" })));
+  const [churchCode, setChurchCode] = useState("EGLISE-" + Math.random().toString(36).substring(2, 8).toUpperCase());
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [editingUser, setEditingUser] = useState(null);
+  const [editForm, setEditForm] = useState({ role: "" });
+  const allRoles = ["pasteur", "admin", "tresorier", "secretaire", "responsable_dept", "agent_service_ordre", "membre"];
+
   return (
     <div>
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Gestion Utilisateurs</h2>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Utilisateurs avec accès à la plateforme</p>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Gestion Utilisateurs</h2>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{users.length} utilisateurs avec accès</p>
+        </div>
+        <Btn variant="secondary" size="sm" icon={Download} onClick={() => {
+          const csv = "\uFEFFNom,Prénom,Email,Rôle,Dernière connexion\n" + users.map(u => `${u.last_name},${u.first_name},${u.email},${u.role},${u.last_login}`).join("\n");
+          const b = new Blob([csv], {type:"text/csv;charset=utf-8;"}); const url = URL.createObjectURL(b);
+          const a = document.createElement("a"); a.href = url; a.download = "utilisateurs.csv"; a.click();
+        }}>Exporter la liste</Btn>
       </div>
+
+      {/* Church code section */}
+      <div style={{ background: "#f0fdfa", borderRadius: 14, padding: "18px 22px", border: "1px solid #ccfbf1", marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>🔑 Code d'inscription de votre église</p>
+          <p style={{ margin: "4px 0 0", fontSize: 12, color: "#64748b" }}>Partagez ce code avec vos membres pour qu'ils puissent s'inscrire</p>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+          <div style={{ padding: "10px 20px", background: "#fff", borderRadius: 10, border: "2px dashed #0d9488", fontFamily: "monospace", fontSize: 18, fontWeight: 800, color: "#0d9488", letterSpacing: "2px" }}>{churchCode}</div>
+          <Btn variant="secondary" size="sm" onClick={() => { navigator.clipboard?.writeText(churchCode); }}>Copier</Btn>
+          <Btn variant="ghost" size="sm" onClick={() => setChurchCode("EGLISE-" + Math.random().toString(36).substring(2, 8).toUpperCase())}>Régénérer</Btn>
+        </div>
+      </div>
+
       <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", overflow: "hidden" }}>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead><tr style={{ background: "#f8fafc" }}>
@@ -2830,12 +3967,29 @@ const UserManagementPage = () => {
                 <td style={{ padding: "12px 16px" }}><Badge variant="purple">{u.role}</Badge></td>
                 <td style={{ padding: "12px 16px", fontSize: 12, color: "#64748b" }}>{u.email}</td>
                 <td style={{ padding: "12px 16px", fontSize: 12, color: "#94a3b8" }}>{u.last_login}</td>
-                <td style={{ padding: "12px 16px" }}><Btn variant="ghost" size="sm" icon={Edit} /></td>
+                <td style={{ padding: "12px 16px" }}>
+                  <div style={{ display: "flex", gap: 4 }}>
+                    <Btn variant="ghost" size="sm" icon={Edit} onClick={() => { setEditingUser(u); setEditForm({ role: u.role }); setShowEditModal(true); }} />
+                    <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer l'utilisateur ${u.first_name} ${u.last_name} ?`)) setUsers(prev => prev.filter(x => x.id !== u.id)); }} />
+                  </div>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+
+      <Modal open={showEditModal} onClose={() => setShowEditModal(false)} title={`Modifier — ${editingUser?.first_name} ${editingUser?.last_name}`}>
+        <FormField label="Rôle">
+          <select style={selectStyle} value={editForm.role} onChange={e => setEditForm({...editForm, role: e.target.value})}>
+            {allRoles.map(r => <option key={r} value={r}>{r.charAt(0).toUpperCase() + r.slice(1).replace("_", " ")}</option>)}
+          </select>
+        </FormField>
+        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
+          <Btn variant="secondary" onClick={() => setShowEditModal(false)}>Annuler</Btn>
+          <Btn onClick={() => { setUsers(prev => prev.map(u => u.id === editingUser?.id ? {...u, role: editForm.role} : u)); setShowEditModal(false); }}>Enregistrer</Btn>
+        </div>
+      </Modal>
     </div>
   );
 };
@@ -2845,39 +3999,52 @@ const UserManagementPage = () => {
 // ═══════════════════════════════════════════════════════
 const SubscriptionPage = () => {
   const plans = [
-    { name: "Starter", price: "5 000", desc: "Idéal pour les petites églises", features: ["100 membres", "2 utilisateurs", "Dashboard basique", "Gestion membres", "Finances de base"], current: false, color: "#64748b" },
-    { name: "Growth", price: "15 000", desc: "Pour les églises en croissance", features: ["500 membres", "5 utilisateurs", "Toutes fonctionnalités", "Quiz & gamification", "Export PDF/Excel", "Support email"], current: true, color: "#0d9488" },
-    { name: "Pro", price: "25 000", desc: "Gestion complète & Intelligente", features: ["Membres illimités", "10 utilisateurs", "Mentorat avancé", "Alertes intelligentes", "Rapports avancés", "Support prioritaire", "Cartographie"], current: false, color: "#3b82f6" },
-    { name: "Alliance", price: "50 000", desc: "Multi-sites & Dénominations", features: ["Multi-églises", "Utilisateurs illimités", "API personnalisée", "Formation dédiée", "Support WhatsApp 24/7", "Personnalisation totale", "Gestion dénomination"], current: false, color: "#8b5cf6" },
+    { name: "Starter", price: "5 000", desc: "Idéal pour les petites églises", features: ["200 membres", "3 comptes staff", "Dashboard basique", "Gestion membres", "Finances de base"], current: false, color: "#64748b", icon: "🌱" },
+    { name: "Growth", price: "15 000", desc: "Pour les églises en croissance", features: ["500 membres", "10 comptes staff", "Toutes fonctionnalités", "Quiz & gamification", "Export PDF/Excel", "Support email"], current: true, color: "#0d9488", icon: "🚀", popular: true },
+    { name: "Pro", price: "25 000", desc: "Gestion complète & Intelligente", features: ["Membres illimités", "Comptes staff illimités", "Mentorat avancé", "Alertes intelligentes", "Rapports avancés", "Support prioritaire", "Cartographie"], current: false, color: "#3b82f6", icon: "⚡" },
+    { name: "Alliance", price: "50 000", desc: "Multi-sites & Dénominations", features: ["Multi-églises", "Utilisateurs illimités", "API personnalisée", "Formation dédiée", "Support WhatsApp 24/7", "Personnalisation totale", "Gestion dénomination"], current: false, color: "#8b5cf6", icon: "👑" },
   ];
   return (
     <div>
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Abonnement</h2>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Gérez votre abonnement Lumen Church</p>
+      <div style={{ textAlign: "center", marginBottom: 32 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0f172a", margin: "0 0 8px" }}>Choisissez votre plan</h2>
+        <p style={{ fontSize: 14, color: "#94a3b8", margin: 0 }}>En FCFA · 30 jours d'essai · Annulez à tout moment</p>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
         {plans.map(p => (
           <div key={p.name} style={{
-            background: "#fff", borderRadius: 18, padding: 28, border: p.current ? "2px solid #0d9488" : "1px solid #f1f5f9",
-            position: "relative", transition: "all 0.2s"
-          }}>
-            {p.current && <div style={{ position: "absolute", top: -1, left: "50%", transform: "translateX(-50%)", background: "#0d9488", color: "#fff", padding: "3px 14px", borderRadius: "0 0 10px 10px", fontSize: 10, fontWeight: 700 }}>ACTUEL</div>}
-            <h3 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "12px 0 4px" }}>{p.name}</h3>
-            <div style={{ marginBottom: 20 }}>
-              <span style={{ fontSize: 28, fontWeight: 800, color: "#0f172a" }}>{p.price}</span>
-              <span style={{ fontSize: 13, color: "#94a3b8" }}> F/mois</span>
+            background: "#fff", borderRadius: 20, padding: "32px 24px", position: "relative",
+            border: p.popular ? `2px solid ${p.color}` : "1px solid #f1f5f9",
+            transform: p.popular ? "scale(1.03)" : "scale(1)",
+            boxShadow: p.popular ? `0 12px 40px ${p.color}20` : "0 2px 8px rgba(0,0,0,0.03)",
+            transition: "all 0.3s"
+          }}
+          onMouseEnter={e => { e.currentTarget.style.transform = p.popular ? "scale(1.05)" : "scale(1.02)"; e.currentTarget.style.boxShadow = `0 12px 40px ${p.color}25`; }}
+          onMouseLeave={e => { e.currentTarget.style.transform = p.popular ? "scale(1.03)" : "scale(1)"; e.currentTarget.style.boxShadow = p.popular ? `0 12px 40px ${p.color}20` : "0 2px 8px rgba(0,0,0,0.03)"; }}
+          >
+            {p.popular && <div style={{ position: "absolute", top: -13, left: "50%", transform: "translateX(-50%)", background: p.color, color: "#fff", padding: "4px 16px", borderRadius: 20, fontSize: 10, fontWeight: 700, letterSpacing: "0.5px" }}>LE PLUS POPULAIRE</div>}
+            {p.current && <div style={{ position: "absolute", top: 12, right: 12 }}><Badge variant="success">Actuel</Badge></div>}
+            <div style={{ textAlign: "center", marginBottom: 20 }}>
+              <span style={{ fontSize: 32 }}>{p.icon}</span>
+              <h3 style={{ fontSize: 20, fontWeight: 800, color: "#0f172a", margin: "8px 0 4px" }}>{p.name}</h3>
+              <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>{p.desc}</p>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 20 }}>
+            <div style={{ textAlign: "center", marginBottom: 20, padding: "16px 0", borderTop: "1px solid #f1f5f9", borderBottom: "1px solid #f1f5f9" }}>
+              <span style={{ fontSize: 36, fontWeight: 900, color: p.color }}>{p.price}</span>
+              <span style={{ fontSize: 14, color: "#94a3b8" }}> F/mois</span>
+            </div>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
               {p.features.map((f, i) => (
                 <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#475569" }}>
-                  <Check size={14} color="#10b981" />{f}
+                  <Check size={14} color={p.color} />{f}
                 </div>
               ))}
             </div>
-            <Btn variant={p.current ? "secondary" : "primary"} style={{ width: "100%" }}>
-              {p.current ? "Plan actuel" : "Choisir"}
-            </Btn>
+            <button style={{
+              width: "100%", padding: 14, borderRadius: 12, border: p.current ? "2px solid #e2e8f0" : "none",
+              background: p.current ? "#fff" : p.color, color: p.current ? "#64748b" : "#fff",
+              fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.2s"
+            }}>{p.current ? "Plan actuel" : "Choisir ce plan"}</button>
           </div>
         ))}
       </div>
@@ -2897,7 +4064,7 @@ const SupportPage = () => (
     <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
       {[
         { icon: Mail, title: "Email", desc: "support@lumenchurch.com", color: "#3b82f6" },
-        { icon: Phone, title: "Téléphone", desc: "+225 07 00 00 00", color: "#10b981" },
+        { icon: Phone, title: "WhatsApp / Téléphone", desc: "+225 07 87 45 08 32", color: "#10b981" },
         { icon: MessageSquare, title: "Chat en direct", desc: "Disponible lun-ven 8h-18h", color: "#8b5cf6" },
       ].map((s, i) => (
         <div key={i} style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9", textAlign: "center" }}>
@@ -2919,35 +4086,50 @@ const SupportPage = () => (
 // ═══════════════════════════════════════════════════════
 // DOCUMENTATION PAGE
 // ═══════════════════════════════════════════════════════
-const DocumentationPage = () => (
-  <div>
-    <div style={{ marginBottom: 24 }}>
-      <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Documentation</h2>
-      <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Guide d'utilisation de Lumen Church</p>
+const DocumentationPage = () => {
+  const [openDoc, setOpenDoc] = useState(null);
+  const docs = [
+    { title: "Premiers pas", icon: "🚀", content: "1. Créez votre compte église en renseignant le nom, la dénomination et le pasteur principal.\n2. Complétez l'onboarding en 5 étapes pour configurer votre espace.\n3. Ajoutez vos premiers membres manuellement ou par import CSV.\n4. Configurez vos départements et comités.\n5. Partagez le code d'inscription à vos membres pour qu'ils rejoignent." },
+    { title: "Gestion des membres", icon: "👥", content: "• Ajoutez des membres avec prénom, nom, téléphone, email, genre, catégorie (H/F/Jeune/Enfant).\n• Filtrez par statut : Actif, Passif, Sympathisant, Nouveau converti.\n• Changez le statut directement depuis le tableau.\n• Seuls le pasteur et l'admin peuvent supprimer un membre.\n• Exportez la liste en CSV ou rapport texte.\n• Un membre peut appartenir à plusieurs départements/comités." },
+    { title: "Finances", icon: "💰", content: "• Enregistrez les entrées (dîmes, offrandes, dons, quêtes) et sorties (loyer, électricité, salaires...).\n• Filtrez par période : Jour, Semaine, Mois, Année.\n• Exportez le rapport financier en CSV.\n• Les graphiques montrent la répartition et l'évolution.\n• Créez des sous-catégories pour les projets (construction, équipements...)." },
+    { title: "Agenda & Cultes", icon: "📅", content: "• Le calendrier affiche tous les événements en vue mensuelle.\n• Double-cliquez sur un jour pour créer un événement.\n• Les cultes ont un enregistrement détaillé : présences (H/F/J/E), offrandes, thème, prédicateur.\n• Créez vos propres types de culte (dominical, du soir, prière, veillée...).\n• Exportez l'historique des cultes en CSV." },
+    { title: "Départements & Comités", icon: "🏛️", content: "• La terminologie est personnalisable dans Paramètres.\n• Cliquez sur un département/comité pour voir la liste des membres.\n• Créez de nouveaux départements/comités avec un responsable.\n• Un membre peut faire partie de plusieurs départements/comités." },
+    { title: "Rôles & Permissions", icon: "🔐", content: "• Le pasteur a accès complet (non modifiable).\n• Configurez les permissions par action : Voir, Créer, Modifier, Supprimer.\n• Modules configurables : Membres, Finances, Événements, Cultes, Communication, Visiteurs, Paramètres, Rapports.\n• Créez des rôles personnalisés (ex: Responsable Jeunesse, Comité présences)." },
+    { title: "Quiz & Concours", icon: "📝", content: "• Créez des quiz bibliques avec titre, catégorie, difficulté et nombre de questions.\n• Consultez le classement individuel (top 5 avec médailles).\n• Consultez le classement par groupes de l'église.\n• Exportez les classements en CSV." },
+    { title: "Mentorat & Formation", icon: "🤝", content: "• Un mentor peut avoir plusieurs mentorés.\n• Suivez les sessions avec le bouton +1.\n• Créez des parcours de formation avec étapes personnalisées.\n• Voyez qui est inscrit dans chaque parcours." },
+    { title: "Export & Rapports", icon: "📊", content: "• Exportez les membres en CSV avec toutes les informations.\n• Exportez les finances par période.\n• Exportez l'historique des cultes.\n• Exportez les classements quiz.\n• Tous les exports sont au format CSV, compatible Excel." },
+  ];
+  return (
+    <div>
+      <div style={{ marginBottom: 24 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Documentation</h2>
+        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Guide d'utilisation de Lumen Church</p>
+      </div>
+      <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        {docs.map((d, i) => (
+          <div key={i} style={{ background: "#fff", borderRadius: 14, border: "1px solid #f1f5f9", overflow: "hidden" }}>
+            <div onClick={() => setOpenDoc(openDoc === i ? null : i)} style={{ padding: "16px 20px", display: "flex", alignItems: "center", justifyContent: "space-between", cursor: "pointer" }}
+              onMouseEnter={e => e.currentTarget.style.background = "#fafbfc"}
+              onMouseLeave={e => e.currentTarget.style.background = "#fff"}>
+              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                <span style={{ fontSize: 24 }}>{d.icon}</span>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{d.title}</h3>
+                </div>
+              </div>
+              <ChevronDown size={18} color="#94a3b8" style={{ transform: openDoc === i ? "rotate(180deg)" : "rotate(0)", transition: "transform 0.2s" }} />
+            </div>
+            {openDoc === i && (
+              <div style={{ padding: "0 20px 18px", borderTop: "1px solid #f1f5f9" }}>
+                <pre style={{ margin: "12px 0 0", fontSize: 13, color: "#475569", lineHeight: 1.8, whiteSpace: "pre-wrap", fontFamily: "inherit" }}>{d.content}</pre>
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
     </div>
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
-      {[
-        { title: "Premiers pas", desc: "Configuration initiale de votre église", icon: "🚀" },
-        { title: "Gestion des membres", desc: "Ajouter, modifier et suivre les membres", icon: "👥" },
-        { title: "Finances", desc: "Dîmes, offrandes et gestion budgétaire", icon: "💰" },
-        { title: "Agenda & Cultes", desc: "Planifier les événements et suivre les cultes", icon: "📅" },
-        { title: "Départements", desc: "Organiser les ministères de l'église", icon: "🏛️" },
-        { title: "Rôles & Permissions", desc: "Configurer les accès utilisateurs", icon: "🔐" },
-        { title: "Quiz bibliques", desc: "Créer et gérer des quiz interactifs", icon: "📝" },
-        { title: "Mentorat", desc: "Suivre les parcours de mentorat", icon: "🤝" },
-        { title: "Export & Rapports", desc: "Générer des rapports et exporter les données", icon: "📊" },
-      ].map((d, i) => (
-        <div key={i} style={{ background: "#fff", borderRadius: 14, padding: 20, border: "1px solid #f1f5f9", cursor: "pointer", transition: "all 0.2s" }}
-          onMouseEnter={e => { e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 6px 20px rgba(0,0,0,0.05)"; }}
-          onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "none"; }}>
-          <div style={{ fontSize: 28, marginBottom: 10 }}>{d.icon}</div>
-          <h3 style={{ margin: "0 0 4px", fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{d.title}</h3>
-          <p style={{ margin: 0, fontSize: 12, color: "#94a3b8" }}>{d.desc}</p>
-        </div>
-      ))}
-    </div>
-  </div>
-);
+  );
+};
 
 // ═══════════════════════════════════════════════════════
 // JOIN CHURCH PAGE — Member registration
@@ -3303,6 +4485,138 @@ const LandingAdminPage = ({ landingData, setLandingData }) => {
 };
 
 // ═══════════════════════════════════════════════════════
+// REWARDS / GAMIFICATION PAGE
+// ═══════════════════════════════════════════════════════
+const RewardsPage = ({ achievements = [], xp = 0, level = 1 }) => {
+  const xpForNextLevel = level * 500;
+  const xpProgress = ((xp % 500) / 500) * 100;
+  const done = achievements.filter(a => a.done);
+  const pending = achievements.filter(a => !a.done);
+
+  const leaderboard = [
+    { name: "Jean Kouadio", role: "Pasteur", xp: 980, level: 2, badges: 6 },
+    { name: "Marie Bamba", role: "Trésorière", xp: 720, level: 2, badges: 4 },
+    { name: "Samuel Ouattara", role: "Responsable", xp: 540, level: 2, badges: 3 },
+    { name: "Esther Koné", role: "Secrétaire", xp: 420, level: 1, badges: 2 },
+    { name: "Paul Yao", role: "Membre", xp: 310, level: 1, badges: 2 },
+  ];
+
+  const levelNames = { 1: "Semeur", 2: "Berger", 3: "Serviteur", 4: "Leader", 5: "Apôtre" };
+  const levelColors = { 1: "#3b82f6", 2: "#0d9488", 3: "#8b5cf6", 4: "#f59e0b", 5: "#ec4899" };
+
+  return (
+    <div>
+      <div style={{ marginBottom: 24 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Récompenses & Badges</h2>
+        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{done.length}/{achievements.length} badges obtenus · Niveau {level}</p>
+      </div>
+
+      {/* XP Bar */}
+      <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9", marginBottom: 20, display: "flex", alignItems: "center", gap: 20 }}>
+        <div style={{
+          width: 72, height: 72, borderRadius: "50%", flexShrink: 0,
+          background: `linear-gradient(135deg, ${levelColors[level] || "#0d9488"}, ${levelColors[level] || "#0d9488"}aa)`,
+          display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
+          boxShadow: `0 4px 20px ${levelColors[level] || "#0d9488"}40`
+        }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: "#fff", opacity: 0.8 }}>NIV.</span>
+          <span style={{ fontSize: 26, fontWeight: 900, color: "#fff", lineHeight: 1 }}>{level}</span>
+        </div>
+        <div style={{ flex: 1 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+            <div>
+              <span style={{ fontSize: 16, fontWeight: 800, color: "#0f172a" }}>{levelNames[level] || "Fidèle"}</span>
+              <span style={{ fontSize: 12, color: "#94a3b8", marginLeft: 8 }}>→ {levelNames[level + 1] || "Niveau max"}</span>
+            </div>
+            <span style={{ fontSize: 13, fontWeight: 700, color: "#0d9488" }}>{xp} / {xpForNextLevel} XP</span>
+          </div>
+          <div style={{ width: "100%", height: 10, background: "#f1f5f9", borderRadius: 5, overflow: "hidden" }}>
+            <div style={{
+              width: `${xpProgress}%`, height: "100%", borderRadius: 5,
+              background: `linear-gradient(90deg, ${levelColors[level] || "#0d9488"}, ${levelColors[level] || "#10b981"})`,
+              transition: "width 0.5s ease"
+            }} />
+          </div>
+          <p style={{ margin: "6px 0 0", fontSize: 11, color: "#94a3b8" }}>
+            {xpForNextLevel - xp} XP pour atteindre le niveau {level + 1} — {levelNames[level + 1] || "Niveau maximum"}
+          </p>
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
+        {/* Badges obtenus */}
+        <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9" }}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 16px", display: "flex", alignItems: "center", gap: 8 }}>
+            🏆 Badges obtenus <Badge variant="success">{done.length}</Badge>
+          </h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {done.length === 0 && <p style={{ fontSize: 12, color: "#94a3b8" }}>Complétez des actions pour débloquer des badges !</p>}
+            {done.map(a => (
+              <div key={a.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", background: "#f0fdfa", borderRadius: 10, border: "1px solid #0d948820" }}>
+                <div style={{ width: 40, height: 40, borderRadius: 10, background: "linear-gradient(135deg, #f59e0b, #f97316)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>{a.icon}</div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{a.name}</p>
+                  <p style={{ margin: 0, fontSize: 11, color: "#64748b" }}>{a.desc}</p>
+                </div>
+                <Badge variant="warning">+{a.xp} XP</Badge>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Badges à débloquer */}
+        <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9" }}>
+          <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 16px", display: "flex", alignItems: "center", gap: 8 }}>
+            🔒 À débloquer <Badge variant="info">{pending.length}</Badge>
+          </h3>
+          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+            {pending.map(a => (
+              <div key={a.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", background: "#f8fafc", borderRadius: 10, border: "1px solid #f1f5f9", opacity: 0.7 }}>
+                <div style={{ width: 40, height: 40, borderRadius: 10, background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0, filter: "grayscale(1)" }}>{a.icon}</div>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#64748b" }}>{a.name}</p>
+                  <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{a.desc}</p>
+                </div>
+                <Badge variant="default">+{a.xp} XP</Badge>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* Classement */}
+      <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9" }}>
+        <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 16px" }}>🏅 Classement de l'église</h3>
+        <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+          {leaderboard.map((p, i) => (
+            <div key={i} style={{
+              display: "flex", alignItems: "center", gap: 14, padding: "12px 16px", borderRadius: 12,
+              background: i === 0 ? "linear-gradient(135deg, #fefce8, #fef9c3)" : "#fafbfc",
+              border: i === 0 ? "1px solid #f59e0b30" : "1px solid #f1f5f9"
+            }}>
+              <div style={{
+                width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                background: i === 0 ? "#f59e0b" : i === 1 ? "#94a3b8" : i === 2 ? "#b45309" : "#f1f5f9",
+                color: i < 3 ? "#fff" : "#64748b", fontSize: 12, fontWeight: 800, flexShrink: 0
+              }}>{i + 1}</div>
+              <Avatar name={p.name} size={36} color={levelColors[p.level] || "#0d9488"} />
+              <div style={{ flex: 1 }}>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{p.name}</p>
+                <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{p.role} · Niv. {p.level} {levelNames[p.level]}</p>
+              </div>
+              <div style={{ textAlign: "right" }}>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 800, color: "#0d9488" }}>{p.xp} XP</p>
+                <p style={{ margin: 0, fontSize: 10, color: "#94a3b8" }}>{p.badges} badges</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════════
 // MAIN APP
 // ═══════════════════════════════════════════════════════
 const PAGES = {
@@ -3316,6 +4630,7 @@ const PAGES = {
   families: { label: "Familles", icon: Heart, component: FamiliesPage },
   groups: { label: "Groupes", icon: UsersRound, component: GroupsPage },
   quiz: { label: "Jeux & Quiz", icon: Star, component: QuizPage },
+  rewards: { label: "Récompenses", icon: Star, component: null }, // needs props
   agenda: { label: "Agenda", icon: Calendar, component: AgendaPage },
   finances: { label: "Finances", icon: DollarSign, component: FinancesPage },
   goals: { label: "Objectifs", icon: Target, component: GoalsPage },
@@ -3327,7 +4642,7 @@ const PAGES = {
   subscription: { label: "Abonnement", icon: CreditCard, component: SubscriptionPage },
   documentation: { label: "Documentation", icon: Receipt, component: DocumentationPage },
   support: { label: "Support", icon: Mail, component: SupportPage },
-  settings: { label: "Paramètres", icon: Settings, component: SettingsPage },
+  settings: { label: "Paramètres", icon: Settings, component: null }, // needs props
 };
 
 export default function App() {
@@ -3340,6 +4655,7 @@ export default function App() {
   const [userRole, setUserRole] = useState("pasteur");
   const [terminology, setTerminology] = useState({ departments: "Départements", committees: "Comités & Services" });
   const [churchData, setChurchData] = useState({ name: "Mon Église", denomination: "", pasteur: "" });
+  const [carouselSlides, setCarouselSlides] = useState(INITIAL_CAROUSEL_SLIDES);
 
   // PWA install prompt
   useEffect(() => {
@@ -3402,9 +4718,9 @@ export default function App() {
       { name: "Frère Samuel O.", role: "Responsable Jeunesse", text: "Les quiz bibliques ont transformé notre département. Les jeunes sont plus engagés que jamais.", avatar: "S" },
     ],
     plans: [
-      { name: "Starter", price: "5 000", period: "/mois", desc: "Idéal pour les petites églises", features: ["100 membres", "2 utilisateurs", "Dashboard", "Finances de base"], cta: "Choisir Starter", popular: false },
-      { name: "Growth", price: "15 000", period: "/mois", desc: "Pour les églises en croissance", features: ["500 membres", "5 utilisateurs", "Toutes fonctionnalités", "Quiz & gamification", "Export PDF/Excel"], cta: "Choisir Growth", popular: true },
-      { name: "Pro", price: "25 000", period: "/mois", desc: "Gestion complète & Intelligente", features: ["Membres illimités", "10 utilisateurs", "Mentorat avancé", "Rapports avancés", "Cartographie"], cta: "Choisir Pro", popular: false },
+      { name: "Starter", price: "5 000", period: "/mois", desc: "Idéal pour les petites églises", features: ["200 membres", "3 comptes staff", "Dashboard", "Finances de base"], cta: "Choisir Starter", popular: false },
+      { name: "Growth", price: "15 000", period: "/mois", desc: "Pour les églises en croissance", features: ["500 membres", "10 comptes staff", "Toutes fonctionnalités", "Quiz & gamification", "Export PDF/Excel"], cta: "Choisir Growth", popular: true },
+      { name: "Pro", price: "25 000", period: "/mois", desc: "Gestion complète & Intelligente", features: ["Membres illimités", "Comptes staff illimités", "Mentorat avancé", "Rapports avancés", "Cartographie"], cta: "Choisir Pro", popular: false },
       { name: "Alliance", price: "50 000", period: "/mois", desc: "Multi-sites & Dénominations", features: ["Multi-églises", "Illimité", "API", "Formation dédiée", "Support 24/7"], cta: "Nous contacter", popular: false },
     ],
     faqs: [
@@ -3495,6 +4811,12 @@ export default function App() {
 
   const CurrentPage = page === "landing" 
     ? () => <LandingAdminPage landingData={landingData} setLandingData={setLandingData} />
+    : page === "settings"
+    ? () => <SettingsPage seasons={seasons} setSeasons={setSeasons} terminology={terminology} setTerminology={setTerminology} carouselSlides={carouselSlides} setCarouselSlides={setCarouselSlides} />
+    : page === "rewards"
+    ? () => <RewardsPage achievements={achievements} xp={xp} level={level} />
+    : page === "dashboard"
+    ? () => <DashboardPage onNavigate={setPage} carouselSlides={carouselSlides} />
     : PAGES[page]?.component || DashboardPage;
 
   return (
@@ -3561,93 +4883,15 @@ export default function App() {
         </nav>
 
         <div style={{ padding: "16px 16px 20px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-          {/* FIFA-Style Player Card */}
-          <div onClick={() => setShowXpInfo(!showXpInfo)} style={{
-            marginBottom: 14, cursor: "pointer", position: "relative",
-            background: level >= 5 ? "linear-gradient(135deg, #f59e0b, #f97316, #ef4444)" : level >= 3 ? "linear-gradient(135deg, #3b82f6, #8b5cf6)" : "linear-gradient(135deg, #0d9488, #10b981)",
-            borderRadius: 14, padding: "14px 14px 10px", overflow: "hidden"
-          }}>
-            {/* Card pattern */}
-            <div style={{ position: "absolute", inset: 0, opacity: 0.08, backgroundImage: "repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px)" }} />
-            <div style={{ position: "relative", zIndex: 1 }}>
-              {/* Season badge */}
-              <div style={{ display: "flex", alignItems: "center", gap: 4, marginBottom: 6 }}>
-                <span style={{ fontSize: 10 }}>{currentSeason.emoji}</span>
-                <span style={{ fontSize: 8, fontWeight: 700, color: "rgba(255,255,255,0.6)", textTransform: "uppercase", letterSpacing: "1px" }}>Saison {currentSeason.name}</span>
-              </div>
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 8 }}>
-                <div>
-                  <div style={{ fontSize: 22, fontWeight: 900, color: "#fff", lineHeight: 1 }}>{level < 10 ? `0${level}` : level}</div>
-                  <div style={{ fontSize: 8, fontWeight: 700, color: "rgba(255,255,255,0.7)", textTransform: "uppercase", letterSpacing: "1.5px" }}>
-                    {level >= 5 ? "LÉGENDE" : level >= 3 ? "ÉTOILE" : "FIDÈLE"}
-                  </div>
-                </div>
-                <div style={{ textAlign: "right" }}>
-                  <div style={{ fontSize: 9, fontWeight: 700, color: "rgba(255,255,255,0.6)", textTransform: "uppercase" }}>XP</div>
-                  <div style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>{xp}</div>
-                </div>
-              </div>
-              {/* Mini stats row like FIFA */}
-              <div style={{ display: "flex", justifyContent: "space-between", gap: 4 }}>
-                {[
-                  { label: "MBR", val: MOCK_MEMBERS.length },
-                  { label: "FIN", val: "5.2M" },
-                  { label: "EVT", val: MOCK_EVENTS.length },
-                  { label: "ACH", val: `${achievements.filter(a => a.done).length}/${achievements.length}` },
-                ].map((s, i) => (
-                  <div key={i} style={{ textAlign: "center", flex: 1 }}>
-                    <div style={{ fontSize: 11, fontWeight: 800, color: "#fff" }}>{s.val}</div>
-                    <div style={{ fontSize: 7, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.5px" }}>{s.label}</div>
-                  </div>
-                ))}
-              </div>
-              {/* XP progress thin bar */}
-              <div style={{ width: "100%", height: 3, background: "rgba(0,0,0,0.2)", borderRadius: 2, marginTop: 8 }}>
-                <div style={{ width: `${xpProgress}%`, height: "100%", background: "#fff", borderRadius: 2, transition: "width 0.5s" }} />
-              </div>
+          {/* XP mini bar */}
+          <div style={{ marginBottom: 12, padding: "8px 12px", background: "rgba(255,255,255,0.05)", borderRadius: 10, cursor: "pointer" }} onClick={() => setPage("rewards")}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 5 }}>
+              <span style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.5px" }}>NIVEAU {level}</span>
+              <span style={{ fontSize: 10, fontWeight: 700, color: "#0d9488" }}>{xp} XP</span>
             </div>
-            {/* Achievements + Seasons popup */}
-            {showXpInfo && (
-              <div style={{ position: "absolute", bottom: "calc(100% + 8px)", left: -4, right: -4, background: "#1e293b", borderRadius: 14, padding: 16, boxShadow: "0 12px 40px rgba(0,0,0,0.4)", zIndex: 50, maxHeight: 380, overflowY: "auto" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-                  <span style={{ fontSize: 13, fontWeight: 800, color: "#fff" }}>🏆 Badges</span>
-                  <span style={{ fontSize: 10, color: "#94a3b8" }}>{achievements.filter(a => a.done).length}/{achievements.length}</span>
-                </div>
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 6, marginBottom: 14 }}>
-                  {achievements.map(a => (
-                    <div key={a.id} style={{
-                      textAlign: "center", padding: "8px 4px", borderRadius: 8,
-                      background: a.done ? "rgba(245,158,11,0.15)" : "rgba(255,255,255,0.03)",
-                      border: a.done ? "1px solid rgba(245,158,11,0.3)" : "1px solid rgba(255,255,255,0.06)",
-                      opacity: a.done ? 1 : 0.5
-                    }}>
-                      <div style={{ fontSize: 18, marginBottom: 2 }}>{a.icon}</div>
-                      <div style={{ fontSize: 7, fontWeight: 700, color: a.done ? "#f59e0b" : "#64748b", lineHeight: 1.2 }}>{a.name}</div>
-                      <div style={{ fontSize: 7, color: "#475569", marginTop: 1 }}>+{a.xp}</div>
-                    </div>
-                  ))}
-                </div>
-                {/* Seasons section */}
-                <div style={{ borderTop: "1px solid rgba(255,255,255,0.08)", paddingTop: 10 }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
-                    <span style={{ fontSize: 11, fontWeight: 700, color: "#fff" }}>📅 Saisons</span>
-                    <span style={{ fontSize: 8, color: "#94a3b8" }}>Personnalisables dans Paramètres</span>
-                  </div>
-                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
-                    {seasons.map(s => (
-                      <div key={s.id} style={{
-                        padding: "4px 8px", borderRadius: 6, fontSize: 9, fontWeight: 600, display: "flex", alignItems: "center", gap: 3,
-                        background: s.active ? "rgba(13,148,136,0.2)" : "rgba(255,255,255,0.05)",
-                        border: s.active ? "1px solid rgba(13,148,136,0.4)" : "1px solid rgba(255,255,255,0.08)",
-                        color: s.active ? "#10b981" : "#64748b"
-                      }}>
-                        <span>{s.emoji}</span>{s.name}{s.active && " ✓"}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            )}
+            <div style={{ width: "100%", height: 4, background: "rgba(255,255,255,0.1)", borderRadius: 2, overflow: "hidden" }}>
+              <div style={{ width: `${xpProgress}%`, height: "100%", background: "linear-gradient(90deg, #0d9488, #10b981)", borderRadius: 2, transition: "width 0.5s" }} />
+            </div>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
             <Avatar name="Jean" size={36} color="#0d9488" />
@@ -3729,15 +4973,11 @@ export default function App() {
           backdropFilter: "blur(10px)", borderBottom: "1px solid #f1f5f9",
           padding: "14px 32px", display: "flex", justifyContent: "space-between", alignItems: "center"
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-            <div style={{ position: "relative", width: 280 }}>
-              <Search size={15} color="#94a3b8" style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)" }} />
-              <input placeholder="Rechercher..." style={{
-                width: "100%", padding: "9px 14px 9px 36px", borderRadius: 10,
-                border: "1px solid #e2e8f0", background: "#fff", fontSize: 13,
-                color: "#0f172a", outline: "none"
-              }} />
-            </div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+            <span style={{ fontSize: 12, color: "#94a3b8" }}>⛪</span>
+            <span style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8" }}>{churchData.name || "Mon Église"}</span>
+            <span style={{ color: "#e2e8f0" }}>·</span>
+            <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{PAGES[page]?.label || "Tableau de bord"}</h3>
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{ position: "relative" }}>
