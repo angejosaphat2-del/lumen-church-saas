@@ -1,8 +1,48 @@
+# ═══════════════════════════════════════════
+# Lumen Church — Configuration Netlify
+# ═══════════════════════════════════════════
+
 [build]
   command = "npm run build"
   publish = "dist"
 
+# Redirect SPA — toutes les routes vers index.html
 [[redirects]]
   from = "/*"
   to = "/index.html"
   status = 200
+
+# Headers de sécurité + cache PWA
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-XSS-Protection = "1; mode=block"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "camera=(), microphone=(), geolocation=()"
+
+[[headers]]
+  for = "/sw.js"
+  [headers.values]
+    Cache-Control = "no-cache, no-store, must-revalidate"
+    Content-Type = "application/javascript"
+
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=86400"
+    Content-Type = "application/manifest+json"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Variables d'environnement (à configurer sur Netlify dashboard)
+# VITE_SUPABASE_URL
+# VITE_SUPABASE_ANON_KEY
+# VITE_POSTHOG_KEY
+# VITE_CINETPAY_SITE_ID
+# VITE_CINETPAY_API_KEY
+# WHATSAPP_SUPPORT_NUMBER
