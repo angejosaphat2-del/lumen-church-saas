@@ -646,7 +646,7 @@ const DashboardPage = ({ onNavigate, carouselSlides: propSlides }) => {
 };
 
 // MEMBERS PAGE
-const MembersPage = ({ userRole, churchName }) => {
+const MembersPage = ({ userRole, churchName, setAlerts = () => {} }) => {
   const [search, setSearch] = useState("");
   const [filter, setFilter] = useState("all");
   const [deptFilter, setDeptFilter] = useState("all");
@@ -1018,12 +1018,103 @@ const MembersPage = ({ userRole, churchName }) => {
             )}
 
             {/* Infos */}
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, fontSize: 12, color: DS.slate600 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, fontSize: 12, color: DS.slate600, marginBottom: 16 }}>
               {m.phone && <div style={{ display: "flex", gap: 6, alignItems: "center" }}><Phone size={12} color={DS.slate400} />{m.phone}</div>}
               {m.email && <div style={{ display: "flex", gap: 6, alignItems: "center" }}><Mail size={12} color={DS.slate400} />{m.email}</div>}
               {(m.departments||[m.department]).filter(Boolean).length > 0 && <div style={{ display: "flex", gap: 6, alignItems: "center" }}><Building2 size={12} color={DS.slate400} />{(m.departments||[m.department]).filter(Boolean).join(", ")}</div>}
               {m.address && <div style={{ display: "flex", gap: 6, alignItems: "center" }}><MapPin size={12} color={DS.slate400} />{m.address}</div>}
             </div>
+
+            {/* Historique d'actions — panneau enrichi */}
+            {(() => {
+              const MOCK_HISTORY = [
+                { id: 1, type: "visite", text: "Visite à domicile effectuée", date: "2026-03-18", author: "Pasteur Jean" },
+                { id: 2, type: "appel", text: "Appel téléphonique — absent au culte du 16/03", date: "2026-03-17", author: "Esther Koné" },
+                { id: 3, type: "culte", text: "Présent au culte dominical du 15/03", date: "2026-03-15", author: "Système" },
+                { id: 4, type: "note", text: "Traversée une période difficile — besoin de soutien", date: "2026-03-10", author: "Pasteur Jean" },
+                { id: 5, type: "statut", text: "Statut changé : inactif → actif", date: "2026-02-28", author: "Secrétaire" },
+              ];
+              const [history, setHistory] = useState([...(m.action_history || []), ...(m.id === 5 ? MOCK_HISTORY : [])]);
+              const [newAction, setNewAction] = useState("");
+              const [newType, setNewType] = useState("note");
+              const [histFilter, setHistFilter] = useState("all");
+              const actionTypes = {
+                note: { label: "Note", emoji: "📝", color: "#3b82f6" },
+                appel: { label: "Appel", emoji: "📞", color: "#10b981" },
+                visite: { label: "Visite", emoji: "🏠", color: "#8b5cf6" },
+                culte: { label: "Culte", emoji: "⛪", color: "#0d9488" },
+                statut: { label: "Statut", emoji: "🔄", color: "#f59e0b" },
+                priere: { label: "Prière", emoji: "🙏", color: "#ec4899" },
+              };
+              const addAction = () => {
+                if (!newAction.trim()) return;
+                const entry = { id: Date.now(), type: newType, text: newAction, date: new Date().toISOString().split("T")[0], author: "Pasteur Jean" };
+                const updated = [entry, ...history];
+                setHistory(updated);
+                setMembers(prev => prev.map(x => x.id === m.id ? { ...x, action_history: updated } : x));
+                setNewAction("");
+                // Résoudre l'alerte persistante pour ce membre
+                setAlerts(prev => prev.map(a => {
+                  if (a.persistent && a.members?.includes(m.id)) {
+                    return { ...a, members: a.members.filter(id => id !== m.id) };
+                  }
+                  return a;
+                }).filter(a => !a.persistent || (a.members?.length || 0) > 0));
+              };
+              const exportHistory = () => {
+                const csv = "\uFEFFDate,Type,Action,Auteur\n" + history.map(e => `${e.date},${actionTypes[e.type]?.label || e.type},"${e.text}",${e.author}`).join("\n");
+                const b = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+                const url = URL.createObjectURL(b);
+                const a = document.createElement("a"); a.href = url;
+                a.download = `historique-${m.first_name}-${m.last_name}.csv`; a.click();
+              };
+              const filteredHistory = histFilter === "all" ? history : history.filter(e => e.type === histFilter);
+              return (
+                <div style={{ borderTop: `1px solid ${DS.slate100}`, paddingTop: 16, marginTop: 4 }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                    <p style={{ margin: 0, fontSize: 13, fontWeight: 800, color: DS.slate900 }}>📋 Historique d'actions</p>
+                    <div style={{ display: "flex", gap: 6 }}>
+                      <span style={{ fontSize: 10, color: DS.slate400, fontWeight: 600, padding: "3px 8px", background: DS.slate100, borderRadius: 6 }}>{history.length} action{history.length > 1 ? "s" : ""}</span>
+                      {history.length > 0 && <Btn size="sm" variant="ghost" icon={Download} onClick={exportHistory} />}
+                    </div>
+                  </div>
+                  {/* Filtres par type */}
+                  <div style={{ display: "flex", gap: 4, flexWrap: "wrap", marginBottom: 10 }}>
+                    <button onClick={() => setHistFilter("all")} style={{ padding: "3px 10px", borderRadius: 6, border: "none", cursor: "pointer", fontSize: 10, fontWeight: 600, background: histFilter === "all" ? DS.slate800 : DS.slate100, color: histFilter === "all" ? "#fff" : DS.slate600 }}>Tout</button>
+                    {Object.entries(actionTypes).map(([k, v]) => (
+                      <button key={k} onClick={() => setHistFilter(k)} style={{ padding: "3px 10px", borderRadius: 6, border: "none", cursor: "pointer", fontSize: 10, fontWeight: 600, background: histFilter === k ? `${v.color}15` : DS.slate100, color: histFilter === k ? v.color : DS.slate600, borderColor: histFilter === k ? v.color : "transparent" }}>
+                        {v.emoji} {v.label}
+                      </button>
+                    ))}
+                  </div>
+                  {/* Saisie rapide */}
+                  <div style={{ display: "flex", gap: 6, marginBottom: 10, flexWrap: "wrap" }}>
+                    <select value={newType} onChange={e => setNewType(e.target.value)} style={{ ...selectStyle, width: 130, fontSize: 11, padding: "7px 10px" }}>
+                      {Object.entries(actionTypes).map(([k, v]) => <option key={k} value={k}>{v.emoji} {v.label}</option>)}
+                    </select>
+                    <input style={{ ...inputStyle, flex: 1, fontSize: 12, padding: "8px 12px", minWidth: 160 }} value={newAction} onChange={e => setNewAction(e.target.value)}
+                      onKeyDown={e => e.key === "Enter" && addAction()}
+                      placeholder="Décrivez l'action effectuée..." />
+                    <Btn size="sm" onClick={addAction} disabled={!newAction.trim()}>+ Ajouter</Btn>
+                  </div>
+                  {filteredHistory.length === 0 && <p style={{ fontSize: 11, color: DS.slate400, fontStyle: "italic", padding: "12px 0" }}>Aucune action de ce type enregistrée</p>}
+                  <div style={{ maxHeight: 200, overflowY: "auto", display: "flex", flexDirection: "column", gap: 5 }}>
+                    {filteredHistory.map(entry => {
+                      const at = actionTypes[entry.type] || { emoji: "📌", color: "#64748b", label: entry.type };
+                      return (
+                        <div key={entry.id} style={{ padding: "9px 12px", background: `${at.color}08`, borderRadius: 9, borderLeft: `3px solid ${at.color}`, display: "flex", alignItems: "flex-start", gap: 10 }}>
+                          <span style={{ fontSize: 15, flexShrink: 0, marginTop: 1 }}>{at.emoji}</span>
+                          <div style={{ flex: 1 }}>
+                            <p style={{ margin: 0, fontSize: 12, color: DS.slate900, fontWeight: 600 }}>{entry.text}</p>
+                            <p style={{ margin: "3px 0 0", fontSize: 10, color: DS.slate400 }}>{at.label} · {entry.author} · {new Date(entry.date).toLocaleDateString("fr")}</p>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })()}
           </div>
         );
       })()}
@@ -2352,9 +2443,47 @@ const CultesPage = ({ userRole = "pasteur" }) => {
   const [appelSearch, setAppelSearch] = useState("");
   const [appelDept, setAppelDept] = useState("all");
   const [appelList, setAppelList] = useState([]);
+  const [culteDupWarning, setCulteDupWarning] = useState(null); // doublon détecté
 
   const filtered = filter === "all" ? cultes : cultes.filter(c => c.type === filter);
   const totalPres = (c) => (c.hommes||0) + (c.femmes||0) + (c.jeunes||0) + (c.enfants||0);
+
+  // ── Vérification doublons culte ──
+  const checkCulteDuplicate = (date, type) => {
+    if (!date || !type) return null;
+    return cultes.find(c => c.date === date && c.type === type) || null;
+  };
+
+  const handleCulteFormChange = (field, value) => {
+    const newForm = { ...form, [field]: value };
+    setForm(newForm);
+    if (field === "date" || field === "type") {
+      const dup = checkCulteDuplicate(newForm.date, newForm.type);
+      setCulteDupWarning(dup || null);
+    }
+  };
+
+  const handleSaveCulte = (force = false) => {
+    if (!form.date) return;
+    if (!force && culteDupWarning) return; // bloqué par doublon — forcer avec force=true
+    const payload = { ...form, id: Date.now(), hommes: parseInt(form.hommes)||0, femmes: parseInt(form.femmes)||0, jeunes: parseInt(form.jeunes)||0, enfants: parseInt(form.enfants)||0, offrande: parseInt(form.offrande)||0 };
+    setCultes(prev => [...prev, payload]);
+    setShowModal(false);
+    setCulteDupWarning(null);
+  };
+
+  // ── Export appel nominal CSV ──
+  const exportAppelCSV = () => {
+    const lines = ["\uFEFFNom,Prénom,Genre,Département,Présence"];
+    appelList.forEach(m => {
+      lines.push(`${m.last_name},${m.first_name},${m.gender === "F" ? "Femme" : "Homme"},${m.department || ""},${m.present ? "Présent" : "Absent"}`);
+    });
+    const csv = lines.join("\n");
+    const b = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(b);
+    const a = document.createElement("a"); a.href = url;
+    a.download = `appel-nominal-${new Date().toISOString().split("T")[0]}.csv`; a.click();
+  };
 
   const openAppel = () => {
     // Responsable sees only their dept/comité/groupe; pasteur/admin sees all
@@ -2399,7 +2528,7 @@ const CultesPage = ({ userRole = "pasteur" }) => {
         <div style={{ display: "flex", gap: 8 }}>
           <Btn variant="secondary" size="sm" icon={Settings} onClick={() => setShowTypeModal(true)}>Types de culte</Btn>
           <Btn variant="secondary" size="sm" icon={UserCheck} onClick={openAppel}>Appel nominal</Btn>
-          <Btn icon={Plus} onClick={() => { setForm({ date: new Date().toISOString().split("T")[0], type: culteTypes[0], hommes: "", femmes: "", jeunes: "", enfants: "", offrande: "", theme: "", predicateur: "" }); setShowModal(true); }}>Enregistrer un culte</Btn>
+          <Btn icon={Plus} onClick={() => { setForm({ date: new Date().toISOString().split("T")[0], type: culteTypes[0], hommes: "", femmes: "", jeunes: "", enfants: "", offrande: "", theme: "", predicateur: "" }); setCulteDupWarning(null); setShowModal(true); }}>Enregistrer un culte</Btn>
         </div>
       </div>
 
@@ -2533,19 +2662,42 @@ const CultesPage = ({ userRole = "pasteur" }) => {
 
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16, paddingTop: 16, borderTop: "1px solid #f1f5f9" }}>
           <Btn variant="secondary" onClick={() => setShowAppelModal(false)}>Annuler</Btn>
+          <Btn variant="secondary" icon={Download} onClick={exportAppelCSV} disabled={appelList.length === 0}>Exporter CSV</Btn>
           <Btn onClick={autoCountFromAppel}>Valider et enregistrer le culte →</Btn>
         </div>
       </Modal>
 
-      <Modal open={showModal} onClose={() => setShowModal(false)} title="Enregistrer un culte" width={550}>
+      <Modal open={showModal} onClose={() => { setShowModal(false); setCulteDupWarning(null); }} title="Enregistrer un culte" width={550}>
         <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-          <FormField label="Date *"><input style={inputStyle} type="date" value={form.date} onChange={e => setForm({...form, date: e.target.value})} /></FormField>
+          <FormField label="Date *">
+            <input style={inputStyle} type="date" value={form.date} onChange={e => handleCulteFormChange("date", e.target.value)} />
+          </FormField>
           <FormField label="Type de culte">
-            <select style={selectStyle} value={form.type} onChange={e => setForm({...form, type: e.target.value})}>
+            <select style={selectStyle} value={form.type} onChange={e => handleCulteFormChange("type", e.target.value)}>
               {culteTypes.map(t => <option key={t} value={t}>{t}</option>)}
             </select>
           </FormField>
         </div>
+
+        {/* ── Alerte doublon ── */}
+        {culteDupWarning && (
+          <div style={{ padding: "12px 16px", background: "#fff8f0", borderRadius: 10, border: "2px solid #f97316", marginBottom: 4 }}>
+            <div style={{ display: "flex", alignItems: "flex-start", gap: 10 }}>
+              <AlertCircle size={18} color="#f97316" style={{ flexShrink: 0, marginTop: 1 }} />
+              <div style={{ flex: 1 }}>
+                <p style={{ margin: "0 0 2px", fontSize: 13, fontWeight: 700, color: "#ea580c" }}>
+                  ⚠️ Doublon détecté — {culteDupWarning.type} du {new Date(culteDupWarning.date).toLocaleDateString("fr")} existe déjà
+                </p>
+                <p style={{ margin: "0 0 8px", fontSize: 11, color: "#78350f" }}>
+                  Thème : « {culteDupWarning.theme || "—"} » · {totalPres(culteDupWarning)} présents
+                </p>
+                <Btn size="sm" variant="secondary" onClick={() => handleSaveCulte(true)}>
+                  Enregistrer quand même (doublon assumé)
+                </Btn>
+              </div>
+            </div>
+          </div>
+        )}
         <FormField label="Thème / Sujet"><input style={inputStyle} value={form.theme} onChange={e => setForm({...form, theme: e.target.value})} /></FormField>
         <FormField label="Prédicateur"><input style={inputStyle} value={form.predicateur} onChange={e => setForm({...form, predicateur: e.target.value})} /></FormField>
         <div style={{ padding: "12px 16px", background: "#f8fafc", borderRadius: 10, marginBottom: 12 }}>
@@ -2560,8 +2712,10 @@ const CultesPage = ({ userRole = "pasteur" }) => {
         </div>
         <FormField label="Offrande (FCFA)"><input style={inputStyle} type="number" value={form.offrande} onChange={e => setForm({...form, offrande: e.target.value})} /></FormField>
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
-          <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
-          <Btn onClick={() => { if(form.date) { setCultes(prev => [...prev, { ...form, id: Date.now(), hommes: parseInt(form.hommes)||0, femmes: parseInt(form.femmes)||0, jeunes: parseInt(form.jeunes)||0, enfants: parseInt(form.enfants)||0, offrande: parseInt(form.offrande)||0 }]); setShowModal(false); } }}>Enregistrer</Btn>
+          <Btn variant="secondary" onClick={() => { setShowModal(false); setCulteDupWarning(null); }}>Annuler</Btn>
+          <Btn onClick={() => handleSaveCulte(false)} disabled={!!culteDupWarning}>
+            {culteDupWarning ? "⚠️ Doublon — voir ci-dessus" : "Enregistrer"}
+          </Btn>
         </div>
       </Modal>
 
@@ -2583,10 +2737,11 @@ const CultesPage = ({ userRole = "pasteur" }) => {
 };
 
 // SETTINGS PAGE
-const SettingsPage = ({ seasons, setSeasons, terminology, setTerminology, carouselSlides: propSlides, setCarouselSlides: propSetSlides }) => {
-  const [churchName, setChurchName] = useState("Église Foursquare Lumière");
-  const [denomination, setDenomination] = useState("Foursquare");
-  const [pasteur, setPasteur] = useState("Jean Kouadio");
+const SettingsPage = ({ seasons, setSeasons, terminology, setTerminology, carouselSlides: propSlides, setCarouselSlides: propSetSlides, churchData, setChurchData, features, setFeatures }) => {
+  const churchName = churchData?.name || "Église Foursquare Lumière";
+  const denomination = churchData?.denomination || "Foursquare";
+  const pasteur = churchData?.pasteur || "Jean Kouadio";
+  const updateChurch = (field, value) => setChurchData?.(prev => ({ ...prev, [field]: value }));
   const [saved, setSaved] = useState(false);
   const ss = seasons || []; const setS = setSeasons || (() => {});
   const tm = terminology || { departments: "Départements", committees: "Comités & Services" }; const setT = setTerminology || (() => {});
@@ -2623,13 +2778,13 @@ const SettingsPage = ({ seasons, setSeasons, terminology, setTerminology, carous
             <Church size={18} color="#0d9488" /> Informations de l'église
           </h3>
           <FormField label="Nom de l'église" required>
-            <input style={inputStyle} value={churchName} onChange={e => setChurchName(e.target.value)} />
+            <input style={inputStyle} value={churchName} onChange={e => updateChurch("name", e.target.value)} />
           </FormField>
           <FormField label="Dénomination">
-            <input style={inputStyle} value={denomination} onChange={e => setDenomination(e.target.value)} />
+            <input style={inputStyle} value={denomination} onChange={e => updateChurch("denomination", e.target.value)} />
           </FormField>
           <FormField label="Pasteur principal">
-            <input style={inputStyle} value={pasteur} onChange={e => setPasteur(e.target.value)} />
+            <input style={inputStyle} value={pasteur} onChange={e => updateChurch("pasteur", e.target.value)} />
           </FormField>
           <Btn onClick={() => { setSaved(true); setTimeout(() => setSaved(false), 2000); }}>
             {saved ? "✓ Enregistré" : "Enregistrer"}
@@ -2643,10 +2798,16 @@ const SettingsPage = ({ seasons, setSeasons, terminology, setTerminology, carous
           <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 16px" }}>Adaptez les noms des modules selon les appellations utilisées dans votre église.</p>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
             <FormField label="Nom pour 'Départements'">
-              <input style={inputStyle} value={tm.departments} onChange={e => setT(prev => ({...prev, departments: e.target.value}))} placeholder="Ex: Départements, Ministères, Commissions..." />
+              <input style={inputStyle} value={tm.departments} onChange={e => setT(prev => ({...prev, departments: e.target.value}))} placeholder="Ex: Ministères, Commissions..." />
             </FormField>
             <FormField label="Nom pour 'Comités & Services'">
               <input style={inputStyle} value={tm.committees} onChange={e => setT(prev => ({...prev, committees: e.target.value}))} placeholder="Ex: Comités, Services, Équipes..." />
+            </FormField>
+            <FormField label="Nom pour 'Groupes'">
+              <input style={inputStyle} value={tm.groups || "Groupes"} onChange={e => setT(prev => ({...prev, groups: e.target.value}))} placeholder="Ex: Groupes, Cellules, Fraternités..." />
+            </FormField>
+            <FormField label="Nom pour 'Familles'">
+              <input style={inputStyle} value={tm.families || "Familles"} onChange={e => setT(prev => ({...prev, families: e.target.value}))} placeholder="Ex: Familles, Foyers, Maisons..." />
             </FormField>
           </div>
           <p style={{ margin: "8px 0 0", fontSize: 11, color: "#94a3b8" }}>Ces noms apparaîtront dans la sidebar et les pages correspondantes.</p>
@@ -2754,12 +2915,27 @@ const SettingsPage = ({ seasons, setSeasons, terminology, setTerminology, carous
           <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 20px", display: "flex", alignItems: "center", gap: 8 }}>
             <CreditCard size={18} color="#8b5cf6" /> Abonnement
           </h3>
-          <div style={{ padding: 16, background: "#f0fdfa", borderRadius: 12, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <div>
-              <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>Plan Pro</p>
-              <p style={{ margin: "2px 0 0", fontSize: 12, color: "#64748b" }}>Renouvelé le 01/04/2026 · 25 000 F/mois</p>
+          <div style={{ padding: 16, background: "#f0fdfa", borderRadius: 12, border: "1px solid #0d948830", marginBottom: 12 }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>🚀 Plan Growth</p>
+                <p style={{ margin: "2px 0 0", fontSize: 12, color: "#64748b" }}>Renouvelé le 01/05/2026 · 15 000 F/mois</p>
+                <p style={{ margin: "4px 0 0", fontSize: 11, color: "#0d9488", fontWeight: 600 }}>Paiement via Orange Money · CinetPay</p>
+              </div>
+              <Badge variant="success">Actif</Badge>
             </div>
-            <Badge variant="success">Actif</Badge>
+          </div>
+          <div style={{ padding: 14, background: "#fffbeb", borderRadius: 10, border: "1px solid #fde68a", marginBottom: 12 }}>
+            <p style={{ margin: "0 0 4px", fontSize: 12, fontWeight: 700, color: "#92400e" }}>💡 Économisez 30 000 F avec le plan annuel</p>
+            <p style={{ margin: 0, fontSize: 11, color: "#a16207" }}>Passez au plan Growth annuel à 150 000 F et obtenez 2 mois offerts.</p>
+          </div>
+          <div style={{ display: "flex", gap: 8 }}>
+            <Btn variant="secondary" size="sm" onClick={() => {}}>Gérer l'abonnement →</Btn>
+            <a href="https://wa.me/2250700000000?text=Bonjour%2C%20je%20veux%20passer%20au%20plan%20annuel" target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+              <button style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 14px", borderRadius: 8, border: "none", background: "#25D366", color: "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>
+                💬 Plan annuel via WhatsApp
+              </button>
+            </a>
           </div>
         </div>
 
@@ -2767,7 +2943,43 @@ const SettingsPage = ({ seasons, setSeasons, terminology, setTerminology, carous
           <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 20px", display: "flex", alignItems: "center", gap: 8 }}>
             <Shield size={18} color="#ef4444" /> Sécurité
           </h3>
-          <Btn variant="secondary" icon={Lock}>Changer le mot de passe</Btn>
+          {(() => {
+            const [showPwd, setShowPwd] = useState(false);
+            const [pwdForm, setPwdForm] = useState({ current: "", next: "", confirm: "" });
+            const [pwdMsg, setPwdMsg] = useState(null);
+            const handlePwd = () => {
+              if (!pwdForm.current) { setPwdMsg({ type: "error", text: "Saisissez votre mot de passe actuel." }); return; }
+              if (pwdForm.next.length < 8) { setPwdMsg({ type: "error", text: "Le nouveau mot de passe doit faire au moins 8 caractères." }); return; }
+              if (pwdForm.next !== pwdForm.confirm) { setPwdMsg({ type: "error", text: "Les mots de passe ne correspondent pas." }); return; }
+              setPwdMsg({ type: "success", text: "✅ Mot de passe modifié avec succès !" });
+              setPwdForm({ current: "", next: "", confirm: "" });
+              setTimeout(() => { setPwdMsg(null); setShowPwd(false); }, 3000);
+            };
+            return showPwd ? (
+              <div style={{ background: "#f8fafc", borderRadius: 12, padding: 18, border: "1px solid #e2e8f0" }}>
+                <FormField label="Mot de passe actuel">
+                  <input type="password" style={inputStyle} value={pwdForm.current} onChange={e => setPwdForm(f => ({...f, current: e.target.value}))} placeholder="••••••••" />
+                </FormField>
+                <FormField label="Nouveau mot de passe">
+                  <input type="password" style={inputStyle} value={pwdForm.next} onChange={e => setPwdForm(f => ({...f, next: e.target.value}))} placeholder="Minimum 8 caractères" />
+                </FormField>
+                <FormField label="Confirmer le nouveau mot de passe">
+                  <input type="password" style={inputStyle} value={pwdForm.confirm} onChange={e => setPwdForm(f => ({...f, confirm: e.target.value}))} placeholder="••••••••" />
+                </FormField>
+                {pwdMsg && (
+                  <div style={{ padding: "9px 14px", borderRadius: 10, marginBottom: 12, fontSize: 12, fontWeight: 600, background: pwdMsg.type === "error" ? "#fef2f2" : "#f0fdfa", color: pwdMsg.type === "error" ? "#dc2626" : "#0d9488", border: `1px solid ${pwdMsg.type === "error" ? "#fecaca" : "#0d948830"}` }}>
+                    {pwdMsg.text}
+                  </div>
+                )}
+                <div style={{ display: "flex", gap: 8 }}>
+                  <Btn onClick={handlePwd}>Enregistrer</Btn>
+                  <Btn variant="secondary" onClick={() => { setShowPwd(false); setPwdForm({ current: "", next: "", confirm: "" }); setPwdMsg(null); }}>Annuler</Btn>
+                </div>
+              </div>
+            ) : (
+              <Btn variant="secondary" icon={Lock} onClick={() => setShowPwd(true)}>Changer le mot de passe</Btn>
+            );
+          })()}
         </div>
 
 
@@ -2839,24 +3051,26 @@ const SettingsPage = ({ seasons, setSeasons, terminology, setTerminology, carous
           <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 16px" }}>Activez ou désactivez des fonctionnalités spécifiques</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {[
-              { key: "subdivisions", label: "Subdivisions de départements", desc: "Permet de créer des sous-groupes dans les départements (ex: Jeunesse → Ados, Jeunes Adultes)", default: false },
-              { key: "attendance", label: "Suivi des présences", desc: "Active le suivi automatique des présences dans les cultes", default: true },
-              { key: "gamification", label: "Gamification & Badges", desc: "Active le système de badges et récompenses pour l'engagement", default: true },
-              { key: "formations", label: "Parcours de formation", desc: "Active les parcours de formation personnalisés", default: true },
-              { key: "quiz", label: "Quiz & Concours", desc: "Active les quiz bibliques et le classement", default: true },
-              { key: "testimonials_media", label: "Témoignages vidéo/audio", desc: "Permet d'ajouter des liens vidéo et audio aux témoignages", default: true },
+              { key: "subdivisions", label: "Sous-entités (sous-dept, sous-groupe, sous-famille)", desc: "Permet de créer des sous-entités dans les départements, groupes et familles" },
+              { key: "gamification", label: "Gamification & Badges", desc: "Active le système de badges, XP et récompenses pour l'engagement" },
+              { key: "formations", label: "Parcours de formation", desc: "Active les parcours de formation personnalisés" },
+              { key: "quiz", label: "Quiz & Concours", desc: "Active les quiz bibliques et le classement" },
+              { key: "testimonials_media", label: "Témoignages vidéo/audio", desc: "Permet d'ajouter des liens vidéo et audio aux témoignages" },
+              { key: "visitors", label: "Module Visiteurs", desc: "Gestion des visiteurs et suivi par zone" },
+              { key: "goals", label: "Objectifs & KPIs", desc: "Suivi des objectifs chiffrés de l'église" },
+              { key: "cells", label: "Cellules & Annexes", desc: "Gestion des cellules, annexes et églises filles" },
             ].map(feat => {
-              const [on, setOn] = useState(feat.default);
+              const on = features?.[feat.key] !== false; // default true unless explicitly false
               return (
-                <div key={feat.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", background: "#f8fafc", borderRadius: 10 }}>
+                <div key={feat.key} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", background: on ? "#f0fdfa" : "#f8fafc", borderRadius: 10, border: `1px solid ${on ? "#0d948820" : "#f1f5f9"}`, transition: "all 0.2s" }}>
                   <div style={{ flex: 1 }}>
-                    <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{feat.label}</p>
+                    <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: on ? "#0f172a" : "#94a3b8" }}>{feat.label}</p>
                     <p style={{ margin: "2px 0 0", fontSize: 11, color: "#94a3b8" }}>{feat.desc}</p>
                   </div>
-                  <div onClick={() => setOn(!on)} style={{
+                  <div onClick={() => setFeatures?.(prev => ({ ...prev, [feat.key]: !on }))} style={{
                     width: 44, height: 24, borderRadius: 12, padding: 3, cursor: "pointer", transition: "all 0.2s",
                     background: on ? "#0d9488" : "#e2e8f0", display: "flex", alignItems: "center",
-                    justifyContent: on ? "flex-end" : "flex-start"
+                    justifyContent: on ? "flex-end" : "flex-start", flexShrink: 0,
                   }}>
                     <div style={{ width: 18, height: 18, borderRadius: "50%", background: "#fff", boxShadow: "0 1px 3px rgba(0,0,0,0.15)" }} />
                   </div>
@@ -3228,717 +3442,433 @@ const OnboardingFlow = ({ step, setStep, churchName, onComplete }) => {
 };
 
 // ═══════════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════
+// SHARED ENTITY DETAIL — used by Families, Groups, Committees
+// ═══════════════════════════════════════════════════════
+const EntityDetail = ({ entity, onBack, setEntities, color, icon: Icon, entityType, features }) => {
+  const [tab, setTab] = useState("membres");
+  const [showAddMember, setShowAddMember] = useState(false);
+  const [newMember, setNewMember] = useState("");
+  const [showPresence, setShowPresence] = useState(false);
+  const [presForm, setPresForm] = useState({ date: new Date().toISOString().split("T")[0], type: "Réunion", members: [] });
+  const [showSubEntity, setShowSubEntity] = useState(false);
+  const [subForm, setSubForm] = useState({ name: "", description: "", leader: "" });
+  const ec = entity.color || color;
+  const allPresences = entity.presences || [];
+
+  const openPresence = () => {
+    setPresForm({ date: new Date().toISOString().split("T")[0], type: "Réunion",
+      members: (entity.members||[]).map(m => ({ name: m, status: "present" })) });
+    setShowPresence(true);
+  };
+  const savePresence = () => {
+    const rapport = { id: Date.now(), date: presForm.date, type: presForm.type, members: presForm.members };
+    setEntities(prev => prev.map(e => e.id === entity.id ? { ...e, presences: [...(e.presences||[]), rapport] } : e));
+    setShowPresence(false);
+  };
+  const addMember = () => {
+    if (!newMember.trim()) return;
+    setEntities(prev => prev.map(e => e.id === entity.id ? { ...e, members: [...(e.members||[]), newMember.trim()] } : e));
+    setNewMember(""); setShowAddMember(false);
+  };
+  const removeMember = (name) => setEntities(prev => prev.map(e => e.id === entity.id ? { ...e, members: (e.members||[]).filter(m => m !== name) } : e));
+  const addSubEntity = () => {
+    if (!subForm.name.trim()) return;
+    setEntities(prev => prev.map(e => e.id === entity.id ? { ...e, subEntities: [...(e.subEntities||[]), { ...subForm, id: Date.now(), members: [] }] } : e));
+    setSubForm({ name: "", description: "", leader: "" }); setShowSubEntity(false);
+  };
+  const getMemberStats = (mName) => {
+    const total = allPresences.length;
+    if (!total) return { pct: 0 };
+    const present = allPresences.filter(r => r.members?.find(m => m.name === mName && m.status === "present")).length;
+    return { pct: Math.round(present / total * 100) };
+  };
+
+  return (
+    <div>
+      <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 24 }}>
+        <button onClick={onBack} style={{ display: "flex", alignItems: "center", gap: 6, padding: "8px 16px", borderRadius: DS.r10, border: "1px solid #e2e8f0", background: "#fff", cursor: "pointer", fontSize: 13, fontWeight: 700, color: DS.slate600, boxShadow: DS.shadowSm }}>← Retour</button>
+        <div style={{ flex: 1 }}>
+          <h2 style={{ margin: 0, fontSize: 22, fontWeight: 800, color: DS.slate900, letterSpacing: "-0.4px" }}>{entity.name}</h2>
+          {entity.description && <p style={{ margin: 0, fontSize: 13, color: DS.slate400 }}>{entity.description}</p>}
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          {features?.subdivisions && <Btn variant="secondary" size="sm" icon={Plus} onClick={() => setShowSubEntity(true)}>Sous-{entityType}</Btn>}
+          <Btn size="sm" icon={UserCheck} onClick={openPresence}>Appel nominal</Btn>
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
+        {[
+          { label: "Membres", value: (entity.members||[]).length, color: ec },
+          { label: "Réunions", value: allPresences.length, color: "#8b5cf6" },
+          { label: "Présence moy.", value: allPresences.length ? (() => { const all = allPresences.flatMap(r => r.members||[]); return Math.round(all.filter(m => m.status==="present").length/(all.length||1)*100)+"%"; })() : "—", color: "#10b981" },
+          { label: "Responsable", value: null, leader: entity.leader, color: "#f59e0b" },
+        ].map((s, i) => (
+          <div key={i} style={{ background: "#fff", borderRadius: DS.r12, padding: "16px 18px", border: `1px solid ${DS.slate100}`, boxShadow: DS.shadowSm, borderTop: `3px solid ${s.color}` }}>
+            <p style={{ margin: "0 0 4px", fontSize: 10, fontWeight: 700, color: DS.slate400, textTransform: "uppercase", letterSpacing: "0.8px" }}>{s.label}</p>
+            {s.leader !== undefined ? (
+              <div style={{ display: "flex", alignItems: "center", gap: 6, marginTop: 6 }}>
+                <Avatar name={s.leader} size={24} color={ec} />
+                <span style={{ fontSize: 12, fontWeight: 700, color: DS.slate900 }}>{s.leader || "—"}</span>
+              </div>
+            ) : <p style={{ margin: 0, fontSize: 24, fontWeight: 900, color: s.color }}>{s.value}</p>}
+          </div>
+        ))}
+      </div>
+
+      <TabBar tabs={[
+        { key: "membres", label: "👥 Membres" },
+        { key: "presences", label: `📋 Présences (${allPresences.length})` },
+        ...(features?.subdivisions ? [{ key: "sub", label: `🔗 Sous-${entityType}s` }] : []),
+      ]} active={tab} onChange={setTab} />
+
+      {tab === "membres" && (
+        <div style={{ background: "#fff", borderRadius: DS.r16, border: `1px solid ${DS.slate100}`, overflow: "hidden", boxShadow: DS.shadowSm }}>
+          <div style={{ padding: "14px 20px", borderBottom: `1px solid ${DS.slate100}`, display: "flex", justifyContent: "space-between" }}>
+            <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: DS.slate900 }}>Membres ({(entity.members||[]).length})</h3>
+            <Btn size="sm" icon={Plus} onClick={() => setShowAddMember(true)}>Ajouter</Btn>
+          </div>
+          {showAddMember && (
+            <div style={{ padding: "12px 20px", background: DS.slate50, borderBottom: `1px solid ${DS.slate100}`, display: "flex", gap: 8 }}>
+              <input style={{ ...inputStyle, flex: 1 }} value={newMember} onChange={e => setNewMember(e.target.value)} placeholder="Nom du membre..." autoFocus onKeyDown={e => e.key === "Enter" && addMember()} />
+              <Btn size="sm" onClick={addMember}>Ajouter</Btn>
+              <Btn size="sm" variant="secondary" onClick={() => setShowAddMember(false)}>Annuler</Btn>
+            </div>
+          )}
+          {(entity.members||[]).map((mName, i) => {
+            const stats = getMemberStats(mName);
+            const fullM = MOCK_MEMBERS.find(m => `${m.first_name} ${m.last_name}` === mName || m.first_name === mName);
+            const lvl = fullM?.quiz_points ? Math.floor(fullM.quiz_points/300)+1 : 1;
+            const lvlNames = ["","Semeur","Berger","Serviteur","Leader","Apôtre"];
+            const pColor = stats.pct >= 80 ? "#10b981" : stats.pct >= 50 ? "#f59e0b" : "#ef4444";
+            return (
+              <div key={i} style={{ padding: "12px 20px", borderBottom: `1px solid ${DS.slate50}`, display: "flex", alignItems: "center", gap: 12 }}>
+                <Avatar name={mName} size={34} color={ec} />
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: DS.slate900 }}>{mName}</p>
+                  <p style={{ margin: 0, fontSize: 10, color: DS.slate400 }}>Niv. {lvl} {lvlNames[Math.min(lvl,5)]}</p>
+                </div>
+                {allPresences.length > 0 && (
+                  <div style={{ textAlign: "center", minWidth: 60 }}>
+                    <div style={{ fontSize: 13, fontWeight: 900, color: pColor }}>{stats.pct}%</div>
+                    <div style={{ width: 48, height: 3, background: DS.slate100, borderRadius: 2, margin: "3px auto 0", overflow: "hidden" }}>
+                      <div style={{ width: `${stats.pct}%`, height: "100%", background: pColor }} />
+                    </div>
+                    <div style={{ fontSize: 9, color: DS.slate400, marginTop: 2 }}>présence</div>
+                  </div>
+                )}
+                <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => removeMember(mName)} />
+              </div>
+            );
+          })}
+          {!(entity.members||[]).length && <EmptyState icon={Users} title="Aucun membre" description="Ajoutez des membres" />}
+        </div>
+      )}
+
+      {tab === "presences" && (
+        <div>
+          {!allPresences.length && <EmptyState icon={Activity} title="Aucune réunion" description="Faites un appel nominal pour commencer" />}
+          {allPresences.map(r => (
+            <div key={r.id} style={{ background: "#fff", borderRadius: DS.r12, padding: 18, border: `1px solid ${DS.slate100}`, marginBottom: 10, boxShadow: DS.shadowSm }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                <div>
+                  <h4 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: DS.slate900 }}>{r.type}</h4>
+                  <p style={{ margin: 0, fontSize: 11, color: DS.slate400 }}>{new Date(r.date).toLocaleDateString("fr", { weekday:"long", day:"numeric", month:"long", year:"numeric" })}</p>
+                </div>
+                <div style={{ display: "flex", gap: 6 }}>
+                  <span style={{ padding: "3px 10px", background: "#f0fdf4", color: "#10b981", borderRadius: 8, fontSize: 11, fontWeight: 700 }}>✓ {r.members?.filter(m => m.status==="present").length}</span>
+                  <span style={{ padding: "3px 10px", background: "#fffbeb", color: "#d97706", borderRadius: 8, fontSize: 11, fontWeight: 700 }}>~ {r.members?.filter(m => m.status==="absent_justifie").length}</span>
+                  <span style={{ padding: "3px 10px", background: "#fef2f2", color: "#ef4444", borderRadius: 8, fontSize: 11, fontWeight: 700 }}>✗ {r.members?.filter(m => m.status==="absent").length}</span>
+                </div>
+              </div>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 5 }}>
+                {r.members?.map((m, j) => (
+                  <span key={j} style={{ padding: "2px 9px", borderRadius: 20, fontSize: 11, fontWeight: 600,
+                    background: m.status==="present" ? "#f0fdf4" : m.status==="absent_justifie" ? "#fffbeb" : "#fef2f2",
+                    color: m.status==="present" ? "#10b981" : m.status==="absent_justifie" ? "#d97706" : "#ef4444",
+                    border: `1px solid ${m.status==="present" ? "#bbf7d0" : m.status==="absent_justifie" ? "#fde68a" : "#fecaca"}`,
+                  }}>{m.status==="present" ? "✓" : m.status==="absent_justifie" ? "~" : "✗"} {m.name}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {tab === "sub" && features?.subdivisions && (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(240px, 1fr))", gap: 12 }}>
+          {(entity.subEntities||[]).map((se, i) => (
+            <div key={se.id} style={{ background: "#fff", borderRadius: DS.r12, padding: 18, border: `1px solid ${DS.slate100}`, boxShadow: DS.shadowSm, borderLeft: `4px solid ${ec}` }}>
+              <h4 style={{ margin: "0 0 6px", fontSize: 14, fontWeight: 800, color: DS.slate900 }}>{se.name}</h4>
+              {se.description && <p style={{ margin: "0 0 8px", fontSize: 11, color: DS.slate400 }}>{se.description}</p>}
+              {se.leader && <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: DS.slate600 }}><Avatar name={se.leader} size={20} color={ec} /> {se.leader}</div>}
+            </div>
+          ))}
+          {!(entity.subEntities||[]).length && <EmptyState icon={Plus} title="Aucun sous-groupe" description="Créez votre premier sous-groupe" />}
+        </div>
+      )}
+
+      <Modal open={showPresence} onClose={() => setShowPresence(false)} title={`Appel nominal — ${entity.name}`} width={540}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginBottom: 14 }}>
+          <FormField label="Date"><input style={inputStyle} type="date" value={presForm.date} onChange={e => setPresForm(f => ({...f, date: e.target.value}))} /></FormField>
+          <FormField label="Type"><input style={inputStyle} value={presForm.type} onChange={e => setPresForm(f => ({...f, type: e.target.value}))} /></FormField>
+        </div>
+        <div style={{ display: "flex", gap: 8, marginBottom: 12 }}>
+          <Btn size="sm" variant="secondary" onClick={() => setPresForm(f => ({...f, members: f.members.map(m => ({...m, status: "present"}))})}>Tout présent</Btn>
+        </div>
+        <div style={{ display: "flex", flexDirection: "column", gap: 6, maxHeight: 320, overflowY: "auto", marginBottom: 14 }}>
+          {presForm.members.map((m, i) => (
+            <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "10px 14px", borderRadius: 10,
+              background: m.status==="present" ? "#f0fdf4" : m.status==="absent_justifie" ? "#fffbeb" : "#fef2f2",
+              border: `1px solid ${m.status==="present" ? "#bbf7d0" : m.status==="absent_justifie" ? "#fde68a" : "#fecaca"}` }}>
+              <Avatar name={m.name} size={30} color={ec} />
+              <span style={{ flex: 1, fontSize: 13, fontWeight: 600, color: DS.slate900 }}>{m.name}</span>
+              <select value={m.status} onChange={e => setPresForm(f => ({...f, members: f.members.map((x,j) => j===i ? {...x, status: e.target.value} : x)}))}
+                style={{ ...selectStyle, width: 170, fontSize: 12 }}>
+                <option value="present">✓ Présent</option>
+                <option value="absent_justifie">~ Absent justifié</option>
+                <option value="absent">✗ Absent</option>
+              </select>
+            </div>
+          ))}
+        </div>
+        <div style={{ display: "flex", gap: 8, justifyContent: "flex-end" }}>
+          <Btn variant="secondary" onClick={() => setShowPresence(false)}>Annuler</Btn>
+          <Btn onClick={savePresence}>Valider</Btn>
+        </div>
+      </Modal>
+
+      <Modal open={showSubEntity} onClose={() => setShowSubEntity(false)} title={`Nouveau sous-${entityType}`}>
+        <FormField label="Nom *"><input style={inputStyle} value={subForm.name} onChange={e => setSubForm(f => ({...f, name: e.target.value}))} /></FormField>
+        <FormField label="Description"><input style={inputStyle} value={subForm.description} onChange={e => setSubForm(f => ({...f, description: e.target.value}))} /></FormField>
+        <FormField label="Responsable"><input style={inputStyle} value={subForm.leader} onChange={e => setSubForm(f => ({...f, leader: e.target.value}))} /></FormField>
+        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
+          <Btn variant="secondary" onClick={() => setShowSubEntity(false)}>Annuler</Btn>
+          <Btn onClick={addSubEntity}>Créer</Btn>
+        </div>
+      </Modal>
+    </div>
+  );
+};
+
+// ═══════════════════════════════════════════════════════
 // FAMILIES PAGE
 // ═══════════════════════════════════════════════════════
-const FamiliesPage = () => {
+// FAMILIES PAGE
+const FamiliesPage = ({ features }) => {
+  const famColors = ["#ec4899","#8b5cf6","#f59e0b","#10b981","#3b82f6","#ef4444"];
   const [families, setFamilies] = useState([
-    { id: 1, name: "Famille Kouadio", description: "Famille pastorale", members: ["Jean Kouadio", "Marie Bamba"] },
-    { id: 2, name: "Famille Yao-Koné", description: "", members: ["Paul Yao", "Esther Koné"] },
-    { id: 3, name: "Famille Tra-Diallo", description: "", members: ["David Tra", "Ruth Diallo"] },
-    { id: 4, name: "Famille Ouattara-Achi", description: "", members: ["Samuel Ouattara", "Grace Achi"] },
+    { id: 1, name: "Famille Kouadio", description: "Famille pastorale", leader: "Jean Kouadio", color: "#ec4899", members: ["Jean Kouadio", "Marie Bamba"], presences: [], subEntities: [] },
+    { id: 2, name: "Famille Yao-Koné", description: "", leader: "Paul Yao", color: "#8b5cf6", members: ["Paul Yao", "Esther Koné"], presences: [], subEntities: [] },
+    { id: 3, name: "Famille Tra-Diallo", description: "", leader: "David Tra", color: "#f59e0b", members: ["David Tra", "Ruth Diallo"], presences: [], subEntities: [] },
+    { id: 4, name: "Famille Ouattara-Achi", description: "", leader: "Samuel Ouattara", color: "#10b981", members: ["Samuel Ouattara", "Grace Achi"], presences: [], subEntities: [] },
   ]);
   const [showModal, setShowModal] = useState(false);
   const [selectedFam, setSelectedFam] = useState(null);
-  const [form, setForm] = useState({ name: "", description: "" });
-  return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <div><h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Familles</h2>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{families.length} familles</p></div>
-        <Btn icon={Plus} onClick={() => { setForm({ name: "", description: "" }); setShowModal(true); }}>Nouvelle famille</Btn>
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: selectedFam ? "1fr 1fr" : "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {families.map(f => (
-            <div key={f.id} onClick={() => setSelectedFam(f)} style={{ background: "#fff", borderRadius: 14, padding: 20, border: selectedFam?.id === f.id ? "2px solid #ec4899" : "1px solid #f1f5f9", cursor: "pointer" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <div style={{ width: 40, height: 40, borderRadius: 12, background: "#ec489915", display: "flex", alignItems: "center", justifyContent: "center" }}><Heart size={18} color="#ec4899" /></div>
-                  <div>
-                    <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{f.name}</h3>
-                    <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{f.members.length} membres{f.description ? ` · ${f.description}` : ""}</p>
-                  </div>
-                </div>
-                <Btn variant="ghost" size="sm" icon={Trash2} onClick={(e) => { e.stopPropagation(); if(confirm(`Supprimer ${f.name} ?`)) setFamilies(prev => prev.filter(x => x.id !== f.id)); }} />
-              </div>
-            </div>
-          ))}
-        </div>
-        {selectedFam && (
-          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 24 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedFam.name}</h3>
-              <Btn variant="ghost" size="sm" icon={X} onClick={() => setSelectedFam(null)} />
-            </div>
-            {selectedFam.description && <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 16px" }}>{selectedFam.description}</p>}
-            <h4 style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 700 }}>Membres ({selectedFam.members.length})</h4>
-            {selectedFam.members.map((m, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 0", borderBottom: "1px solid #f8fafc" }}>
-                <Avatar name={m} size={28} color={i === 0 ? "#0d9488" : "#ec4899"} />
-                <span style={{ fontSize: 13, color: "#0f172a" }}>{m}</span>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouvelle famille">
-        <FormField label="Nom" required><input style={inputStyle} value={form.name} onChange={e => setForm({...form, name: e.target.value})} /></FormField>
-        <FormField label="Description"><textarea style={{...inputStyle, minHeight: 60, resize: "vertical"}} value={form.description} onChange={e => setForm({...form, description: e.target.value})} /></FormField>
-        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
-          <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
-          <Btn onClick={() => { if(form.name) { setFamilies(prev => [...prev, { ...form, id: Date.now(), members: [] }]); setShowModal(false); } }}>Créer</Btn>
-        </div>
-      </Modal>
-    </div>
-  );
-};
-
-// ═══════════════════════════════════════════════════════
-// GROUPS PAGE
-// ═══════════════════════════════════════════════════════
-const GroupsPage = () => {
-  const [groups, setGroups] = useState([
-    { id: 1, name: "Groupe Alpha", description: "Croissance spirituelle", leader: "Jean Kouadio", members: ["David Tra", "Grace Achi", "Paul Yao"], members_count: 15 },
-    { id: 2, name: "Groupe Béthel", description: "Prière et partage", leader: "Marie Bamba", members: ["Sarah Touré", "Ruth Diallo"], members_count: 12 },
-    { id: 3, name: "Groupe Cana", description: "Groupe de couples", leader: "Samuel Ouattara", members: ["Moïse Dembélé", "Esther Koné"], members_count: 18 },
-  ]);
-  const [showModal, setShowModal] = useState(false);
-  const [selectedGroup, setSelectedGroup] = useState(null);
   const [form, setForm] = useState({ name: "", description: "", leader: "" });
-  return (
-    <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <div><h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Groupes</h2>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{groups.length} groupes actifs</p></div>
-        <Btn icon={Plus} onClick={() => { setForm({ name: "", description: "", leader: "" }); setShowModal(true); }}>Nouveau groupe</Btn>
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: selectedGroup ? "1fr 1fr" : "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {groups.map(g => (
-            <div key={g.id} onClick={() => setSelectedGroup(g)} style={{ background: "#fff", borderRadius: 14, padding: 20, border: selectedGroup?.id === g.id ? "2px solid #3b82f6" : "1px solid #f1f5f9", cursor: "pointer" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                  <div style={{ width: 42, height: 42, borderRadius: 12, background: "#3b82f615", display: "flex", alignItems: "center", justifyContent: "center" }}><UsersRound size={20} color="#3b82f6" /></div>
-                  <div>
-                    <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{g.name}</h3>
-                    <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{g.description} · {g.members_count} membres</p>
-                  </div>
-                </div>
-                <div style={{ display: "flex", gap: 4 }}>
-                  <Btn variant="ghost" size="sm" icon={Trash2} onClick={(e) => { e.stopPropagation(); if(confirm(`Supprimer ${g.name} ?`)) setGroups(prev => prev.filter(x => x.id !== g.id)); }} />
-                </div>
-              </div>
-              <div style={{ padding: "8px 0 0", fontSize: 12, color: "#64748b", display: "flex", alignItems: "center", gap: 6 }}>
-                <Avatar name={g.leader} size={20} color="#3b82f6" />Responsable : {g.leader}
-              </div>
-            </div>
-          ))}
-        </div>
-        {selectedGroup && (
-          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 24 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedGroup.name}</h3>
-              <Btn variant="ghost" size="sm" icon={X} onClick={() => setSelectedGroup(null)} />
-            </div>
-            <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 16px" }}>Responsable : {selectedGroup.leader} · {selectedGroup.members_count} membres</p>
-            <h4 style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Membres du groupe</h4>
-            {(selectedGroup.members||[]).map((m, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #f8fafc" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <Avatar name={m} size={28} color="#3b82f6" />
-                  <span style={{ fontSize: 13, color: "#0f172a", cursor: "pointer" }}>{m}</span>
-                </div>
-                <Badge variant="success">Actif</Badge>
-              </div>
-            ))}
-          </div>
-        )}
-      </div>
-      <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouveau groupe">
-        <FormField label="Nom" required><input style={inputStyle} value={form.name} onChange={e => setForm({...form, name: e.target.value})} /></FormField>
-        <FormField label="Description"><input style={inputStyle} value={form.description} onChange={e => setForm({...form, description: e.target.value})} /></FormField>
-        <FormField label="Responsable"><input style={inputStyle} value={form.leader} onChange={e => setForm({...form, leader: e.target.value})} /></FormField>
-        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
-          <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
-          <Btn onClick={() => { if(form.name) { setGroups(prev => [...prev, { ...form, id: Date.now(), members_count: 0, members: [] }]); setShowModal(false); } }}>Créer</Btn>
-        </div>
-      </Modal>
-    </div>
-  );
-};
+  const [search, setSearch] = useState("");
 
-// ═══════════════════════════════════════════════════════
-// ANNEXES (Cells/Structure) PAGE — with separate Cellules tab
-const AnnexesPage = () => {
-  const [mainTab, setMainTab] = useState("cellules");
-  const [tab, setTab] = useState("carte");
-  const [cells, setCells] = useState(MOCK_CELLS);
-  const [units, setUnits] = useState([
-    { id: 4, name: "Annexe Bouaké", type: "Annexe", address: "Bouaké, Centre", leader: "Daniel Konan", members_count: 45, lat: 7.694, lng: -5.030, finances: { entrees: 350000, sorties: 120000 }, presences: [] },
-    { id: 5, name: "Église fille Yamoussoukro", type: "Église fille", address: "Yamoussoukro", leader: "Moïse Dembélé", members_count: 60, lat: 6.827, lng: -5.276, finances: { entrees: 520000, sorties: 180000 }, presences: [] },
-  ]);
-  const [unitTypes, setUnitTypes] = useState(["Annexe", "Église fille", "Point de prière"]);
-  const [showModal, setShowModal] = useState(false);
-  const [showCellModal, setShowCellModal] = useState(false);
-  const [showTypeModal, setShowTypeModal] = useState(false);
-  const [selectedUnit, setSelectedUnit] = useState(null);
-  const [selectedCell, setSelectedCell] = useState(null);
-  const [newType, setNewType] = useState("");
-  const [form, setForm] = useState({ name: "", type: "Annexe", address: "", leader: "" });
-  const [cellForm, setCellForm] = useState({ name: "", quartier: "", leader: "", day: "Mardi", time: "19h00" });
-  const [showCellPresenceModal, setShowCellPresenceModal] = useState(false);
-  const [presenceForm, setPresenceForm] = useState({ present: "", absent: "" });
-  const [showPresenceModal, setShowPresenceModal] = useState(false);
-
-  const typeColors = { "Annexe": "#3b82f6", "Église fille": "#8b5cf6", "Point de prière": "#f59e0b" };
-  const cellColor = "#0d9488";
-  const days = ["Lundi", "Mardi", "Mercredi", "Jeudi", "Vendredi", "Samedi", "Dimanche"];
-
-  const totalCellMembers = cells.reduce((s, c) => s + c.members_count, 0);
-  const totalMembers = units.reduce((s, u) => s + u.members_count, 0);
-  const totalEntrees = units.reduce((s, u) => s + u.finances.entrees, 0);
-  const totalSorties = units.reduce((s, u) => s + u.finances.sorties, 0);
-
-  const moveCell = (idx, dir) => {
-    const arr = [...cells];
-    const swapIdx = idx + dir;
-    if (swapIdx < 0 || swapIdx >= arr.length) return;
-    [arr[idx], arr[swapIdx]] = [arr[swapIdx], arr[idx]];
-    setCells(arr);
-  };
-  const moveUnit = (idx, dir) => {
-    const arr = [...units];
-    const swapIdx = idx + dir;
-    if (swapIdx < 0 || swapIdx >= arr.length) return;
-    [arr[idx], arr[swapIdx]] = [arr[swapIdx], arr[idx]];
-    setUnits(arr);
-  };
+  if (selectedFam) {
+    const current = families.find(f => f.id === selectedFam.id) || selectedFam;
+    return <EntityDetail entity={current} onBack={() => setSelectedFam(null)} setEntities={setFamilies} color="#ec4899" icon={Heart} entityType="famille" features={features} />;
+  }
 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
         <div>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Structure & Réseau</h2>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>
-            {cells.length} cellules ({totalCellMembers} membres) · {units.length} annexes ({totalMembers} membres)
-          </p>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: DS.slate900, margin: 0, letterSpacing: "-0.5px" }}>Familles</h2>
+          <p style={{ fontSize: 13, color: DS.slate400, margin: "4px 0 0" }}>{families.length} familles</p>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
-          {mainTab === "cellules" && <Btn icon={Plus} onClick={() => { setCellForm({ name: "", quartier: "", leader: "", day: "Mardi", time: "19h00" }); setShowCellModal(true); }}>Nouvelle cellule</Btn>}
-          {mainTab === "annexes" && (
-            <>
-              <Btn variant="secondary" size="sm" icon={Settings} onClick={() => setShowTypeModal(true)}>Types</Btn>
-              <Btn icon={Plus} onClick={() => { setForm({ name: "", type: "Annexe", address: "", leader: "" }); setShowModal(true); }}>Nouvelle annexe</Btn>
-            </>
-          )}
+          <div style={{ position: "relative" }}>
+            <Search size={14} color={DS.slate400} style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)" }} />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher..." style={{ ...inputStyle, paddingLeft: 30, width: 180 }} />
+          </div>
+          <Btn icon={Plus} onClick={() => { setForm({ name: "", description: "", leader: "" }); setShowModal(true); }}>Nouvelle famille</Btn>
         </div>
       </div>
-
-      {/* Main Tab — Cellules vs Annexes */}
-      <div style={{ display: "flex", gap: 4, marginBottom: 20 }}>
-        {[
-          { key: "cellules", label: `🏘️ Cellules (${cells.length})` },
-          { key: "annexes", label: `⛪ Annexes & Églises filles (${units.length})` },
-        ].map(t => (
-          <button key={t.key} onClick={() => setMainTab(t.key)} style={{
-            padding: "10px 20px", borderRadius: 10, border: "none", cursor: "pointer", fontSize: 13, fontWeight: mainTab === t.key ? 700 : 500,
-            background: mainTab === t.key ? "#0d9488" : "#f1f5f9",
-            color: mainTab === t.key ? "#fff" : "#64748b", transition: "all 0.2s"
-          }}>{t.label}</button>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
+        {families.filter(f => f.name.toLowerCase().includes(search.toLowerCase())).map(f => (
+          <div key={f.id} onClick={() => setSelectedFam(f)} style={{ background: "#fff", borderRadius: DS.r16, padding: 22, cursor: "pointer", border: `1px solid ${DS.slate100}`, borderTop: `4px solid ${f.color}`, boxShadow: DS.shadowSm, transition: "all 0.2s" }}
+            onMouseEnter={e => { e.currentTarget.style.boxShadow = DS.shadowMd; e.currentTarget.style.transform = "translateY(-2px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.boxShadow = DS.shadowSm; e.currentTarget.style.transform = "translateY(0)"; }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+              <div style={{ width: 42, height: 42, borderRadius: 12, background: `${f.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><Heart size={20} color={f.color} /></div>
+              <ChevronRight size={16} color={DS.slate400} />
+            </div>
+            <h3 style={{ margin: "0 0 4px", fontSize: 15, fontWeight: 800, color: DS.slate900 }}>{f.name}</h3>
+            {f.description && <p style={{ margin: "0 0 10px", fontSize: 11, color: DS.slate400 }}>{f.description}</p>}
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+              <Avatar name={f.leader} size={22} color={f.color} />
+              <span style={{ fontSize: 12, color: DS.slate600, fontWeight: 600 }}>{f.leader}</span>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <div style={{ flex: 1, textAlign: "center", padding: "6px 0", background: DS.slate50, borderRadius: 8 }}>
+                <div style={{ fontSize: 16, fontWeight: 900, color: f.color }}>{(f.members||[]).length}</div>
+                <div style={{ fontSize: 9, color: DS.slate400, textTransform: "uppercase", letterSpacing: "0.5px" }}>Membres</div>
+              </div>
+              <div style={{ flex: 1, textAlign: "center", padding: "6px 0", background: DS.slate50, borderRadius: 8 }}>
+                <div style={{ fontSize: 16, fontWeight: 900, color: "#8b5cf6" }}>{(f.presences||[]).length}</div>
+                <div style={{ fontSize: 9, color: DS.slate400, textTransform: "uppercase", letterSpacing: "0.5px" }}>Réunions</div>
+              </div>
+            </div>
+          </div>
         ))}
+        {families.length === 0 && <EmptyState icon={Heart} title="Aucune famille" description="Créez votre première famille" />}
       </div>
-
-      {/* ═══ CELLULES TAB ═══ */}
-      {mainTab === "cellules" && (
-        <div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 12, marginBottom: 20 }}>
-            <StatCard icon={Home} title="Cellules actives" value={cells.length} color="#0d9488" />
-            <StatCard icon={Users} title="Membres en cellules" value={totalCellMembers} color="#3b82f6" />
-            <StatCard icon={Activity} title="Taux moyen de présence" value={(() => {
-              const allPres = cells.flatMap(c => c.presences);
-              if (!allPres.length) return "—";
-              const moy = allPres.reduce((s, p) => s + (p.present / (p.present + p.absent || 1)), 0) / allPres.length;
-              return `${Math.round(moy * 100)}%`;
-            })()} color="#8b5cf6" />
-          </div>
-
-          <div style={{ display: "grid", gridTemplateColumns: selectedCell ? "1fr 1fr" : "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              {cells.map((c, idx) => (
-                <div key={c.id} onClick={() => setSelectedCell(c)} style={{
-                  background: "#fff", borderRadius: 14, padding: 18, border: selectedCell?.id === c.id ? `2px solid ${cellColor}` : "1px solid #f1f5f9",
-                  borderLeft: `4px solid ${cellColor}`, cursor: "pointer", transition: "all 0.15s"
-                }}>
-                  <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                    <div style={{ flex: 1 }}>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 4 }}>
-                        <span style={{ fontSize: 16 }}>🏘️</span>
-                        <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{c.name}</h3>
-                      </div>
-                      <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>
-                        {c.quartier} · {c.day} {c.time} · Resp: {c.leader}
-                      </p>
-                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginTop: 8 }}>
-                        <Badge variant="default">{c.members_count} membres</Badge>
-                        {c.presences.length > 0 && (
-                          <span style={{ fontSize: 10, color: "#0d9488", fontWeight: 600 }}>
-                            Dernière réunion: {c.presences[0].present} présents
-                          </span>
-                        )}
-                      </div>
-                    </div>
-                    <div style={{ display: "flex", flexDirection: "column", gap: 2, marginLeft: 8 }}>
-                      <button onClick={(e) => { e.stopPropagation(); moveCell(idx, -1); }} style={{ background: "#f1f5f9", border: "none", borderRadius: 4, width: 24, height: 20, cursor: "pointer", fontSize: 10 }}>▲</button>
-                      <button onClick={(e) => { e.stopPropagation(); moveCell(idx, 1); }} style={{ background: "#f1f5f9", border: "none", borderRadius: 4, width: 24, height: 20, cursor: "pointer", fontSize: 10 }}>▼</button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {selectedCell && (
-              <div style={{ background: "#fff", borderRadius: 16, border: `2px solid ${cellColor}`, padding: 24 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-                  <div>
-                    <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedCell.name}</h3>
-                    <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{selectedCell.quartier} · {selectedCell.day} à {selectedCell.time}</p>
-                  </div>
-                  <Btn variant="ghost" size="sm" icon={X} onClick={() => setSelectedCell(null)} />
-                </div>
-
-                <div style={{ padding: "10px 14px", background: "#f0fdfa", borderRadius: 10, marginBottom: 14, display: "flex", justifyContent: "space-between" }}>
-                  <div><p style={{ margin: 0, fontSize: 11, color: "#64748b" }}>Responsable</p><p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{selectedCell.leader}</p></div>
-                  <div><p style={{ margin: 0, fontSize: 11, color: "#64748b" }}>Membres</p><p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0d9488" }}>{selectedCell.members_count}</p></div>
-                </div>
-
-                <h4 style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Membres ({selectedCell.members.length})</h4>
-                {selectedCell.members.length === 0 && <p style={{ fontSize: 12, color: "#94a3b8" }}>Aucun membre assigné</p>}
-                {selectedCell.members.map((m, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, padding: "7px 0", borderBottom: "1px solid #f8fafc" }}>
-                    <Avatar name={m} size={28} color={cellColor} />
-                    <span style={{ fontSize: 13, color: "#0f172a" }}>{m}</span>
-                  </div>
-                ))}
-
-                <h4 style={{ margin: "14px 0 10px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Historique des présences</h4>
-                {selectedCell.presences.length === 0 && <p style={{ fontSize: 12, color: "#94a3b8" }}>Aucune réunion enregistrée</p>}
-                {selectedCell.presences.map((p, i) => (
-                  <div key={i} style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "8px 0", borderBottom: "1px solid #f8fafc" }}>
-                    <span style={{ fontSize: 12, color: "#475569" }}>{new Date(p.date).toLocaleDateString("fr")}</span>
-                    <div style={{ display: "flex", gap: 8 }}>
-                      <Badge variant="success">{p.present} présents</Badge>
-                      <Badge variant="danger">{p.absent} absents</Badge>
-                    </div>
-                  </div>
-                ))}
-
-                <div style={{ marginTop: 16, display: "flex", gap: 8 }}>
-                  <Btn size="sm" icon={Check} onClick={() => { setShowCellPresenceModal(true); setPresenceForm({ present: "", absent: "" }); }}>Marquer présence</Btn>
-                  <Btn size="sm" variant="danger" onClick={() => { if(confirm(`Promouvoir "${selectedCell.name}" en annexe ?`)) { setUnits(prev => [...prev, { id: Date.now(), name: selectedCell.name, type: "Annexe", address: selectedCell.quartier, leader: selectedCell.leader, members_count: selectedCell.members_count, finances: { entrees: 0, sorties: 0 }, presences: [] }]); setCells(prev => prev.filter(x => x.id !== selectedCell.id)); setSelectedCell(null); setMainTab("annexes"); } }}>↑ Promouvoir en annexe</Btn>
-                </div>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* ═══ ANNEXES TAB ═══ */}
-      {mainTab === "annexes" && (
-        <div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 12, marginBottom: 20 }}>
-            <StatCard icon={Network} title="Annexes" value={units.length} color="#3b82f6" />
-            <StatCard icon={Users} title="Membres total" value={totalMembers} color="#8b5cf6" />
-            <StatCard icon={ArrowUpCircle} title="Entrées" value={`${(totalEntrees/1000).toFixed(0)}k F`} color="#10b981" />
-            <StatCard icon={Wallet} title="Solde" value={`${((totalEntrees-totalSorties)/1000).toFixed(0)}k F`} color="#0d9488" />
-          </div>
-
-          <TabBar tabs={[{ key: "carte", label: "Cartographie" }, { key: "liste", label: "Liste & Priorité" }, { key: "finances", label: "Finances" }]} active={tab} onChange={setTab} />
-
-          {tab === "liste" && (
-            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-              <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 8px" }}>Utilisez les flèches ▲▼ pour réordonner la priorité d'affichage</p>
-              {units.map((u, idx) => (
-                <div key={u.id} style={{ background: "#fff", borderRadius: 14, padding: 18, border: "1px solid #f1f5f9", display: "flex", alignItems: "center", gap: 14 }}>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
-                    <button onClick={() => moveUnit(idx, -1)} style={{ background: "#f1f5f9", border: "none", borderRadius: 4, width: 28, height: 22, cursor: "pointer", fontSize: 11 }}>▲</button>
-                    <button onClick={() => moveUnit(idx, 1)} style={{ background: "#f1f5f9", border: "none", borderRadius: 4, width: 28, height: 22, cursor: "pointer", fontSize: 11 }}>▼</button>
-                  </div>
-                  <div style={{ width: 8, height: 40, borderRadius: 4, background: typeColors[u.type] || "#64748b", flexShrink: 0 }} />
-                  <div style={{ flex: 1 }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{u.name}</h3>
-                      <Badge variant="info">{u.type}</Badge>
-                    </div>
-                    <p style={{ margin: "2px 0 0", fontSize: 11, color: "#94a3b8" }}>{u.address} · Resp: {u.leader} · {u.members_count} membres</p>
-                  </div>
-                  <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer ${u.name} ?`)) setUnits(prev => prev.filter(x => x.id !== u.id)); }} />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {tab === "carte" && (() => {
-            // Leaflet map — rendered via useEffect, markers draggable
-            const mapRef = useRef(null);
-            const leafletMap = useRef(null);
-            const markersRef = useRef({});
-
-            // L'église mère (fixe, marqueur spécial)
-            const EGLISE_MERE = { id: "mere", name: "Église Foursquare Lumière", type: "Église mère", lat: 5.354, lng: -4.008, color: "#0d9488", icon: "⛪" };
-
-            // Tous les points sur la carte = église mère + annexes
-            const allPoints = [EGLISE_MERE, ...units];
-
-            useEffect(() => {
-              if (leafletMap.current || !mapRef.current) return;
-
-              // Inject Leaflet CSS
-              if (!document.getElementById("leaflet-css")) {
-                const link = document.createElement("link");
-                link.id = "leaflet-css";
-                link.rel = "stylesheet";
-                link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-                document.head.appendChild(link);
-              }
-
-              const initMap = () => {
-                if (typeof L === "undefined") { setTimeout(initMap, 200); return; }
-                const map = L.map(mapRef.current, { center: [6.5, -5.5], zoom: 7 });
-                L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-                  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-                }).addTo(map);
-                leafletMap.current = map;
-                renderMarkers();
-              };
-
-              const script = document.createElement("script");
-              script.src = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.js";
-              script.onload = initMap;
-              document.head.appendChild(script);
-
-              return () => { if (leafletMap.current) { leafletMap.current.remove(); leafletMap.current = null; } };
-            }, []);
-
-            const renderMarkers = () => {
-              const map = leafletMap.current;
-              if (!map || typeof L === "undefined") return;
-
-              // Clear existing markers
-              Object.values(markersRef.current).forEach(m => map.removeLayer(m));
-              markersRef.current = {};
-
-              allPoints.forEach(pt => {
-                const color = pt.id === "mere" ? "#0d9488" : (typeColors[pt.type] || "#64748b");
-                const isMere = pt.id === "mere";
-                const icon = L.divIcon({
-                  html: `<div style="
-                    width:${isMere ? 44 : 36}px; height:${isMere ? 44 : 36}px;
-                    border-radius:50%; background:${color};
-                    border:3px solid #fff; box-shadow:0 3px 12px rgba(0,0,0,0.3);
-                    display:flex; align-items:center; justify-content:center;
-                    font-size:${isMere ? 20 : 16}px; cursor:${isMere ? "default" : "grab"};
-                    position:relative;
-                  ">${isMere ? "⛪" : (pt.type === "Annexe" ? "🏛️" : pt.type === "Église fille" ? "⛪" : "🙏")}
-                  <div style="
-                    position:absolute; bottom:-22px; left:50%; transform:translateX(-50%);
-                    white-space:nowrap; background:#fff; padding:2px 7px; border-radius:5px;
-                    font-size:10px; font-weight:700; color:#0f172a;
-                    box-shadow:0 2px 6px rgba(0,0,0,0.15); pointer-events:none;
-                  ">${pt.name.length > 20 ? pt.name.slice(0,18)+"…" : pt.name}</div></div>`,
-                  className: "", iconSize: [isMere ? 44 : 36, 60], iconAnchor: [isMere ? 22 : 18, isMere ? 22 : 18],
-                });
-
-                const marker = L.marker([pt.lat, pt.lng], {
-                  icon, draggable: !isMere, autoPan: true
-                }).addTo(map);
-
-                if (!isMere) {
-                  marker.on("dragend", (e) => {
-                    const { lat, lng } = e.target.getLatLng();
-                    setUnits(prev => prev.map(u => u.id === pt.id ? { ...u, lat, lng } : u));
-                  });
-                  marker.on("click", () => setSelectedUnit(pt));
-                }
-
-                // Draw line from mère to each point
-                if (!isMere) {
-                  L.polyline([[EGLISE_MERE.lat, EGLISE_MERE.lng], [pt.lat, pt.lng]], {
-                    color, weight: 1.5, dashArray: "6 4", opacity: 0.5
-                  }).addTo(map);
-                }
-
-                markersRef.current[pt.id] = marker;
-              });
-            };
-
-            // Re-render markers when units change
-            useEffect(() => { renderMarkers(); }, [units]);
-
-            // Add point by clicking on map
-            const [addMode, setAddMode] = useState(false);
-            useEffect(() => {
-              const map = leafletMap.current;
-              if (!map) return;
-              if (addMode) {
-                map.getContainer().style.cursor = "crosshair";
-                const handler = (e) => {
-                  setForm(f => ({ ...f, lat: e.latlng.lat.toFixed(5), lng: e.latlng.lng.toFixed(5) }));
-                  setShowModal(true);
-                  setAddMode(false);
-                };
-                map.once("click", handler);
-                return () => map.off("click", handler);
-              } else {
-                map.getContainer().style.cursor = "";
-              }
-            }, [addMode]);
-
-            return (
-              <div style={{ borderRadius: 16, overflow: "hidden", border: "1px solid #f1f5f9" }}>
-                {/* Toolbar */}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", padding: "12px 16px", background: "#fff", borderBottom: "1px solid #f1f5f9" }}>
-                  <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
-                    {[
-                      { col: "#0d9488", label: "⛪ Église mère" },
-                      ...unitTypes.map(t => ({ col: typeColors[t] || "#64748b", label: t + " (" + units.filter(u => u.type === t).length + ")" }))
-                    ].map(lg => (
-                      <div key={lg.label} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, fontWeight: 600, color: lg.col, background: `${lg.col}12`, padding: "4px 10px", borderRadius: 20, border: `1px solid ${lg.col}25` }}>
-                        <div style={{ width: 7, height: 7, borderRadius: "50%", background: lg.col }} />{lg.label}
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ display: "flex", gap: 8 }}>
-                    <Btn size="sm" variant={addMode ? "primary" : "secondary"}
-                      onClick={() => setAddMode(a => !a)}>
-                      {addMode ? "🖱️ Cliquer sur la carte..." : "+ Ajouter une unité"}
-                    </Btn>
-                  </div>
-                </div>
-
-                {/* Leaflet map container */}
-                <div ref={mapRef} style={{ height: 460, width: "100%", zIndex: 0 }} />
-
-                {/* Drag hint */}
-                <div style={{ padding: "8px 16px", background: "#f8fafc", borderTop: "1px solid #f1f5f9", fontSize: 11, color: "#94a3b8", display: "flex", justifyContent: "space-between" }}>
-                  <span>🖱️ Glissez un marqueur pour changer sa position · Cliquez pour voir le détail</span>
-                  <span>{units.length} unité{units.length > 1 ? "s" : ""} · {cells.length} cellule{cells.length > 1 ? "s" : ""}</span>
-                </div>
-
-                {/* Selected unit detail */}
-                {selectedUnit && selectedUnit.id !== "mere" && (
-                  <div style={{ padding: "16px 20px", background: "#fff", borderTop: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <div style={{ width: 40, height: 40, borderRadius: 12, background: `${typeColors[selectedUnit.type] || "#64748b"}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20 }}>🏛️</div>
-                      <div>
-                        <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{selectedUnit.name}</h3>
-                        <p style={{ margin: 0, fontSize: 12, color: "#94a3b8" }}>{selectedUnit.type} · {selectedUnit.address} · Resp: {selectedUnit.leader}</p>
-                        <p style={{ margin: "2px 0 0", fontSize: 10, color: "#cbd5e1" }}>📍 {selectedUnit.lat?.toFixed ? selectedUnit.lat.toFixed(4) : selectedUnit.lat}, {selectedUnit.lng?.toFixed ? selectedUnit.lng.toFixed(4) : selectedUnit.lng}</p>
-                      </div>
-                    </div>
-                    <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
-                      <Badge variant="info">{selectedUnit.members_count} membres</Badge>
-                      <Badge variant="success">{((selectedUnit.finances.entrees - selectedUnit.finances.sorties)/1000).toFixed(0)}k F</Badge>
-                      <Btn size="sm" variant="danger" icon={Trash2} onClick={() => {
-                        if (confirm(`Supprimer ${selectedUnit.name} ?`)) {
-                          setUnits(prev => prev.filter(u => u.id !== selectedUnit.id));
-                          setSelectedUnit(null);
-                        }
-                      }}>Supprimer</Btn>
-                      <Btn variant="ghost" size="sm" icon={X} onClick={() => setSelectedUnit(null)} />
-                    </div>
-                  </div>
-                )}
-              </div>
-            );
-          })()}
-
-          {tab === "finances" && (
-            <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", overflow: "hidden" }}>
-              <table style={{ width: "100%", borderCollapse: "collapse" }}>
-                <thead><tr style={{ background: "#f8fafc" }}>
-                  {["Unité", "Type", "Entrées", "Sorties", "Solde"].map(h => (
-                    <th key={h} style={{ padding: "10px 16px", textAlign: "left", fontSize: 10, fontWeight: 700, color: "#64748b", textTransform: "uppercase" }}>{h}</th>
-                  ))}
-                </tr></thead>
-                <tbody>
-                  {units.map(u => (
-                    <tr key={u.id} style={{ borderTop: "1px solid #f1f5f9" }}>
-                      <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{u.name}</td>
-                      <td style={{ padding: "12px 16px" }}><Badge variant="info">{u.type}</Badge></td>
-                      <td style={{ padding: "12px 16px", fontSize: 12, fontWeight: 700, color: "#10b981" }}>{u.finances.entrees.toLocaleString()} F</td>
-                      <td style={{ padding: "12px 16px", fontSize: 12, fontWeight: 700, color: "#ef4444" }}>{u.finances.sorties.toLocaleString()} F</td>
-                      <td style={{ padding: "12px 16px", fontSize: 13, fontWeight: 800, color: (u.finances.entrees - u.finances.sorties) >= 0 ? "#10b981" : "#ef4444" }}>{(u.finances.entrees - u.finances.sorties).toLocaleString()} F</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
-        </div>
-      )}
-
-      {/* MODALS */}
-      <Modal open={showCellModal} onClose={() => setShowCellModal(false)} title="Nouvelle cellule">
-        <FormField label="Nom de la cellule *"><input style={inputStyle} value={cellForm.name} onChange={e => setCellForm({...cellForm, name: e.target.value})} placeholder="Ex: Cellule Riviera-Golf" /></FormField>
-        <FormField label="Quartier"><input style={inputStyle} value={cellForm.quartier} onChange={e => setCellForm({...cellForm, quartier: e.target.value})} placeholder="Ex: Riviera" /></FormField>
-        <FormField label="Responsable"><input style={inputStyle} value={cellForm.leader} onChange={e => setCellForm({...cellForm, leader: e.target.value})} /></FormField>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
-          <FormField label="Jour de réunion">
-            <select style={selectStyle} value={cellForm.day} onChange={e => setCellForm({...cellForm, day: e.target.value})}>
-              {days.map(d => <option key={d} value={d}>{d}</option>)}
-            </select>
-          </FormField>
-          <FormField label="Heure"><input style={inputStyle} value={cellForm.time} onChange={e => setCellForm({...cellForm, time: e.target.value})} placeholder="19h00" /></FormField>
-        </div>
-        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
-          <Btn variant="secondary" onClick={() => setShowCellModal(false)}>Annuler</Btn>
-          <Btn onClick={() => { if(cellForm.name) { setCells(prev => [...prev, { ...cellForm, id: Date.now(), members: [], members_count: 0, presences: [] }]); setShowCellModal(false); } }}>Créer</Btn>
-        </div>
-      </Modal>
-
-      <Modal open={showCellPresenceModal} onClose={() => setShowCellPresenceModal(false)} title={`Présence cellule — ${selectedCell?.name || ""}`}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-          <FormField label="Présents"><input style={inputStyle} type="number" value={presenceForm.present} onChange={e => setPresenceForm({...presenceForm, present: e.target.value})} /></FormField>
-          <FormField label="Absents"><input style={inputStyle} type="number" value={presenceForm.absent} onChange={e => setPresenceForm({...presenceForm, absent: e.target.value})} /></FormField>
-        </div>
-        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
-          <Btn variant="secondary" onClick={() => setShowCellPresenceModal(false)}>Annuler</Btn>
-          <Btn onClick={() => { if(selectedCell && presenceForm.present) { const updated = { ...selectedCell, presences: [{ date: new Date().toISOString().split("T")[0], present: parseInt(presenceForm.present)||0, absent: parseInt(presenceForm.absent)||0 }, ...selectedCell.presences] }; setCells(prev => prev.map(c => c.id === selectedCell.id ? updated : c)); setSelectedCell(updated); setShowCellPresenceModal(false); } }}>Enregistrer</Btn>
-        </div>
-      </Modal>
-
-      <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouvelle annexe">
+      <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouvelle famille">
         <FormField label="Nom *"><input style={inputStyle} value={form.name} onChange={e => setForm({...form, name: e.target.value})} /></FormField>
-        <FormField label="Type">
-          <select style={selectStyle} value={form.type} onChange={e => setForm({...form, type: e.target.value})}>
-            {unitTypes.map(t => <option key={t} value={t}>{t}</option>)}
-          </select>
-        </FormField>
+        <FormField label="Description"><input style={inputStyle} value={form.description} onChange={e => setForm({...form, description: e.target.value})} /></FormField>
         <FormField label="Responsable"><input style={inputStyle} value={form.leader} onChange={e => setForm({...form, leader: e.target.value})} /></FormField>
-        <FormField label="Adresse"><input style={inputStyle} value={form.address} onChange={e => setForm({...form, address: e.target.value})} /></FormField>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-          <FormField label="Latitude">
-            <input style={inputStyle} type="number" step="0.0001" value={form.lat || ""} onChange={e => setForm({...form, lat: parseFloat(e.target.value)})} placeholder="Ex: 5.354" />
-          </FormField>
-          <FormField label="Longitude">
-            <input style={inputStyle} type="number" step="0.0001" value={form.lng || ""} onChange={e => setForm({...form, lng: parseFloat(e.target.value)})} placeholder="Ex: -4.008" />
-          </FormField>
-        </div>
-        {form.lat && <p style={{ fontSize: 11, color: "#0d9488", margin: "0 0 4px" }}>📍 Position sélectionnée sur la carte</p>}
-        <FormField label="Nombre de membres"><input style={inputStyle} type="number" value={form.members_count || ""} onChange={e => setForm({...form, members_count: parseInt(e.target.value)||0})} placeholder="0" /></FormField>
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
           <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
-          <Btn onClick={() => {
-            if (!form.name) return;
-            setUnits(prev => [...prev, {
-              ...form,
-              id: Date.now(),
-              members_count: form.members_count || 0,
-              lat: parseFloat(form.lat) || 5.354 + (Math.random()-0.5)*2,
-              lng: parseFloat(form.lng) || -4.008 + (Math.random()-0.5)*2,
-              finances: { entrees: 0, sorties: 0 },
-              presences: []
-            }]);
-            setShowModal(false);
-            setForm({ name: "", type: "Annexe", address: "", leader: "" });
-          }}>Créer</Btn>
-        </div>
-      </Modal>
-
-      <Modal open={showTypeModal} onClose={() => setShowTypeModal(false)} title="Types d'unités">
-        {unitTypes.map((t, i) => (
-          <div key={i} style={{ display: "flex", justifyContent: "space-between", padding: "8px 12px", background: "#f8fafc", borderRadius: 8, marginBottom: 6 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <div style={{ width: 10, height: 10, borderRadius: "50%", background: typeColors[t] || "#64748b" }} />
-              <span style={{ fontSize: 13, fontWeight: 600 }}>{t}</span>
-            </div>
-            <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => setUnitTypes(prev => prev.filter(x => x !== t))} />
-          </div>
-        ))}
-        <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
-          <input style={{ ...inputStyle, flex: 1 }} value={newType} onChange={e => setNewType(e.target.value)} placeholder="Ex: Mission" />
-          <Btn onClick={() => { if(newType.trim()) { setUnitTypes(prev => [...prev, newType.trim()]); setNewType(""); } }}>Ajouter</Btn>
+          <Btn onClick={() => { if(form.name) { setFamilies(prev => [...prev, { ...form, id: Date.now(), members: [], presences: [], subEntities: [], color: famColors[prev.length % famColors.length] }]); setShowModal(false); } }}>Créer</Btn>
         </div>
       </Modal>
     </div>
   );
 };
 
-// ═══════════════════════════════════════════════════════
+// GROUPS PAGE
+const GroupsPage = ({ features }) => {
+  const grpColors = ["#3b82f6","#8b5cf6","#10b981","#f59e0b","#ec4899","#0d9488"];
+  const [groups, setGroups] = useState([
+    { id: 1, name: "Groupe Alpha", description: "Croissance spirituelle", leader: "Jean Kouadio", color: "#3b82f6", members: ["David Tra", "Grace Achi", "Paul Yao"], presences: [], subEntities: [] },
+    { id: 2, name: "Groupe Béthel", description: "Prière et partage", leader: "Marie Bamba", color: "#8b5cf6", members: ["Sarah Touré", "Ruth Diallo"], presences: [], subEntities: [] },
+    { id: 3, name: "Groupe Cana", description: "Groupe de couples", leader: "Samuel Ouattara", color: "#10b981", members: ["Moïse Dembélé", "Esther Koné"], presences: [], subEntities: [] },
+  ]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedGroup, setSelectedGroup] = useState(null);
+  const [form, setForm] = useState({ name: "", description: "", leader: "" });
+  const [search, setSearch] = useState("");
+
+  if (selectedGroup) {
+    const current = groups.find(g => g.id === selectedGroup.id) || selectedGroup;
+    return <EntityDetail entity={current} onBack={() => setSelectedGroup(null)} setEntities={setGroups} color="#3b82f6" icon={UsersRound} entityType="groupe" features={features} />;
+  }
+
+  return (
+    <div>
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: DS.slate900, margin: 0, letterSpacing: "-0.5px" }}>Groupes</h2>
+          <p style={{ fontSize: 13, color: DS.slate400, margin: "4px 0 0" }}>{groups.length} groupes actifs</p>
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <div style={{ position: "relative" }}>
+            <Search size={14} color={DS.slate400} style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)" }} />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher..." style={{ ...inputStyle, paddingLeft: 30, width: 180 }} />
+          </div>
+          <Btn icon={Plus} onClick={() => { setForm({ name: "", description: "", leader: "" }); setShowModal(true); }}>Nouveau groupe</Btn>
+        </div>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
+        {groups.filter(g => g.name.toLowerCase().includes(search.toLowerCase())).map(g => (
+          <div key={g.id} onClick={() => setSelectedGroup(g)} style={{ background: "#fff", borderRadius: DS.r16, padding: 22, cursor: "pointer", border: `1px solid ${DS.slate100}`, borderTop: `4px solid ${g.color}`, boxShadow: DS.shadowSm, transition: "all 0.2s" }}
+            onMouseEnter={e => { e.currentTarget.style.boxShadow = DS.shadowMd; e.currentTarget.style.transform = "translateY(-2px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.boxShadow = DS.shadowSm; e.currentTarget.style.transform = "translateY(0)"; }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+              <div style={{ width: 42, height: 42, borderRadius: 12, background: `${g.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><UsersRound size={20} color={g.color} /></div>
+              <ChevronRight size={16} color={DS.slate400} />
+            </div>
+            <h3 style={{ margin: "0 0 4px", fontSize: 15, fontWeight: 800, color: DS.slate900 }}>{g.name}</h3>
+            {g.description && <p style={{ margin: "0 0 10px", fontSize: 11, color: DS.slate400 }}>{g.description}</p>}
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+              <Avatar name={g.leader} size={22} color={g.color} />
+              <span style={{ fontSize: 12, color: DS.slate600, fontWeight: 600 }}>{g.leader}</span>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <div style={{ flex: 1, textAlign: "center", padding: "6px 0", background: DS.slate50, borderRadius: 8 }}>
+                <div style={{ fontSize: 16, fontWeight: 900, color: g.color }}>{(g.members||[]).length}</div>
+                <div style={{ fontSize: 9, color: DS.slate400, textTransform: "uppercase" }}>Membres</div>
+              </div>
+              <div style={{ flex: 1, textAlign: "center", padding: "6px 0", background: DS.slate50, borderRadius: 8 }}>
+                <div style={{ fontSize: 16, fontWeight: 900, color: "#8b5cf6" }}>{(g.presences||[]).length}</div>
+                <div style={{ fontSize: 9, color: DS.slate400, textTransform: "uppercase" }}>Réunions</div>
+              </div>
+            </div>
+          </div>
+        ))}
+        {groups.length === 0 && <EmptyState icon={UsersRound} title="Aucun groupe" description="Créez votre premier groupe" />}
+      </div>
+      <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouveau groupe">
+        <FormField label="Nom *"><input style={inputStyle} value={form.name} onChange={e => setForm({...form, name: e.target.value})} /></FormField>
+        <FormField label="Description"><input style={inputStyle} value={form.description} onChange={e => setForm({...form, description: e.target.value})} /></FormField>
+        <FormField label="Responsable"><input style={inputStyle} value={form.leader} onChange={e => setForm({...form, leader: e.target.value})} /></FormField>
+        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
+          <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
+          <Btn onClick={() => { if(form.name) { setGroups(prev => [...prev, { ...form, id: Date.now(), members: [], presences: [], subEntities: [], color: grpColors[prev.length % grpColors.length] }]); setShowModal(false); } }}>Créer</Btn>
+        </div>
+      </Modal>
+    </div>
+  );
+};
+
 // COMMITTEES PAGE
-// ═══════════════════════════════════════════════════════
-const CommitteesPage = () => {
+const CommitteesPage = ({ features }) => {
+  const comColors = ["#8b5cf6","#f59e0b","#3b82f6","#10b981","#ec4899","#0d9488"];
   const [committees, setCommittees] = useState([
-    { id: 1, name: "Comité d'organisation", description: "Organisation des événements", leader: "Esther Koné", members: ["Grace Achi", "David Tra", "Paul Yao", "Ruth Diallo"], color: "#8b5cf6" },
-    { id: 2, name: "Service d'ordre", description: "Sécurité pendant les cultes", leader: "Moïse Dembélé", members: ["Samuel Ouattara", "Daniel Konan", "Jean Kouadio"], color: "#f59e0b" },
-    { id: 3, name: "Équipe média", description: "Sonorisation, vidéo, réseaux sociaux", leader: "Daniel Konan", members: ["Sarah Touré", "Paul Yao"], color: "#3b82f6" },
-    { id: 4, name: "Secrétariat", description: "Administration et documentation", leader: "Esther Koné", members: ["Marie Bamba", "Grace Achi"], color: "#10b981" },
+    { id: 1, name: "Comité d'organisation", description: "Organisation des événements", leader: "Esther Koné", color: "#8b5cf6", members: ["Grace Achi","David Tra","Paul Yao","Ruth Diallo"], presences: [], subEntities: [] },
+    { id: 2, name: "Service d'ordre", description: "Sécurité pendant les cultes", leader: "Moïse Dembélé", color: "#f59e0b", members: ["Samuel Ouattara","Daniel Konan","Jean Kouadio"], presences: [], subEntities: [] },
+    { id: 3, name: "Équipe média", description: "Sonorisation, vidéo, réseaux sociaux", leader: "Daniel Konan", color: "#3b82f6", members: ["Sarah Touré","Paul Yao"], presences: [], subEntities: [] },
+    { id: 4, name: "Secrétariat", description: "Administration et documentation", leader: "Esther Koné", color: "#10b981", members: ["Marie Bamba","Grace Achi"], presences: [], subEntities: [] },
   ]);
   const [showModal, setShowModal] = useState(false);
   const [selectedCom, setSelectedCom] = useState(null);
   const [form, setForm] = useState({ name: "", description: "", leader: "" });
-  const comColors = ["#8b5cf6", "#f59e0b", "#3b82f6", "#10b981", "#ec4899", "#0d9488"];
+  const [search, setSearch] = useState("");
+
+  if (selectedCom) {
+    const current = committees.find(c => c.id === selectedCom.id) || selectedCom;
+    return <EntityDetail entity={current} onBack={() => setSelectedCom(null)} setEntities={setCommittees} color="#8b5cf6" icon={Briefcase} entityType="comité" features={features} />;
+  }
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <div><h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Comités & Services</h2>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{committees.length} comités</p></div>
-        <Btn icon={Plus} onClick={() => { setForm({ name: "", description: "", leader: "" }); setShowModal(true); }}>Nouveau comité</Btn>
-      </div>
-      <div style={{ display: "grid", gridTemplateColumns: selectedCom ? "1fr 1fr" : "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: 12 }}>
-          {committees.map((c, idx) => (
-            <div key={c.id} onClick={() => setSelectedCom(c)} style={{ background: "#fff", borderRadius: 14, padding: 20, border: selectedCom?.id === c.id ? `2px solid ${c.color}` : "1px solid #f1f5f9", borderLeft: `4px solid ${c.color}`, cursor: "pointer" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                  <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{c.name}</h3>
-                  <p style={{ margin: "2px 0 0", fontSize: 11, color: "#94a3b8" }}>{c.description}</p>
-                </div>
-                <div style={{ display: "flex", alignItems: "center", gap: 4 }} onClick={e => e.stopPropagation()}>
-                  <Badge variant="default">{(c.members||[]).length} membres</Badge>
-                  <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer ${c.name} ?`)) setCommittees(prev => prev.filter(x => x.id !== c.id)); }} />
-                </div>
-              </div>
-              <div style={{ padding: "8px 0 0", fontSize: 12, color: "#64748b", display: "flex", alignItems: "center", gap: 6 }}>
-                <Avatar name={c.leader} size={20} color={c.color} />Responsable : {c.leader}
-              </div>
-            </div>
-          ))}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: DS.slate900, margin: 0, letterSpacing: "-0.5px" }}>Comités & Services</h2>
+          <p style={{ fontSize: 13, color: DS.slate400, margin: "4px 0 0" }}>{committees.length} comités</p>
         </div>
-        {selectedCom && (
-          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 24 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 16 }}>
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedCom.name}</h3>
-              <Btn variant="ghost" size="sm" icon={X} onClick={() => setSelectedCom(null)} />
-            </div>
-            <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 16px" }}>{selectedCom.description} · Resp: {selectedCom.leader}</p>
-            <h4 style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Membres ({(selectedCom.members||[]).length})</h4>
-            {(selectedCom.members||[]).map((mName, i) => {
-              const fullMember = MOCK_MEMBERS.find(m => `${m.first_name} ${m.last_name}` === mName || m.first_name === mName);
-              const pct = fullMember?.presence_pct || Math.floor(60 + (i * 7) % 35);
-              const pColor = pct >= 80 ? "#10b981" : pct >= 50 ? "#f59e0b" : "#ef4444";
-              const lvl = fullMember?.quiz_points ? Math.floor(fullMember.quiz_points / 300) + 1 : 1;
-              const lvlNames = ["","Semeur","Berger","Serviteur","Leader","Apôtre"];
-              return (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 0", borderBottom: "1px solid #f8fafc" }}>
-                  <Avatar name={mName} size={30} color={selectedCom.color} />
-                  <div style={{ flex: 1 }}>
-                    <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: DS.slate900 }}>{mName}</p>
-                    <p style={{ margin: 0, fontSize: 10, color: DS.slate400 }}>Niv. {lvl} {lvlNames[Math.min(lvl, 5)]}</p>
-                  </div>
-                  <div style={{ textAlign: "right" }}>
-                    <div style={{ fontSize: 13, fontWeight: 800, color: pColor }}>{pct}%</div>
-                    <div style={{ width: 44, height: 3, background: DS.slate100, borderRadius: 2, marginTop: 3, overflow: "hidden" }}>
-                      <div style={{ width: `${pct}%`, height: "100%", background: pColor, borderRadius: 2 }} />
-                    </div>
-                    <div style={{ fontSize: 9, color: DS.slate400, marginTop: 2 }}>présence</div>
-                  </div>
-                </div>
-              );
-            })}
+        <div style={{ display: "flex", gap: 8 }}>
+          <div style={{ position: "relative" }}>
+            <Search size={14} color={DS.slate400} style={{ position: "absolute", left: 10, top: "50%", transform: "translateY(-50%)" }} />
+            <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher..." style={{ ...inputStyle, paddingLeft: 30, width: 180 }} />
           </div>
-        )}
+          <Btn icon={Plus} onClick={() => { setForm({ name: "", description: "", leader: "" }); setShowModal(true); }}>Nouveau comité</Btn>
+        </div>
+      </div>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 16 }}>
+        {committees.filter(c => c.name.toLowerCase().includes(search.toLowerCase())).map(c => (
+          <div key={c.id} onClick={() => setSelectedCom(c)} style={{ background: "#fff", borderRadius: DS.r16, padding: 22, cursor: "pointer", border: `1px solid ${DS.slate100}`, borderTop: `4px solid ${c.color}`, boxShadow: DS.shadowSm, transition: "all 0.2s" }}
+            onMouseEnter={e => { e.currentTarget.style.boxShadow = DS.shadowMd; e.currentTarget.style.transform = "translateY(-2px)"; }}
+            onMouseLeave={e => { e.currentTarget.style.boxShadow = DS.shadowSm; e.currentTarget.style.transform = "translateY(0)"; }}>
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
+              <div style={{ width: 42, height: 42, borderRadius: 12, background: `${c.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><Briefcase size={20} color={c.color} /></div>
+              <ChevronRight size={16} color={DS.slate400} />
+            </div>
+            <h3 style={{ margin: "0 0 4px", fontSize: 15, fontWeight: 800, color: DS.slate900 }}>{c.name}</h3>
+            {c.description && <p style={{ margin: "0 0 10px", fontSize: 11, color: DS.slate400 }}>{c.description}</p>}
+            <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 12 }}>
+              <Avatar name={c.leader} size={22} color={c.color} />
+              <span style={{ fontSize: 12, color: DS.slate600, fontWeight: 600 }}>{c.leader}</span>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <div style={{ flex: 1, textAlign: "center", padding: "6px 0", background: DS.slate50, borderRadius: 8 }}>
+                <div style={{ fontSize: 16, fontWeight: 900, color: c.color }}>{(c.members||[]).length}</div>
+                <div style={{ fontSize: 9, color: DS.slate400, textTransform: "uppercase" }}>Membres</div>
+              </div>
+              <div style={{ flex: 1, textAlign: "center", padding: "6px 0", background: DS.slate50, borderRadius: 8 }}>
+                <div style={{ fontSize: 16, fontWeight: 900, color: "#8b5cf6" }}>{(c.presences||[]).length}</div>
+                <div style={{ fontSize: 9, color: DS.slate400, textTransform: "uppercase" }}>Réunions</div>
+              </div>
+            </div>
+          </div>
+        ))}
+        {committees.length === 0 && <EmptyState icon={Briefcase} title="Aucun comité" description="Créez votre premier comité" />}
       </div>
       <Modal open={showModal} onClose={() => setShowModal(false)} title="Nouveau comité">
         <FormField label="Nom *"><input style={inputStyle} value={form.name} onChange={e => setForm({...form, name: e.target.value})} placeholder="Ex: Service d'ordre" /></FormField>
@@ -3946,14 +3876,13 @@ const CommitteesPage = () => {
         <FormField label="Responsable"><input style={inputStyle} value={form.leader} onChange={e => setForm({...form, leader: e.target.value})} /></FormField>
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
           <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
-          <Btn onClick={() => { if(form.name) { setCommittees(prev => [...prev, { ...form, id: Date.now(), members: [], color: comColors[prev.length % comColors.length] }]); setShowModal(false); } }}>Créer</Btn>
+          <Btn onClick={() => { if(form.name) { setCommittees(prev => [...prev, { ...form, id: Date.now(), members: [], presences: [], subEntities: [], color: comColors[prev.length % comColors.length] }]); setShowModal(false); } }}>Créer</Btn>
         </div>
       </Modal>
     </div>
   );
 };
 
-// ═══════════════════════════════════════════════════════
 // GOALS PAGE
 // ═══════════════════════════════════════════════════════
 const GoalsPage = () => {
@@ -4728,22 +4657,30 @@ const QuizPage = ({ userRole }) => {
 // ═══════════════════════════════════════════════════════
 const RoleManagementPage = () => {
   const modules = [
-    { key: "members", label: "Membres", actions: ["Voir les membres", "Créer des membres", "Modifier les membres", "Supprimer les membres"] },
-    { key: "finances", label: "Finances", actions: ["Voir les finances", "Créer des transactions", "Modifier les transactions", "Supprimer les transactions"] },
-    { key: "events", label: "Événements", actions: ["Voir les événements", "Créer des événements", "Modifier les événements", "Supprimer les événements"] },
-    { key: "cultes", label: "Cultes", actions: ["Voir les cultes", "Créer des cultes", "Modifier les cultes", "Supprimer les cultes", "Gérer les présences"] },
-    { key: "communication", label: "Communication", actions: ["Gérer le carrousel", "Envoyer des messages"] },
-    { key: "visitors", label: "Visiteurs", actions: ["Voir les visiteurs", "Créer des visiteurs", "Modifier les visiteurs"] },
-    { key: "params", label: "Paramètres", actions: ["Voir les paramètres", "Modifier les paramètres"] },
-    { key: "reports", label: "Rapports", actions: ["Voir les rapports", "Exporter les données"] },
+    { key: "members", label: "👥 Membres", actions: ["Voir les membres", "Créer des membres", "Modifier les membres", "Supprimer les membres", "Exporter les membres"] },
+    { key: "finances", label: "💰 Finances", actions: ["Voir les finances", "Voir les dîmes", "Créer des transactions", "Modifier les transactions", "Supprimer les transactions", "Exporter les finances"] },
+    { key: "events", label: "📅 Événements", actions: ["Voir les événements", "Créer des événements", "Modifier les événements", "Supprimer les événements"] },
+    { key: "cultes", label: "⛪ Cultes", actions: ["Voir les cultes", "Créer des cultes", "Modifier les cultes", "Supprimer les cultes", "Gérer les présences", "Exporter l'appel nominal"] },
+    { key: "cells", label: "🏠 Cellules", actions: ["Voir les cellules", "Créer des cellules", "Modifier sa cellule", "Marquer présences cellule", "Voir la cellule assignée"] },
+    { key: "visitors", label: "👤 Visiteurs", actions: ["Voir les visiteurs", "Créer des visiteurs", "Modifier les visiteurs", "Supprimer les visiteurs"] },
+    { key: "communication", label: "📣 Communication", actions: ["Gérer le carrousel", "Envoyer des messages", "Gérer les témoignages"] },
+    { key: "reports", label: "📊 Rapports", actions: ["Voir les rapports", "Exporter les données", "Voir les statistiques"] },
+    { key: "params", label: "⚙️ Paramètres", actions: ["Voir les paramètres", "Modifier les paramètres", "Gérer les utilisateurs", "Gérer les rôles"] },
   ];
 
+  const allPerms = (exceptions = []) => modules.reduce((acc, m) => {
+    m.actions.forEach(a => { acc[a] = !exceptions.includes(a); });
+    return acc;
+  }, {});
+
   const [roles, setRoles] = useState([
-    { id: 1, name: "Administrateur", color: "#3b82f6", permissions: modules.reduce((acc, m) => { m.actions.forEach(a => acc[a] = true); return acc; }, {}), custom: false },
-    { id: 2, name: "Trésorier", color: "#10b981", permissions: { "Voir les membres": true, "Voir les finances": true, "Créer des transactions": true, "Modifier les transactions": true, "Voir les cultes": true, "Voir les rapports": true, "Exporter les données": true }, custom: false },
-    { id: 3, name: "Secrétaire", color: "#f59e0b", permissions: { "Voir les membres": true, "Créer des membres": true, "Modifier les membres": true, "Voir les événements": true, "Créer des événements": true, "Modifier les événements": true, "Voir les visiteurs": true, "Créer des visiteurs": true, "Modifier les visiteurs": true, "Voir les paramètres": true, "Voir les rapports": true, "Exporter les données": true, "Envoyer des messages": true }, custom: false },
-    { id: 4, name: "Responsable Département", color: "#0d9488", permissions: { "Voir les membres": true, "Voir les cultes": true, "Gérer les présences": true, "Voir les rapports": true }, custom: false },
-    { id: 5, name: "Membre", color: "#64748b", permissions: { "Voir les cultes": true }, custom: false },
+    { id: 1, name: "Administrateur", color: "#3b82f6", permissions: allPerms(["Supprimer les membres", "Supprimer les transactions", "Supprimer les cultes", "Gérer les rôles"]), custom: false },
+    { id: 2, name: "Trésorier", color: "#10b981", permissions: { "Voir les membres": true, "Voir les finances": true, "Voir les dîmes": true, "Créer des transactions": true, "Modifier les transactions": true, "Voir les cultes": true, "Voir les rapports": true, "Exporter les données": true, "Exporter les finances": true, "Voir les statistiques": true }, custom: false },
+    { id: 3, name: "Secrétaire", color: "#f59e0b", permissions: { "Voir les membres": true, "Créer des membres": true, "Modifier les membres": true, "Exporter les membres": true, "Voir les événements": true, "Créer des événements": true, "Modifier les événements": true, "Voir les visiteurs": true, "Créer des visiteurs": true, "Modifier les visiteurs": true, "Voir les cultes": true, "Créer des cultes": true, "Gérer les présences": true, "Exporter l'appel nominal": true, "Voir les paramètres": true, "Voir les rapports": true, "Exporter les données": true, "Envoyer des messages": true, "Gérer les témoignages": true }, custom: false },
+    { id: 4, name: "Responsable Département", color: "#0d9488", permissions: { "Voir les membres": true, "Voir les cultes": true, "Gérer les présences": true, "Exporter l'appel nominal": true, "Voir les rapports": true, "Voir les statistiques": true }, custom: false },
+    { id: 5, name: "Responsable Cellule", color: "#ec4899", permissions: { "Voir les membres": true, "Voir les cellules": true, "Modifier sa cellule": true, "Marquer présences cellule": true, "Voir la cellule assignée": true, "Voir les événements": true }, custom: false },
+    { id: 6, name: "Adjoint Cellule", color: "#f97316", permissions: { "Voir les membres": true, "Voir la cellule assignée": true, "Marquer présences cellule": true, "Voir les événements": true }, custom: false },
+    { id: 7, name: "Membre", color: "#64748b", permissions: { "Voir les cultes": true, "Voir les événements": true }, custom: false },
   ]);
   const [selectedRole, setSelectedRole] = useState(roles[0]);
   const [showNewRole, setShowNewRole] = useState(false);
@@ -4754,15 +4691,25 @@ const RoleManagementPage = () => {
     setRoles(prev => prev.map(r => r.id === selectedRole.id ? { ...r, permissions: { ...r.permissions, [action]: !r.permissions[action] } } : r));
     setSelectedRole(prev => ({ ...prev, permissions: { ...prev.permissions, [action]: !prev.permissions[action] } }));
   };
+
+  const toggleAll = (moduleActions, val) => {
+    const update = {};
+    moduleActions.forEach(a => { update[a] = val; });
+    setRoles(prev => prev.map(r => r.id === selectedRole.id ? { ...r, permissions: { ...r.permissions, ...update } } : r));
+    setSelectedRole(prev => ({ ...prev, permissions: { ...prev.permissions, ...update } }));
+  };
+
   const activeCount = Object.values(selectedRole.permissions || {}).filter(Boolean).length;
-  const roleColors = ["#3b82f6", "#10b981", "#f59e0b", "#0d9488", "#8b5cf6", "#ec4899", "#ef4444"];
+  const totalCount = modules.reduce((s, m) => s + m.actions.length, 0);
+  const roleColors = ["#3b82f6", "#10b981", "#f59e0b", "#0d9488", "#8b5cf6", "#ec4899", "#ef4444", "#f97316"];
+  const roleIcons = { 1: "🛡️", 2: "💰", 3: "📋", 4: "🏛️", 5: "🏠", 6: "🤝", 7: "👤" };
 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
         <div>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Gestion des Rôles & Permissions</h2>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Le pasteur a accès à tout · Configurez les accès par rôle</p>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Le pasteur a accès à tout · Configurez les accès granulaires par rôle</p>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           <Btn variant="secondary" icon={Plus} onClick={() => setShowNewRole(true)}>Créer un rôle</Btn>
@@ -4773,71 +4720,108 @@ const RoleManagementPage = () => {
       <div style={{ display: "grid", gridTemplateColumns: "260px 1fr", gap: 20 }}>
         {/* Role list */}
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-          <div style={{ padding: "14px 16px", background: "#f0fdfa", borderRadius: 12, border: "2px solid #0d9488" }}>
+          <div style={{ padding: "14px 16px", background: "#f0fdfa", borderRadius: 12, border: "2px solid #8b5cf6" }}>
             <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-              <Shield size={16} color="#8b5cf6" />
+              <span style={{ fontSize: 16 }}>👑</span>
               <span style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Pasteur</span>
             </div>
-            <p style={{ margin: "4px 0 0", fontSize: 10, color: "#64748b" }}>Accès complet — non modifiable</p>
+            <p style={{ margin: "4px 0 0", fontSize: 10, color: "#64748b" }}>{totalCount}/{totalCount} permissions — non modifiable</p>
           </div>
-          {roles.map(r => (
-            <div key={r.id} onClick={() => setSelectedRole(r)} style={{
-              padding: "14px 16px", borderRadius: 12, cursor: "pointer",
-              background: selectedRole.id === r.id ? "#fff" : "#fafbfc",
-              border: selectedRole.id === r.id ? `2px solid ${r.color}` : "1px solid #f1f5f9"
-            }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <div style={{ width: 28, height: 28, borderRadius: 8, background: `${r.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><Shield size={13} color={r.color} /></div>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{r.name}</span>
+          {roles.map(r => {
+            const cnt = Object.values(r.permissions || {}).filter(Boolean).length;
+            return (
+              <div key={r.id} onClick={() => setSelectedRole(r)} style={{
+                padding: "14px 16px", borderRadius: 12, cursor: "pointer",
+                background: selectedRole.id === r.id ? "#fff" : "#fafbfc",
+                border: selectedRole.id === r.id ? `2px solid ${r.color}` : "1px solid #f1f5f9",
+                transition: "all 0.15s"
+              }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                    <div style={{ width: 30, height: 30, borderRadius: 8, background: `${r.color}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 14 }}>{roleIcons[r.id] || "🔐"}</div>
+                    <span style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{r.name}</span>
+                  </div>
+                  {r.custom && <Btn variant="ghost" size="sm" icon={Trash2} onClick={(e) => { e.stopPropagation(); if(confirm(`Supprimer le rôle ${r.name} ?`)) setRoles(prev => prev.filter(x => x.id !== r.id)); }} />}
                 </div>
-                {r.custom && <Btn variant="ghost" size="sm" icon={Trash2} onClick={(e) => { e.stopPropagation(); if(confirm(`Supprimer le rôle ${r.name} ?`)) setRoles(prev => prev.filter(x => x.id !== r.id)); }} />}
+                <div style={{ marginTop: 6, display: "flex", alignItems: "center", gap: 6 }}>
+                  <div style={{ flex: 1, height: 4, background: "#e2e8f0", borderRadius: 2 }}>
+                    <div style={{ width: `${Math.round((cnt / totalCount) * 100)}%`, height: "100%", background: r.color, borderRadius: 2, transition: "width 0.3s" }} />
+                  </div>
+                  <span style={{ fontSize: 10, color: "#94a3b8", flexShrink: 0 }}>{cnt}/{totalCount}</span>
+                </div>
               </div>
-              <p style={{ margin: "4px 0 0", fontSize: 10, color: "#94a3b8" }}>{Object.values(r.permissions || {}).filter(Boolean).length} permission(s) active(s)</p>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         {/* Permissions detail */}
         <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 28 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 24 }}>
-            <div style={{ width: 36, height: 36, borderRadius: 10, background: `${selectedRole.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}><Shield size={18} color={selectedRole.color} /></div>
-            <div>
-              <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedRole.name}</h3>
-              <p style={{ margin: 0, fontSize: 12, color: "#94a3b8" }}>{activeCount} permission(s) active(s)</p>
+          <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 24 }}>
+            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+              <div style={{ width: 38, height: 38, borderRadius: 10, background: `${selectedRole.color}15`, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 18 }}>{roleIcons[selectedRole.id] || "🔐"}</div>
+              <div>
+                <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{selectedRole.name}</h3>
+                <p style={{ margin: 0, fontSize: 12, color: "#94a3b8" }}>{activeCount}/{totalCount} permissions actives</p>
+              </div>
+            </div>
+            <div style={{ display: "flex", gap: 8 }}>
+              <Btn size="sm" variant="secondary" onClick={() => { modules.forEach(m => toggleAll(m.actions, true)); }}>Tout activer</Btn>
+              <Btn size="sm" variant="secondary" onClick={() => { modules.forEach(m => toggleAll(m.actions, false)); }}>Tout désactiver</Btn>
             </div>
           </div>
 
-          {modules.map(mod => (
-            <div key={mod.key} style={{ marginBottom: 20 }}>
-              <h4 style={{ margin: "0 0 10px", fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{mod.label}</h4>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 8 }}>
-                {mod.actions.map(action => {
-                  const checked = selectedRole.permissions?.[action] || false;
-                  return (
-                    <label key={action} onClick={() => togglePerm(action)} style={{
-                      display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", borderRadius: 8, cursor: "pointer",
-                      background: checked ? "#f0fdfa" : "#fafbfc", border: checked ? "1px solid #0d948830" : "1px solid #f1f5f9"
-                    }}>
-                      <div style={{
-                        width: 18, height: 18, borderRadius: 4, display: "flex", alignItems: "center", justifyContent: "center",
-                        background: checked ? "#0d9488" : "#fff", border: checked ? "none" : "2px solid #d1d5db"
+          <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
+            {modules.map(mod => {
+              const modActive = mod.actions.filter(a => selectedRole.permissions?.[a]).length;
+              const allActive = modActive === mod.actions.length;
+              return (
+                <div key={mod.key} style={{ padding: 16, background: "#f8fafc", borderRadius: 12 }}>
+                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+                    <h4 style={{ margin: 0, fontSize: 13, fontWeight: 800, color: "#0f172a" }}>{mod.label}</h4>
+                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                      <span style={{ fontSize: 11, color: "#94a3b8" }}>{modActive}/{mod.actions.length}</span>
+                      <label onClick={() => toggleAll(mod.actions, !allActive)} style={{
+                        display: "flex", alignItems: "center", gap: 5, cursor: "pointer", fontSize: 11, fontWeight: 600,
+                        color: allActive ? "#0d9488" : "#94a3b8"
                       }}>
-                        {checked && <Check size={12} color="#fff" />}
-                      </div>
-                      <span style={{ fontSize: 12, color: checked ? "#0f172a" : "#94a3b8", fontWeight: checked ? 600 : 400 }}>{action}</span>
-                    </label>
-                  );
-                })}
-              </div>
-            </div>
-          ))}
+                        <div style={{ width: 36, height: 20, borderRadius: 10, padding: 2, transition: "all 0.2s", background: allActive ? "#0d9488" : "#e2e8f0", display: "flex", alignItems: "center", justifyContent: allActive ? "flex-end" : "flex-start" }}>
+                          <div style={{ width: 16, height: 16, borderRadius: "50%", background: "#fff", boxShadow: "0 1px 2px rgba(0,0,0,0.15)" }} />
+                        </div>
+                        Tout
+                      </label>
+                    </div>
+                  </div>
+                  <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(200px, 1fr))", gap: 6 }}>
+                    {mod.actions.map(action => {
+                      const checked = selectedRole.permissions?.[action] || false;
+                      return (
+                        <label key={action} onClick={() => togglePerm(action)} style={{
+                          display: "flex", alignItems: "center", gap: 8, padding: "8px 12px", borderRadius: 8, cursor: "pointer",
+                          background: checked ? "#f0fdfa" : "#fff",
+                          border: checked ? "1px solid #0d948840" : "1px solid #e2e8f0",
+                          transition: "all 0.15s"
+                        }}>
+                          <div style={{
+                            width: 18, height: 18, borderRadius: 4, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center",
+                            background: checked ? "#0d9488" : "#fff", border: checked ? "none" : "2px solid #d1d5db"
+                          }}>
+                            {checked && <Check size={12} color="#fff" />}
+                          </div>
+                          <span style={{ fontSize: 12, color: checked ? "#0f172a" : "#94a3b8", fontWeight: checked ? 600 : 400 }}>{action}</span>
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </div>
 
       <Modal open={showNewRole} onClose={() => setShowNewRole(false)} title="Créer un nouveau rôle">
         <FormField label="Nom du rôle *"><input style={inputStyle} value={newRoleName} onChange={e => setNewRoleName(e.target.value)} placeholder="Ex: Responsable Jeunesse" /></FormField>
-        <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 12px" }}>Le rôle sera créé sans aucune permission. Vous pourrez les configurer ensuite.</p>
+        <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 12px" }}>Le rôle sera créé sans aucune permission. Configurez-les après création.</p>
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
           <Btn variant="secondary" onClick={() => setShowNewRole(false)}>Annuler</Btn>
           <Btn onClick={() => { if(newRoleName.trim()) { const nr = { id: Date.now(), name: newRoleName.trim(), color: roleColors[roles.length % roleColors.length], permissions: {}, custom: true }; setRoles(prev => [...prev, nr]); setSelectedRole(nr); setNewRoleName(""); setShowNewRole(false); } }}>Créer</Btn>
@@ -4851,12 +4835,34 @@ const RoleManagementPage = () => {
 // USER MANAGEMENT PAGE
 // ═══════════════════════════════════════════════════════
 const UserManagementPage = () => {
-  const [users, setUsers] = useState(MOCK_MEMBERS.filter(m => m.role !== "membre").map(m => ({ ...m, last_login: "2026-03-20" })));
+  const [users, setUsers] = useState([
+    ...MOCK_MEMBERS.filter(m => m.role !== "membre").map(m => ({ ...m, last_login: "2026-03-20", cellule_id: null })),
+    { id: 101, first_name: "Moïse", last_name: "Dembélé", gender: "M", phone: "+225 07 22 33 44", email: "moise.d@email.com", status: "actif", role: "responsable_cellule", cellule_id: 1, department: "Cocody", last_login: "2026-03-28" },
+    { id: 102, first_name: "Chantal", last_name: "Kouamé", gender: "F", phone: "+225 05 88 77 66", email: "chantal.k@email.com", status: "actif", role: "adjoint_cellule", cellule_id: 1, department: "Cocody", last_login: "2026-03-25" },
+    { id: 103, first_name: "Théodore", last_name: "Gba", gender: "M", phone: "+225 01 55 44 33", email: "theodore.g@email.com", status: "actif", role: "responsable_cellule", cellule_id: 2, department: "Yopougon", last_login: "2026-03-22" },
+  ]);
   const [churchCode, setChurchCode] = useState("EGLISE-" + Math.random().toString(36).substring(2, 8).toUpperCase());
   const [showEditModal, setShowEditModal] = useState(false);
   const [editingUser, setEditingUser] = useState(null);
-  const [editForm, setEditForm] = useState({ role: "" });
-  const allRoles = ["pasteur", "admin", "tresorier", "secretaire", "responsable_dept", "agent_service_ordre", "membre"];
+  const [editForm, setEditForm] = useState({ role: "", cellule_id: null });
+  const allRoles = [
+    { value: "pasteur", label: "Pasteur" },
+    { value: "admin", label: "Administrateur" },
+    { value: "tresorier", label: "Trésorier" },
+    { value: "secretaire", label: "Secrétaire" },
+    { value: "responsable_dept", label: "Responsable Département" },
+    { value: "responsable_cellule", label: "Responsable Cellule" },
+    { value: "adjoint_cellule", label: "Adjoint Cellule" },
+    { value: "agent_service_ordre", label: "Agent Service d'Ordre" },
+    { value: "membre", label: "Membre" },
+  ];
+  const roleIsCellule = (r) => r === "responsable_cellule" || r === "adjoint_cellule";
+  const roleColors = {
+    pasteur: "#8b5cf6", admin: "#3b82f6", tresorier: "#10b981", secretaire: "#f59e0b",
+    responsable_dept: "#0d9488", responsable_cellule: "#ec4899", adjoint_cellule: "#f97316",
+    agent_service_ordre: "#64748b", membre: "#94a3b8",
+  };
+  const roleLabels = { responsable_cellule: "Resp. Cellule", adjoint_cellule: "Adjoint Cellule" };
 
   return (
     <div>
@@ -4888,43 +4894,68 @@ const UserManagementPage = () => {
       <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", overflow: "hidden" }}>
         <table style={{ width: "100%", borderCollapse: "collapse" }}>
           <thead><tr style={{ background: "#f8fafc" }}>
-            {["Utilisateur", "Rôle", "Email", "Dernière connexion", "Actions"].map(h => (
+            {["Utilisateur", "Rôle", "Cellule affectée", "Email", "Dernière connexion", "Actions"].map(h => (
               <th key={h} style={{ padding: "12px 16px", textAlign: "left", fontSize: 11, fontWeight: 700, color: "#64748b", textTransform: "uppercase", letterSpacing: "0.5px" }}>{h}</th>
             ))}
           </tr></thead>
           <tbody>
-            {users.map(u => (
-              <tr key={u.id} style={{ borderTop: "1px solid #f1f5f9" }}>
-                <td style={{ padding: "12px 16px" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                    <Avatar name={u.first_name} size={32} color="#0d9488" />
-                    <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{u.first_name} {u.last_name}</span>
-                  </div>
-                </td>
-                <td style={{ padding: "12px 16px" }}><Badge variant="purple">{u.role}</Badge></td>
-                <td style={{ padding: "12px 16px", fontSize: 12, color: "#64748b" }}>{u.email}</td>
-                <td style={{ padding: "12px 16px", fontSize: 12, color: "#94a3b8" }}>{u.last_login}</td>
-                <td style={{ padding: "12px 16px" }}>
-                  <div style={{ display: "flex", gap: 4 }}>
-                    <Btn variant="ghost" size="sm" icon={Edit} onClick={() => { setEditingUser(u); setEditForm({ role: u.role }); setShowEditModal(true); }} />
-                    <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer l'utilisateur ${u.first_name} ${u.last_name} ?`)) setUsers(prev => prev.filter(x => x.id !== u.id)); }} />
-                  </div>
-                </td>
-              </tr>
-            ))}
+            {users.map(u => {
+              const cellule = MOCK_CELLS.find(c => c.id === u.cellule_id);
+              const rColor = roleColors[u.role] || "#64748b";
+              return (
+                <tr key={u.id} style={{ borderTop: "1px solid #f1f5f9" }}>
+                  <td style={{ padding: "12px 16px" }}>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                      <Avatar name={u.first_name} size={32} color={rColor} />
+                      <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{u.first_name} {u.last_name}</span>
+                    </div>
+                  </td>
+                  <td style={{ padding: "12px 16px" }}>
+                    <span style={{ padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600, background: `${rColor}18`, color: rColor, border: `1px solid ${rColor}30` }}>
+                      {allRoles.find(r => r.value === u.role)?.label || u.role}
+                    </span>
+                  </td>
+                  <td style={{ padding: "12px 16px", fontSize: 12, color: cellule ? "#0d9488" : "#94a3b8", fontWeight: cellule ? 600 : 400 }}>
+                    {cellule ? `🏠 ${cellule.name}` : "—"}
+                  </td>
+                  <td style={{ padding: "12px 16px", fontSize: 12, color: "#64748b" }}>{u.email}</td>
+                  <td style={{ padding: "12px 16px", fontSize: 12, color: "#94a3b8" }}>{u.last_login}</td>
+                  <td style={{ padding: "12px 16px" }}>
+                    <div style={{ display: "flex", gap: 4 }}>
+                      <Btn variant="ghost" size="sm" icon={Edit} onClick={() => { setEditingUser(u); setEditForm({ role: u.role, cellule_id: u.cellule_id || "" }); setShowEditModal(true); }} />
+                      <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer l'utilisateur ${u.first_name} ${u.last_name} ?`)) setUsers(prev => prev.filter(x => x.id !== u.id)); }} />
+                    </div>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>
 
       <Modal open={showEditModal} onClose={() => setShowEditModal(false)} title={`Modifier — ${editingUser?.first_name} ${editingUser?.last_name}`}>
         <FormField label="Rôle">
-          <select style={selectStyle} value={editForm.role} onChange={e => setEditForm({...editForm, role: e.target.value})}>
-            {allRoles.map(r => <option key={r} value={r}>{r.charAt(0).toUpperCase() + r.slice(1).replace("_", " ")}</option>)}
+          <select style={selectStyle} value={editForm.role} onChange={e => setEditForm({...editForm, role: e.target.value, cellule_id: roleIsCellule(e.target.value) ? editForm.cellule_id : null})}>
+            {allRoles.map(r => <option key={r.value} value={r.value}>{r.label}</option>)}
           </select>
         </FormField>
+        {roleIsCellule(editForm.role) && (
+          <FormField label={editForm.role === "responsable_cellule" ? "🏠 Cellule à diriger" : "🏠 Cellule (adjoint)"}>
+            <select style={selectStyle} value={editForm.cellule_id || ""} onChange={e => setEditForm({...editForm, cellule_id: e.target.value ? parseInt(e.target.value) : null})}>
+              <option value="">— Sélectionner une cellule —</option>
+              {MOCK_CELLS.map(c => <option key={c.id} value={c.id}>{c.name} ({c.quartier})</option>)}
+            </select>
+            {editForm.role === "adjoint_cellule" && (
+              <p style={{ margin: "4px 0 0", fontSize: 11, color: "#94a3b8" }}>L'adjoint assiste le responsable et le remplace en son absence.</p>
+            )}
+          </FormField>
+        )}
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
           <Btn variant="secondary" onClick={() => setShowEditModal(false)}>Annuler</Btn>
-          <Btn onClick={() => { setUsers(prev => prev.map(u => u.id === editingUser?.id ? {...u, role: editForm.role} : u)); setShowEditModal(false); }}>Enregistrer</Btn>
+          <Btn onClick={() => {
+            setUsers(prev => prev.map(u => u.id === editingUser?.id ? {...u, role: editForm.role, cellule_id: editForm.cellule_id || null} : u));
+            setShowEditModal(false);
+          }}>Enregistrer</Btn>
         </div>
       </Modal>
     </div>
@@ -4935,56 +4966,316 @@ const UserManagementPage = () => {
 // SUBSCRIPTION PAGE
 // ═══════════════════════════════════════════════════════
 const SubscriptionPage = () => {
+  const [billing, setBilling] = useState("monthly"); // "monthly" | "annual"
+  const [paying, setPaying] = useState(null); // plan en cours de paiement
+  const [payStep, setPayStep] = useState("method"); // "method" | "processing" | "done"
+  const [payMethod, setPayMethod] = useState("orange");
+
   const plans = [
-    { name: "Starter", price: "5 000", desc: "Idéal pour les petites églises", features: ["200 membres", "3 comptes staff", "Dashboard basique", "Gestion membres", "Finances de base"], current: false, color: "#64748b", icon: "🌱" },
-    { name: "Growth", price: "15 000", desc: "Pour les églises en croissance", features: ["500 membres", "10 comptes staff", "Toutes fonctionnalités", "Quiz & gamification", "Export PDF/Excel", "Support email"], current: true, color: "#0d9488", icon: "🚀", popular: true },
-    { name: "Pro", price: "25 000", desc: "Gestion complète & Intelligente", features: ["Membres illimités", "Comptes staff illimités", "Mentorat avancé", "Alertes intelligentes", "Rapports avancés", "Support prioritaire", "Cartographie"], current: false, color: "#3b82f6", icon: "⚡" },
-    { name: "Alliance", price: "50 000", desc: "Multi-sites & Dénominations", features: ["Multi-églises", "Utilisateurs illimités", "API personnalisée", "Formation dédiée", "Support WhatsApp 24/7", "Personnalisation totale", "Gestion dénomination"], current: false, color: "#8b5cf6", icon: "👑" },
+    {
+      name: "Starter", icon: "🌱", color: "#64748b", current: false,
+      desc: "Petites églises de quartier",
+      monthly: 5000, annual: 50000, // 2 mois offerts
+      savings: 10000,
+      features: [
+        "✅ 200 membres", "✅ 3 comptes staff", "✅ Dashboard & statistiques",
+        "✅ Gestion membres & finances", "✅ Agenda & cultes",
+        "✅ Support WhatsApp (Lun–Ven)", "❌ Quiz & gamification", "❌ Cellules",
+      ],
+    },
+    {
+      name: "Growth", icon: "🚀", color: "#0d9488", current: true, popular: true,
+      desc: "Églises en croissance",
+      monthly: 15000, annual: 150000,
+      savings: 30000,
+      features: [
+        "✅ 500 membres", "✅ 10 comptes staff", "✅ Toutes les fonctionnalités",
+        "✅ Quiz & gamification", "✅ Cellules de maison",
+        "✅ Notifications WhatsApp automatiques",
+        "✅ Export PDF/Excel", "✅ Support WhatsApp prioritaire",
+      ],
+    },
+    {
+      name: "Pro", icon: "⚡", color: "#3b82f6", current: false,
+      desc: "Grandes églises",
+      monthly: 25000, annual: 250000,
+      savings: 50000,
+      features: [
+        "✅ Membres illimités", "✅ Staff illimité", "✅ Toutes les fonctionnalités",
+        "✅ Rapport mensuel PDF auto", "✅ Alertes intelligentes",
+        "✅ Mode hors-ligne avancé", "✅ Cartographie zones",
+        "✅ Support WhatsApp 7j/7 · 8h–22h",
+      ],
+    },
+    {
+      name: "Dénomination", icon: "👑", color: "#8b5cf6", current: false,
+      desc: "Multi-sites & dénominations",
+      monthly: 50000, annual: 500000,
+      savings: 100000,
+      features: [
+        "✅ Multi-églises illimité", "✅ Tableau de bord dénomination",
+        "✅ Gestion centralisée", "✅ API personnalisée",
+        "✅ Formation dédiée sur site", "✅ Support WhatsApp 24h/24",
+        "✅ Personnalisation totale", "✅ Contrat annuel négociable",
+      ],
+    },
   ];
+
+  const payMethods = [
+    { id: "orange", label: "Orange Money", emoji: "🟠", color: "#ff6600" },
+    { id: "mtn", label: "MTN MoMo", emoji: "🟡", color: "#ffcc00" },
+    { id: "wave", label: "Wave", emoji: "🔵", color: "#1a86e0" },
+    { id: "moov", label: "Moov Money", emoji: "🔷", color: "#004f9f" },
+    { id: "carte", label: "Carte bancaire", emoji: "💳", color: "#64748b" },
+  ];
+
+  const currentPlan = plans.find(p => p.current);
+  const getPrice = (p) => billing === "annual" ? p.annual : p.monthly;
+  const getLabel = (p) => billing === "annual"
+    ? `${p.annual.toLocaleString()} F/an`
+    : `${p.monthly.toLocaleString()} F/mois`;
+
+  const openPayment = (plan) => {
+    if (plan.current) return;
+    setPaying(plan);
+    setPayStep("method");
+    setPayMethod("orange");
+  };
+
+  const processPayment = () => {
+    setPayStep("processing");
+    setTimeout(() => setPayStep("done"), 2800);
+  };
+
   return (
     <div>
-      <div style={{ textAlign: "center", marginBottom: 32 }}>
-        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0f172a", margin: "0 0 8px" }}>Choisissez votre plan</h2>
-        <p style={{ fontSize: 14, color: "#94a3b8", margin: 0 }}>En FCFA · 30 jours d'essai · Annulez à tout moment</p>
+      {/* Header */}
+      <div style={{ textAlign: "center", marginBottom: 28 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: "#0f172a", margin: "0 0 6px" }}>Choisissez votre plan</h2>
+        <p style={{ fontSize: 13, color: "#94a3b8", margin: "0 0 20px" }}>Paiement sécurisé via CinetPay · Orange Money, Wave, MTN, carte bancaire</p>
+
+        {/* Toggle mensuel / annuel */}
+        <div style={{ display: "inline-flex", background: "#f1f5f9", borderRadius: 12, padding: 4, gap: 4 }}>
+          {[{k:"monthly",l:"Mensuel"},{k:"annual",l:"Annuel"}].map(b => (
+            <button key={b.k} onClick={() => setBilling(b.k)} style={{
+              padding: "8px 20px", borderRadius: 9, border: "none", cursor: "pointer",
+              background: billing === b.k ? "#0d9488" : "transparent",
+              color: billing === b.k ? "#fff" : "#64748b",
+              fontSize: 13, fontWeight: 700, transition: "all 0.2s",
+            }}>{b.l}</button>
+          ))}
+        </div>
+        {billing === "annual" && (
+          <div style={{ marginTop: 10, display: "inline-block", padding: "5px 14px", background: "#f0fdfa", borderRadius: 20, fontSize: 12, fontWeight: 700, color: "#0d9488", border: "1px solid #0d948830" }}>
+            🎉 2 mois offerts sur tous les plans annuels !
+          </div>
+        )}
       </div>
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16 }}>
+
+      {/* Plans grid */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))", gap: 16, marginBottom: 32 }}>
         {plans.map(p => (
           <div key={p.name} style={{
-            background: "#fff", borderRadius: 20, padding: "32px 24px", position: "relative",
+            background: "#fff", borderRadius: 20, padding: "28px 22px", position: "relative",
             border: p.popular ? `2px solid ${p.color}` : "1px solid #f1f5f9",
-            transform: p.popular ? "scale(1.03)" : "scale(1)",
+            transform: p.popular ? "scale(1.02)" : "scale(1)",
             boxShadow: p.popular ? `0 12px 40px ${p.color}20` : "0 2px 8px rgba(0,0,0,0.03)",
-            transition: "all 0.3s"
+            transition: "all 0.25s"
           }}
-          onMouseEnter={e => { e.currentTarget.style.transform = p.popular ? "scale(1.05)" : "scale(1.02)"; e.currentTarget.style.boxShadow = `0 12px 40px ${p.color}25`; }}
-          onMouseLeave={e => { e.currentTarget.style.transform = p.popular ? "scale(1.03)" : "scale(1)"; e.currentTarget.style.boxShadow = p.popular ? `0 12px 40px ${p.color}20` : "0 2px 8px rgba(0,0,0,0.03)"; }}
+            onMouseEnter={e => { e.currentTarget.style.transform = p.popular ? "scale(1.04)" : "scale(1.01)"; e.currentTarget.style.boxShadow = `0 12px 40px ${p.color}25`; }}
+            onMouseLeave={e => { e.currentTarget.style.transform = p.popular ? "scale(1.02)" : "scale(1)"; e.currentTarget.style.boxShadow = p.popular ? `0 12px 40px ${p.color}20` : "0 2px 8px rgba(0,0,0,0.03)"; }}
           >
-            {p.popular && <div style={{ position: "absolute", top: -13, left: "50%", transform: "translateX(-50%)", background: p.color, color: "#fff", padding: "4px 16px", borderRadius: 20, fontSize: 10, fontWeight: 700, letterSpacing: "0.5px" }}>LE PLUS POPULAIRE</div>}
+            {p.popular && <div style={{ position: "absolute", top: -13, left: "50%", transform: "translateX(-50%)", background: p.color, color: "#fff", padding: "4px 16px", borderRadius: 20, fontSize: 10, fontWeight: 700, letterSpacing: "0.5px", whiteSpace: "nowrap" }}>⭐ LE PLUS CHOISI</div>}
             {p.current && <div style={{ position: "absolute", top: 12, right: 12 }}><Badge variant="success">Actuel</Badge></div>}
-            <div style={{ textAlign: "center", marginBottom: 20 }}>
-              <span style={{ fontSize: 32 }}>{p.icon}</span>
-              <h3 style={{ fontSize: 20, fontWeight: 800, color: "#0f172a", margin: "8px 0 4px" }}>{p.name}</h3>
-              <p style={{ fontSize: 12, color: "#94a3b8", margin: 0 }}>{p.desc}</p>
+
+            <div style={{ textAlign: "center", marginBottom: 16 }}>
+              <div style={{ fontSize: 36, marginBottom: 8 }}>{p.icon}</div>
+              <h3 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 3px" }}>{p.name}</h3>
+              <p style={{ fontSize: 11, color: "#94a3b8", margin: 0 }}>{p.desc}</p>
             </div>
-            <div style={{ textAlign: "center", marginBottom: 20, padding: "16px 0", borderTop: "1px solid #f1f5f9", borderBottom: "1px solid #f1f5f9" }}>
-              <span style={{ fontSize: 36, fontWeight: 900, color: p.color }}>{p.price}</span>
-              <span style={{ fontSize: 14, color: "#94a3b8" }}> F/mois</span>
-            </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: 10, marginBottom: 24 }}>
-              {p.features.map((f, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, fontSize: 13, color: "#475569" }}>
-                  <Check size={14} color={p.color} />{f}
+
+            {/* Prix */}
+            <div style={{ textAlign: "center", padding: "14px 0", borderTop: "1px solid #f1f5f9", borderBottom: "1px solid #f1f5f9", marginBottom: 16 }}>
+              <div style={{ fontSize: 32, fontWeight: 900, color: p.color, lineHeight: 1 }}>
+                {billing === "annual" ? p.annual.toLocaleString() : p.monthly.toLocaleString()}
+              </div>
+              <div style={{ fontSize: 12, color: "#94a3b8", marginTop: 2 }}>
+                F/{billing === "annual" ? "an" : "mois"}
+                {billing === "annual" && <span style={{ marginLeft: 6, color: "#10b981", fontWeight: 700 }}>(-{p.savings.toLocaleString()} F)</span>}
+              </div>
+              {billing === "annual" && (
+                <div style={{ fontSize: 10, color: "#94a3b8", marginTop: 2 }}>
+                  soit {Math.round(p.annual / 12).toLocaleString()} F/mois
                 </div>
-              ))}
+              )}
             </div>
-            <button style={{
-              width: "100%", padding: 14, borderRadius: 12, border: p.current ? "2px solid #e2e8f0" : "none",
-              background: p.current ? "#fff" : p.color, color: p.current ? "#64748b" : "#fff",
-              fontSize: 14, fontWeight: 700, cursor: "pointer", transition: "all 0.2s"
-            }}>{p.current ? "Plan actuel" : "Choisir ce plan"}</button>
+
+            {/* Features */}
+            <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 20 }}>
+              {p.features.map((f, i) => {
+                const ok = f.startsWith("✅");
+                return (
+                  <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: 6, fontSize: 12, color: ok ? "#475569" : "#cbd5e1" }}>
+                    <span style={{ flexShrink: 0, fontSize: 11 }}>{ok ? "✅" : "❌"}</span>
+                    <span>{f.slice(2)}</span>
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* CTA */}
+            {p.name === "Dénomination" ? (
+              <a href="https://wa.me/2250700000000?text=Bonjour%2C%20je%20veux%20le%20plan%20D%C3%A9nomination%20Lumen%20Church" target="_blank" rel="noopener noreferrer" style={{
+                display: "block", width: "100%", padding: 13, borderRadius: 11, textAlign: "center",
+                background: "#25D366", color: "#fff", fontSize: 13, fontWeight: 700, textDecoration: "none"
+              }}>💬 Nous contacter sur WhatsApp</a>
+            ) : (
+              <button onClick={() => openPayment(p)} style={{
+                width: "100%", padding: 13, borderRadius: 11, border: p.current ? "2px solid #e2e8f0" : "none",
+                background: p.current ? "#fff" : p.color, color: p.current ? "#64748b" : "#fff",
+                fontSize: 13, fontWeight: 700, cursor: p.current ? "default" : "pointer", transition: "all 0.2s"
+              }}>
+                {p.current ? "✓ Plan actuel" : `Passer au plan ${p.name} →`}
+              </button>
+            )}
           </div>
         ))}
       </div>
+
+      {/* Méthodes de paiement acceptées */}
+      <div style={{ background: "#fff", borderRadius: 16, padding: 22, border: "1px solid #f1f5f9", marginBottom: 20 }}>
+        <p style={{ margin: "0 0 14px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>💳 Méthodes de paiement acceptées via CinetPay</p>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: 10 }}>
+          {payMethods.map(m => (
+            <div key={m.id} style={{ display: "flex", alignItems: "center", gap: 7, padding: "8px 14px", borderRadius: 10, background: "#f8fafc", border: "1px solid #f1f5f9" }}>
+              <span style={{ fontSize: 18 }}>{m.emoji}</span>
+              <span style={{ fontSize: 12, fontWeight: 600, color: "#475569" }}>{m.label}</span>
+            </div>
+          ))}
+        </div>
+        <p style={{ margin: "12px 0 0", fontSize: 11, color: "#94a3b8" }}>
+          🔒 Paiements sécurisés · Reçu automatique par WhatsApp · Support en cas de problème : <strong style={{ color: "#25D366" }}>WhatsApp +225 07 00 00 00</strong>
+        </p>
+      </div>
+
+      {/* Tableau comparatif résumé */}
+      <div style={{ background: "#fff", borderRadius: 16, padding: 22, border: "1px solid #f1f5f9" }}>
+        <p style={{ margin: "0 0 14px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>📊 Comparaison rapide</p>
+        <div style={{ overflowX: "auto" }}>
+          <table style={{ width: "100%", borderCollapse: "collapse", fontSize: 12 }}>
+            <thead>
+              <tr style={{ background: "#f8fafc" }}>
+                {["Fonctionnalité", "Starter", "Growth", "Pro", "Dénomination"].map(h => (
+                  <th key={h} style={{ padding: "10px 12px", textAlign: h === "Fonctionnalité" ? "left" : "center", fontWeight: 700, color: "#64748b", fontSize: 11, textTransform: "uppercase" }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ["Membres", "200", "500", "Illimité", "Illimité"],
+                ["Comptes staff", "3", "10", "Illimité", "Illimité"],
+                ["Cellules de maison", "❌", "✅", "✅", "✅"],
+                ["Notifications WhatsApp", "❌", "✅", "✅", "✅"],
+                ["Quiz & gamification", "❌", "✅", "✅", "✅"],
+                ["Rapport PDF auto", "❌", "❌", "✅", "✅"],
+                ["Multi-sites", "❌", "❌", "❌", "✅"],
+                ["Support WhatsApp", "Lun–Ven", "Prioritaire", "7j/7", "24h/24"],
+              ].map((row, i) => (
+                <tr key={i} style={{ borderTop: "1px solid #f8fafc" }}>
+                  {row.map((cell, j) => (
+                    <td key={j} style={{ padding: "9px 12px", textAlign: j === 0 ? "left" : "center", color: j === 0 ? "#0f172a" : cell === "✅" ? "#10b981" : cell === "❌" ? "#cbd5e1" : "#475569", fontWeight: j === 0 ? 600 : 400 }}>
+                      {cell}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Modal paiement CinetPay */}
+      <Modal open={!!paying} onClose={() => { setPaying(null); setPayStep("method"); }} title="Paiement sécurisé — CinetPay" width={480}>
+        {payStep === "method" && paying && (
+          <div>
+            <div style={{ padding: "12px 16px", background: "#f0fdfa", borderRadius: 12, marginBottom: 20, display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+              <div>
+                <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{paying.icon} Plan {paying.name}</p>
+                <p style={{ margin: 0, fontSize: 12, color: "#64748b" }}>{getLabel(paying)}</p>
+              </div>
+              <div style={{ fontSize: 22, fontWeight: 900, color: paying.color }}>{getPrice(paying).toLocaleString()} F</div>
+            </div>
+
+            <p style={{ margin: "0 0 12px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Choisissez votre méthode de paiement</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 20 }}>
+              {payMethods.map(m => (
+                <label key={m.id} onClick={() => setPayMethod(m.id)} style={{
+                  display: "flex", alignItems: "center", gap: 12, padding: "12px 16px", borderRadius: 10, cursor: "pointer",
+                  background: payMethod === m.id ? "#f0fdfa" : "#f8fafc",
+                  border: payMethod === m.id ? `2px solid ${m.color}` : "1px solid #e2e8f0",
+                  transition: "all 0.15s"
+                }}>
+                  <span style={{ fontSize: 22 }}>{m.emoji}</span>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{m.label}</p>
+                    {m.id !== "carte" && <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>Vous recevrez un prompt de confirmation sur votre téléphone</p>}
+                  </div>
+                  <div style={{ width: 18, height: 18, borderRadius: "50%", border: `2px solid ${payMethod === m.id ? m.color : "#d1d5db"}`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    {payMethod === m.id && <div style={{ width: 10, height: 10, borderRadius: "50%", background: m.color }} />}
+                  </div>
+                </label>
+              ))}
+            </div>
+
+            {payMethod !== "carte" && (
+              <FormField label="Numéro de téléphone *">
+                <input style={inputStyle} placeholder="+225 07 00 00 00" />
+              </FormField>
+            )}
+            {payMethod === "carte" && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                <FormField label="Numéro de carte"><input style={{ ...inputStyle, gridColumn: "1/-1" }} placeholder="1234 5678 9012 3456" /></FormField>
+                <FormField label="Expiration"><input style={inputStyle} placeholder="MM/AA" /></FormField>
+                <FormField label="CVV"><input style={inputStyle} placeholder="123" /></FormField>
+              </div>
+            )}
+
+            <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 20 }}>
+              <Btn variant="secondary" onClick={() => { setPaying(null); setPayStep("method"); }}>Annuler</Btn>
+              <Btn onClick={processPayment}>
+                🔒 Payer {getPrice(paying).toLocaleString()} F
+              </Btn>
+            </div>
+            <p style={{ margin: "12px 0 0", fontSize: 10, color: "#94a3b8", textAlign: "center" }}>
+              Sécurisé par CinetPay · Reçu envoyé par WhatsApp · Aucune donnée bancaire stockée
+            </p>
+          </div>
+        )}
+
+        {payStep === "processing" && (
+          <div style={{ textAlign: "center", padding: "40px 0" }}>
+            <div style={{ fontSize: 48, marginBottom: 16, animation: "spin 1s linear infinite" }}>⏳</div>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 8px" }}>Traitement en cours...</h3>
+            <p style={{ fontSize: 13, color: "#64748b", margin: 0 }}>
+              {payMethod !== "carte" ? "Vérifiez votre téléphone et confirmez le paiement" : "Vérification de votre carte..."}
+            </p>
+          </div>
+        )}
+
+        {payStep === "done" && paying && (
+          <div style={{ textAlign: "center", padding: "32px 0" }}>
+            <div style={{ fontSize: 56, marginBottom: 16 }}>✅</div>
+            <h3 style={{ fontSize: 18, fontWeight: 800, color: "#0f172a", margin: "0 0 8px" }}>Paiement confirmé !</h3>
+            <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 6px" }}>
+              Plan <strong>{paying.name}</strong> activé · {getLabel(paying)}
+            </p>
+            <p style={{ fontSize: 12, color: "#25D366", fontWeight: 600, margin: "0 0 24px" }}>
+              📱 Reçu envoyé par WhatsApp
+            </p>
+            <Btn onClick={() => { setPaying(null); setPayStep("method"); }}>Fermer</Btn>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };
@@ -4993,94 +5284,147 @@ const SubscriptionPage = () => {
 // SUPPORT PAGE
 // ═══════════════════════════════════════════════════════
 const SupportPage = () => {
-  const [form, setForm] = useState({ sujet: "", message: "", email: "", priorite: "normale" });
+  const [form, setForm] = useState({ sujet: "", message: "", phone: "", priorite: "normale" });
   const [sent, setSent] = useState(false);
+
+  const WA_NUMBER = "2250700000000"; // À remplacer par le vrai numéro
+
+  const buildWAMessage = () => {
+    const prio = { basse: "🟢 Basse", normale: "🟡 Normale", haute: "🔴 Haute", urgente: "🆘 URGENTE" };
+    return encodeURIComponent(
+      `*[Lumen Church — Support]*\n\n` +
+      `📋 *Sujet :* ${form.sujet}\n` +
+      `🔔 *Priorité :* ${prio[form.priorite]}\n` +
+      `📞 *Téléphone :* ${form.phone}\n\n` +
+      `💬 *Description :*\n${form.message}`
+    );
+  };
+
+  const handleSend = () => {
+    if (!form.sujet || !form.message) return;
+    window.open(`https://wa.me/${WA_NUMBER}?text=${buildWAMessage()}`, "_blank");
+    setSent(true);
+  };
+
   return (
-  <div>
-    <div style={{ marginBottom: 24 }}>
-      <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Support</h2>
-      <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Besoin d'aide ? Envoyez-nous un message</p>
-    </div>
-
-    {/* Email contact card only */}
-    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24 }}>
-      <div style={{ background: "#fff", borderRadius: 16, padding: 22, border: "1px solid #f1f5f9", display: "flex", alignItems: "center", gap: 14 }}>
-        <div style={{ width: 48, height: 48, borderRadius: 14, background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-          <Mail size={22} color="#3b82f6" />
-        </div>
-        <div>
-          <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>Email</h3>
-          <p style={{ margin: "2px 0 0", fontSize: 12, color: "#3b82f6", fontWeight: 600 }}>support@lumenchurch.app</p>
-          <p style={{ margin: "2px 0 0", fontSize: 11, color: "#94a3b8" }}>Réponse sous 24h ouvrables</p>
-        </div>
+    <div>
+      <div style={{ marginBottom: 24 }}>
+        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Support</h2>
+        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Notre équipe vous répond sur WhatsApp — en français, en langue locale si besoin 🇨🇮</p>
       </div>
-      <div style={{ background: "#fff", borderRadius: 16, padding: 22, border: "1px solid #f1f5f9", display: "flex", alignItems: "center", gap: 14 }}>
-        <div style={{ width: 48, height: 48, borderRadius: 14, background: "#f0fdfa", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
-          <MessageSquare size={22} color="#0d9488" />
-        </div>
-        <div>
-          <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>Chat en direct</h3>
-          <p style={{ margin: "2px 0 0", fontSize: 12, color: "#0d9488", fontWeight: 600 }}>Disponible Lun–Ven 8h–18h</p>
-          <p style={{ margin: "2px 0 0", fontSize: 11, color: "#94a3b8" }}>Temps de réponse moyen : 2h</p>
-        </div>
+
+      {/* Canaux de contact */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, marginBottom: 24 }}>
+        {/* WhatsApp principal */}
+        <a href={`https://wa.me/${WA_NUMBER}`} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+          <div style={{ background: "#f0fdf4", borderRadius: 16, padding: 20, border: "2px solid #25D366", display: "flex", alignItems: "center", gap: 14, cursor: "pointer", transition: "all 0.2s" }}
+            onMouseEnter={e => e.currentTarget.style.background = "#dcfce7"}
+            onMouseLeave={e => e.currentTarget.style.background = "#f0fdf4"}>
+            <div style={{ width: 48, height: 48, borderRadius: 14, background: "#25D366", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 24 }}>💬</div>
+            <div>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: "#0f172a" }}>WhatsApp</h3>
+              <p style={{ margin: "2px 0 0", fontSize: 12, color: "#25D366", fontWeight: 700 }}>+225 07 00 00 00</p>
+              <p style={{ margin: "2px 0 0", fontSize: 11, color: "#64748b" }}>Lun–Sam · 7h–21h · Réponse &lt; 1h</p>
+            </div>
+          </div>
+        </a>
+
+        {/* WhatsApp urgence */}
+        <a href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("🆘 URGENT — ")}`} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+          <div style={{ background: "#fef2f2", borderRadius: 16, padding: 20, border: "1px solid #fecaca", display: "flex", alignItems: "center", gap: 14, cursor: "pointer", transition: "all 0.2s" }}
+            onMouseEnter={e => e.currentTarget.style.background = "#fee2e2"}
+            onMouseLeave={e => e.currentTarget.style.background = "#fef2f2"}>
+            <div style={{ width: 48, height: 48, borderRadius: 14, background: "#ef4444", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 24 }}>🆘</div>
+            <div>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: "#0f172a" }}>Urgence</h3>
+              <p style={{ margin: "2px 0 0", fontSize: 12, color: "#ef4444", fontWeight: 700 }}>App inaccessible</p>
+              <p style={{ margin: "2px 0 0", fontSize: 11, color: "#64748b" }}>7j/7 · 24h/24</p>
+            </div>
+          </div>
+        </a>
+
+        {/* Communauté */}
+        <a href={`https://wa.me/${WA_NUMBER}?text=${encodeURIComponent("Bonjour, je veux rejoindre la communauté Lumen Church")}`} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+          <div style={{ background: "#f5f3ff", borderRadius: 16, padding: 20, border: "1px solid #ddd6fe", display: "flex", alignItems: "center", gap: 14, cursor: "pointer", transition: "all 0.2s" }}
+            onMouseEnter={e => e.currentTarget.style.background = "#ede9fe"}
+            onMouseLeave={e => e.currentTarget.style.background = "#f5f3ff"}>
+            <div style={{ width: 48, height: 48, borderRadius: 14, background: "#8b5cf6", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0, fontSize: 24 }}>👥</div>
+            <div>
+              <h3 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: "#0f172a" }}>Communauté</h3>
+              <p style={{ margin: "2px 0 0", fontSize: 12, color: "#8b5cf6", fontWeight: 700 }}>Groupe WhatsApp</p>
+              <p style={{ margin: "2px 0 0", fontSize: 11, color: "#64748b" }}>Entraide entre pasteurs</p>
+            </div>
+          </div>
+        </a>
+      </div>
+
+      {/* Formulaire → ouvre WhatsApp */}
+      <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9", marginBottom: 20 }}>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 6px", display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: 20 }}>💬</span> Envoyer un message WhatsApp
+        </h3>
+        <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 20px" }}>Remplissez le formulaire — il ouvrira WhatsApp avec le message pré-rédigé</p>
+
+        {sent ? (
+          <div style={{ textAlign: "center", padding: "32px 0" }}>
+            <div style={{ fontSize: 48, marginBottom: 12 }}>✅</div>
+            <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 6px" }}>WhatsApp ouvert !</h3>
+            <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 20px" }}>Envoyez simplement le message depuis WhatsApp. Notre équipe répond sous 1h.</p>
+            <Btn onClick={() => { setSent(false); setForm({ sujet: "", message: "", phone: "", priorite: "normale" }); }}>Nouveau message</Btn>
+          </div>
+        ) : (
+          <>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 4 }}>
+              <FormField label="Votre numéro WhatsApp">
+                <input style={inputStyle} value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} placeholder="+225 07 00 00 00" />
+              </FormField>
+              <FormField label="Priorité">
+                <select style={selectStyle} value={form.priorite} onChange={e => setForm({...form, priorite: e.target.value})}>
+                  <option value="basse">🟢 Basse — question générale</option>
+                  <option value="normale">🟡 Normale — problème mineur</option>
+                  <option value="haute">🔴 Haute — problème bloquant</option>
+                  <option value="urgente">🆘 Urgente — site inaccessible</option>
+                </select>
+              </FormField>
+            </div>
+            <FormField label="Sujet *">
+              <input style={inputStyle} value={form.sujet} onChange={e => setForm({...form, sujet: e.target.value})} placeholder="Ex: Impossible d'ajouter un membre" />
+            </FormField>
+            <FormField label="Description *">
+              <textarea style={{...inputStyle, minHeight: 100, resize: "vertical"}} value={form.message} onChange={e => setForm({...form, message: e.target.value})} placeholder="Décrivez le problème..." />
+            </FormField>
+            <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+              <button disabled={!form.sujet || !form.message} onClick={handleSend} style={{
+                display: "flex", alignItems: "center", gap: 8, padding: "12px 22px", borderRadius: 11, border: "none",
+                background: (!form.sujet || !form.message) ? "#e2e8f0" : "#25D366",
+                color: (!form.sujet || !form.message) ? "#94a3b8" : "#fff",
+                fontSize: 14, fontWeight: 700, cursor: (!form.sujet || !form.message) ? "not-allowed" : "pointer"
+              }}>
+                <span style={{ fontSize: 18 }}>💬</span> Ouvrir WhatsApp
+              </button>
+              <span style={{ fontSize: 11, color: "#94a3b8" }}>Répond sous 1h · Lun–Sam 7h–21h</span>
+            </div>
+          </>
+        )}
+      </div>
+
+      {/* FAQ */}
+      <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9" }}>
+        <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 16px" }}>❓ Questions fréquentes</h3>
+        {[
+          { q: "Comment réinitialiser mon mot de passe ?", r: "Paramètres → Sécurité → Changer le mot de passe. Ou écrivez-nous sur WhatsApp." },
+          { q: "Comment importer des membres en masse ?", r: "Membres → bouton Excel/CSV → préparez le fichier selon le modèle → importez." },
+          { q: "L'app fonctionne-t-elle sans internet ?", r: "Oui ! Lumen Church est une PWA avec mode hors-ligne. Vos données se synchronisent automatiquement quand la connexion revient." },
+          { q: "Comment payer l'abonnement ?", r: "Orange Money, MTN MoMo, Wave, Moov ou carte bancaire via CinetPay. Aucune carte étrangère requise." },
+          { q: "Puis-je changer de plan à tout moment ?", r: "Oui, sans frais. L'upgrade est immédiat. Le downgrade prend effet au prochain renouvellement." },
+        ].map((item, i, arr) => (
+          <div key={i} style={{ padding: "13px 0", borderBottom: i < arr.length - 1 ? "1px solid #f1f5f9" : "none" }}>
+            <p style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>— {item.q}</p>
+            <p style={{ margin: 0, fontSize: 12, color: "#64748b" }}>{item.r}</p>
+          </div>
+        ))}
       </div>
     </div>
-
-    {/* Ticket form */}
-    <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9" }}>
-      <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 20px" }}>📩 Ouvrir un ticket d'assistance</h3>
-      {sent ? (
-        <div style={{ textAlign: "center", padding: "32px 0" }}>
-          <div style={{ fontSize: 48, marginBottom: 12 }}>✅</div>
-          <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 6px" }}>Message envoyé !</h3>
-          <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 20px" }}>Notre équipe vous répondra sous 24h à l'adresse indiquée.</p>
-          <Btn onClick={() => { setSent(false); setForm({ sujet: "", message: "", email: "", priorite: "normale" }); }}>Nouveau message</Btn>
-        </div>
-      ) : (
-        <>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 4 }}>
-            <FormField label="Votre email *">
-              <input style={inputStyle} type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} placeholder="votre@email.com" />
-            </FormField>
-            <FormField label="Priorité">
-              <select style={selectStyle} value={form.priorite} onChange={e => setForm({...form, priorite: e.target.value})}>
-                <option value="basse">Basse — question générale</option>
-                <option value="normale">Normale — problème mineur</option>
-                <option value="haute">Haute — problème bloquant</option>
-                <option value="urgente">Urgente — site inaccessible</option>
-              </select>
-            </FormField>
-          </div>
-          <FormField label="Sujet *">
-            <input style={inputStyle} value={form.sujet} onChange={e => setForm({...form, sujet: e.target.value})} placeholder="Ex: Impossible d'ajouter un membre" />
-          </FormField>
-          <FormField label="Description du problème *">
-            <textarea style={{...inputStyle, minHeight: 120, resize: "vertical"}} value={form.message} onChange={e => setForm({...form, message: e.target.value})} placeholder="Décrivez votre problème en détail (étapes pour reproduire, message d'erreur...)" />
-          </FormField>
-          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
-            <Btn icon={Mail} disabled={!form.sujet || !form.message || !form.email} onClick={() => setSent(true)}>Envoyer le ticket</Btn>
-            <span style={{ fontSize: 11, color: "#94a3b8" }}>Réponse sous 24h ouvrables à votre adresse email</span>
-          </div>
-        </>
-      )}
-    </div>
-
-    {/* FAQ rapide */}
-    <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9", marginTop: 16 }}>
-      <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 16px" }}>❓ Questions fréquentes</h3>
-      {[
-        { q: "Comment réinitialiser mon mot de passe ?", r: "Cliquez sur 'Mot de passe oublié' sur la page de connexion, puis suivez les instructions reçues par email." },
-        { q: "Comment importer des membres en masse ?", r: "Allez dans Membres → bouton 'Excel/CSV' → préparez votre fichier selon le modèle, puis importez-le." },
-        { q: "Puis-je utiliser Lumen Church sur mobile ?", r: "Oui ! L'application est une PWA — installez-la depuis votre navigateur mobile via 'Ajouter à l'écran d'accueil'." },
-        { q: "Comment activer la persistance des données ?", r: "Configurez Supabase dans vos variables d'environnement (VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY)." },
-      ].map((item, i) => (
-        <div key={i} style={{ padding: "14px 0", borderBottom: i < 3 ? "1px solid #f1f5f9" : "none" }}>
-          <p style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>— {item.q}</p>
-          <p style={{ margin: 0, fontSize: 12, color: "#64748b" }}>{item.r}</p>
-        </div>
-      ))}
-    </div>
-  </div>
   );
 };
 
@@ -5664,9 +6008,9 @@ const PAGES = {
   mentorships: { label: "Mentorat", icon: UsersRound, component: MentorshipsPage },
   annexes: { label: "Structure", icon: Network, component: AnnexesPage },
   departments: { label: "Départements", icon: Building2, component: DepartmentsPage },
-  committees: { label: "Comités & Services", icon: Briefcase, component: CommitteesPage },
-  families: { label: "Familles", icon: Heart, component: FamiliesPage },
-  groups: { label: "Groupes", icon: UsersRound, component: GroupsPage },
+  committees: { label: "Comités & Services", icon: Briefcase, component: null },
+  families: { label: "Familles", icon: Heart, component: null },
+  groups: { label: "Groupes", icon: UsersRound, component: null },
   quiz: { label: "Jeux & Quiz", icon: Star, component: null }, // needs userRole
   rewards: { label: "Récompenses", icon: Star, component: null }, // needs props
   agenda: { label: "Agenda", icon: Calendar, component: AgendaPage },
@@ -5691,8 +6035,12 @@ export default function App() {
   const [installPrompt, setInstallPrompt] = useState(null);
   const [showInstallBanner, setShowInstallBanner] = useState(false);
   const [userRole, setUserRole] = useState("pasteur");
-  const [terminology, setTerminology] = useState({ departments: "Départements", committees: "Comités & Services" });
+  const [terminology, setTerminology] = useState({ departments: "Départements", committees: "Comités & Services", groups: "Groupes", families: "Familles" });
   const [churchData, setChurchData] = useState({ name: "Mon Église", denomination: "", pasteur: "" });
+  const [features, setFeatures] = useState({
+    subdivisions: false, gamification: true, formations: true,
+    quiz: true, testimonials_media: true, visitors: true, goals: true, cells: true,
+  });
   const [carouselSlides, setCarouselSlides] = useState(INITIAL_CAROUSEL_SLIDES);
 
   // PWA install prompt
@@ -5751,16 +6099,17 @@ export default function App() {
     );
 
     if (absentMembers.length > 0) {
-      // Alerte immédiate le dimanche
+      // Alert stays until an action is logged for each absent member
       alerts.push({
         id: "absent-" + lastSundayDate,
         type: "attendance",
         title: `⚠️ ${absentMembers.length} membre${absentMembers.length > 1 ? "s" : ""} absent${absentMembers.length > 1 ? "s" : ""} au culte`,
-        desc: `${absentMembers.slice(0, 3).map(m => `${m.first_name} ${m.last_name}`).join(", ")}${absentMembers.length > 3 ? ` et ${absentMembers.length - 3} autre(s)` : ""} — absents le dimanche ${new Date(lastSundayDate).toLocaleDateString("fr")}`,
-        read: dayOfWeek !== 0, // Non lu si c'est dimanche, lu sinon
+        desc: `${absentMembers.slice(0, 3).map(m => `${m.first_name} ${m.last_name}`).join(", ")}${absentMembers.length > 3 ? ` et ${absentMembers.length - 3} autre(s)` : ""} — absents le dimanche ${new Date(lastSundayDate).toLocaleDateString("fr")}. ⚠️ Cette alerte restera active jusqu'à ce qu'une action soit enregistrée pour chaque membre concerné.`,
+        read: false,
         date: lastSundayDate,
         priority: "high",
         members: absentMembers.map(m => m.id),
+        persistent: true, // ne disparaît pas à la fermeture
       });
     }
 
@@ -5809,9 +6158,40 @@ export default function App() {
   };
 
   const [alerts, setAlerts] = useState(generateAlerts);
+  const [resolvedAlertMembers, setResolvedAlertMembers] = useState({}); // { alertId: Set<memberId> }
   const markAlertRead = (id) => setAlerts(prev => prev.map(a => a.id === id ? { ...a, read: true } : a));
-  const markAllRead = () => setAlerts(prev => prev.map(a => ({ ...a, read: true })));
+  const markAllRead = () => setAlerts(prev => prev.map(a => a.persistent ? a : { ...a, read: true }));
+
+  // Résoudre un membre dans une alerte persistante (action enregistrée)
+  const resolveAlertMember = (alertId, memberId) => {
+    setResolvedAlertMembers(prev => {
+      const set = new Set(prev[alertId] || []);
+      set.add(memberId);
+      const newState = { ...prev, [alertId]: set };
+      // Si tous les membres sont résolus → supprimer l'alerte persistante
+      const alert = alerts.find(a => a.id === alertId);
+      if (alert?.members && [...set].length >= alert.members.length) {
+        setAlerts(p => p.filter(a => a.id !== alertId));
+      }
+      return newState;
+    });
+  };
   const [showAlerts, setShowAlerts] = useState(false);
+  const [bellShaking, setBellShaking] = useState(false);
+  // Shake bell every 30s if unread alerts exist
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (alerts.some(a => !a.read)) {
+        setBellShaking(true);
+        setTimeout(() => setBellShaking(false), 900);
+      }
+    }, 30000);
+    // Shake immediately on mount if unread
+    if (alerts.some(a => !a.read)) {
+      setTimeout(() => { setBellShaking(true); setTimeout(() => setBellShaking(false), 900); }, 2000);
+    }
+    return () => clearInterval(interval);
+  }, [alerts]);
   const [achievements, setAchievements] = useState([
     { id: 1, name: "Premier pas", desc: "Créer votre compte", done: true, icon: "🎯", xp: 50 },
     { id: 2, name: "Bienvenue", desc: "Compléter l'onboarding", done: true, icon: "🏠", xp: 100 },
@@ -5887,7 +6267,16 @@ export default function App() {
   };
 
   const allowedPages = ROLE_PAGES[userRole] || ROLE_PAGES.membre;
-  const filteredPages = Object.fromEntries(Object.entries(PAGES).filter(([k]) => allowedPages.includes(k)));
+  // Also hide pages for disabled features
+  const featurePageMap = { quiz: "quiz", rewards: "rewards", visitors: "visitors", goals: "goals", cells: "annexes", formations: "mentoring" };
+  const filteredPages = Object.fromEntries(
+    Object.entries(PAGES).filter(([k]) => {
+      if (!allowedPages.includes(k)) return false;
+      const featKey = Object.entries(featurePageMap).find(([,v]) => v === k)?.[0];
+      if (featKey && features?.[featKey] === false) return false;
+      return true;
+    })
+  );
   const unreadAlerts = alerts.filter(a => !a.read).length;
 
   // ═══ LOGIN ═══
@@ -5940,7 +6329,7 @@ export default function App() {
   const CurrentPage = page === "landing" 
     ? () => <LandingAdminPage landingData={landingData} setLandingData={setLandingData} />
     : page === "settings"
-    ? () => <SettingsPage seasons={seasons} setSeasons={setSeasons} terminology={terminology} setTerminology={setTerminology} carouselSlides={carouselSlides} setCarouselSlides={setCarouselSlides} />
+    ? () => <SettingsPage seasons={seasons} setSeasons={setSeasons} terminology={terminology} setTerminology={setTerminology} carouselSlides={carouselSlides} setCarouselSlides={setCarouselSlides} churchData={churchData} setChurchData={setChurchData} features={features} setFeatures={setFeatures} />
     : page === "rewards"
     ? () => <RewardsPage achievements={achievements} xp={xp} level={level} />
     : page === "quiz"
@@ -5950,7 +6339,13 @@ export default function App() {
     : page === "cultes"
     ? () => <CultesPage userRole={userRole} />
     : page === "members"
-    ? () => <MembersPage userRole={userRole} churchName={churchData.name} />
+    ? () => <MembersPage userRole={userRole} churchName={churchData.name} setAlerts={setAlerts} />
+    : page === "families"
+    ? () => <FamiliesPage features={features} />
+    : page === "groups"
+    ? () => <GroupsPage features={features} />
+    : page === "committees"
+    ? () => <CommitteesPage features={features} />
     : page === "dashboard"
     ? () => <DashboardPage onNavigate={setPage} carouselSlides={carouselSlides} />
     : PAGES[page]?.component || DashboardPage;
@@ -5987,6 +6382,19 @@ export default function App() {
           from { opacity:0; transform:translateX(-10px); }
           to   { opacity:1; transform:translateX(0); }
         }
+        @keyframes bellShake {
+          0%,100% { transform: rotate(0deg); }
+          10%,30%  { transform: rotate(-14deg); }
+          20%,40%  { transform: rotate(14deg); }
+          50%      { transform: rotate(-8deg); }
+          60%      { transform: rotate(8deg); }
+          70%      { transform: rotate(-4deg); }
+          80%      { transform: rotate(4deg); }
+        }
+        .bell-shake { animation: bellShake 0.8s ease-in-out; }
+        .alert-item { transition: transform 0.25s ease, opacity 0.25s ease; position: relative; overflow: hidden; }
+        .alert-item:hover .alert-delete { opacity: 1; }
+        .alert-delete { opacity: 0; transition: opacity 0.2s; }
         .nav-btn-item { transition: all 0.18s cubic-bezier(0.4,0,0.2,1); }
         .nav-btn-item:hover { background: rgba(255,255,255,0.09) !important; color: rgba(255,255,255,0.9) !important; }
         .page-content { animation: fadeIn 0.28s ease; }
@@ -6024,9 +6432,13 @@ export default function App() {
             }}>
               <Church size={21} color="#fff" />
             </div>
-            <div>
-              <h1 style={{ fontSize: 16, fontWeight: 800, color: "#fff", margin: 0, letterSpacing: "-0.3px" }}>Lumen Church</h1>
-              <p style={{ fontSize: 10, color: "rgba(255,255,255,0.38)", margin: 0, letterSpacing: "0.8px", textTransform: "uppercase" }}>SaaS · Gestion d'Église</p>
+            <div style={{ minWidth: 0 }}>
+              <h1 style={{ fontSize: 15, fontWeight: 800, color: "#fff", margin: 0, letterSpacing: "-0.3px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", maxWidth: 160 }}>
+                {churchData.name || "Mon Église"}
+              </h1>
+              <p style={{ fontSize: 10, color: "rgba(255,255,255,0.38)", margin: 0, letterSpacing: "0.8px", textTransform: "uppercase" }}>
+                {churchData.denomination || "Lumen Church"}
+              </p>
             </div>
           </div>
         </div>
@@ -6167,54 +6579,127 @@ export default function App() {
           </div>
           <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <div style={{ position: "relative" }}>
-              <div onClick={() => setShowAlerts(!showAlerts)} style={{ cursor: "pointer", position: "relative", padding: 6 }}>
-                <Bell size={18} color="#64748b" />
+              <div
+                className={bellShaking ? "bell-shake" : ""}
+                onClick={() => {
+                  setShowAlerts(v => {
+                    if (!v) {
+                      // Mark all as read when opening (like email)
+                      setTimeout(() => markAllRead(), 3000);
+                    }
+                    return !v;
+                  });
+                }}
+                style={{ cursor: "pointer", position: "relative", padding: 6, display: "flex", alignItems: "center", justifyContent: "center" }}
+              >
+                <Bell size={18} color={unreadAlerts > 0 ? "#0d9488" : "#64748b"} />
                 {unreadAlerts > 0 && (
                   <div style={{
-                    position: "absolute", top: 2, right: 2, width: 15, height: 15, borderRadius: "50%",
+                    position: "absolute", top: 1, right: 1, minWidth: 17, height: 17, borderRadius: 9,
                     background: "linear-gradient(135deg, #ef4444, #dc2626)", color: "#fff",
                     fontSize: 9, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center",
-                    boxShadow: "0 2px 6px rgba(239,68,68,0.5)",
+                    boxShadow: "0 2px 8px rgba(239,68,68,0.5)", padding: "0 4px",
                   }}>{unreadAlerts}</div>
                 )}
               </div>
               {showAlerts && (
                 <div style={{
-                  position: "absolute", top: "calc(100% + 12px)", right: -80, width: 400, maxHeight: 480,
-                  background: "#fff", borderRadius: 18, boxShadow: "0 16px 48px rgba(0,0,0,0.12)",
+                  position: "absolute", top: "calc(100% + 12px)", right: -100, width: 420, maxHeight: 500,
+                  background: "#fff", borderRadius: 20, boxShadow: "0 20px 60px rgba(0,0,0,0.14)",
                   border: "1px solid #f1f5f9", overflow: "hidden", zIndex: 100,
                   animation: "fadeIn 0.18s ease",
                 }}>
-                  <div style={{ padding: "14px 20px", borderBottom: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <h4 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: "#0f172a" }}>Alertes <span style={{ color: "#94a3b8", fontWeight: 500 }}>({unreadAlerts} non lues)</span></h4>
-                    <span style={{ fontSize: 11, color: "#0d9488", cursor: "pointer", fontWeight: 700 }} onClick={markAllRead}>Tout marquer lu</span>
+                  <div style={{ padding: "16px 20px", borderBottom: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#fafbfc" }}>
+                    <div>
+                      <h4 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: "#0f172a" }}>Alertes</h4>
+                      <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{unreadAlerts > 0 ? `${unreadAlerts} non lue${unreadAlerts > 1 ? "s" : ""}` : "Tout lu"}{alerts.some(a => a.persistent) ? " · ⚠️ Persistantes actives" : ""}</p>
+                    </div>
+                    <div style={{ display: "flex", gap: 8 }}>
+                      <span onClick={markAllRead} style={{ fontSize: 11, color: "#0d9488", cursor: "pointer", fontWeight: 700, padding: "4px 10px", background: "#f0fdfa", borderRadius: 8 }}>Tout lire</span>
+                      <span onClick={() => setAlerts(prev => prev.filter(a => a.persistent))} style={{ fontSize: 11, color: "#ef4444", cursor: "pointer", fontWeight: 700, padding: "4px 10px", background: "#fef2f2", borderRadius: 8 }}>Effacer non-persistantes</span>
+                    </div>
                   </div>
-                  <div style={{ overflowY: "auto", maxHeight: 400 }}>
-                    {alerts.map(a => {
+                  <div style={{ overflowY: "auto", maxHeight: 480 }}>
+                    {alerts.length === 0 && (
+                      <div style={{ padding: "48px 20px", textAlign: "center", color: "#94a3b8" }}>
+                        <div style={{ fontSize: 32, marginBottom: 8 }}>✅</div>
+                        <p style={{ margin: 0, fontSize: 13, fontWeight: 600 }}>Aucune alerte</p>
+                      </div>
+                    )}
+                    {alerts.map((a, idx) => {
                       const priorityColors = { high: "#ef4444", medium: "#f59e0b", low: "#94a3b8" };
+                      const pColor = priorityColors[a.priority] || "#0d9488";
+                      const resolved = resolvedAlertMembers[a.id] || new Set();
+                      const totalMembers = a.members?.length || 0;
+                      const resolvedCount = resolved.size;
+                      const allResolved = totalMembers > 0 && resolvedCount >= totalMembers;
                       return (
-                        <div key={a.id} onClick={() => markAlertRead(a.id)} style={{
-                          padding: "13px 20px", borderBottom: "1px solid #f8fafc", cursor: "pointer",
-                          background: a.read ? "transparent" : "#f0fdfa", transition: "background 0.15s",
-                          borderLeft: a.read ? "3px solid transparent" : `3px solid ${priorityColors[a.priority] || "#0d9488"}`,
-                        }}
-                          onMouseEnter={e => e.currentTarget.style.background = "#fafbfc"}
-                          onMouseLeave={e => e.currentTarget.style.background = a.read ? "transparent" : "#f0fdfa"}
-                        >
-                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
-                            <p style={{ margin: 0, fontSize: 13, fontWeight: a.read ? 500 : 700, color: "#0f172a", flex: 1, lineHeight: 1.4 }}>{a.title}</p>
-                            {!a.read && <div style={{ width: 8, height: 8, borderRadius: "50%", background: priorityColors[a.priority] || "#0d9488", flexShrink: 0, marginTop: 4, marginLeft: 8 }} />}
+                        <div key={a.id} className="alert-item" style={{
+                          display: "flex", flexDirection: "column",
+                          borderBottom: "1px solid #f8fafc",
+                          background: a.persistent ? (allResolved ? "#f0fdf4" : "#fff8f0") : (a.read ? "#fff" : "#f0fdfa"),
+                          borderLeft: a.persistent ? `3px solid ${pColor}` : `3px solid ${a.read ? "transparent" : pColor}`,
+                        }}>
+                          <div style={{ display: "flex", alignItems: "stretch" }}>
+                            {/* Content */}
+                            <div onClick={() => markAlertRead(a.id)} style={{ flex: 1, padding: "13px 14px", cursor: "pointer" }}>
+                              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
+                                <p style={{ margin: 0, fontSize: 13, fontWeight: a.read ? 500 : 700, color: "#0f172a", lineHeight: 1.4 }}>
+                                  {a.title}
+                                  {a.persistent && <span style={{ marginLeft: 8, fontSize: 10, padding: "2px 7px", background: "#fef3c7", color: "#d97706", borderRadius: 6, fontWeight: 700, verticalAlign: "middle" }}>PERSISTANTE</span>}
+                                </p>
+                                {!a.read && <div style={{ width: 8, height: 8, borderRadius: "50%", background: pColor, flexShrink: 0, marginTop: 3 }} />}
+                              </div>
+                              <p style={{ margin: "4px 0 2px", fontSize: 11, color: "#64748b", lineHeight: 1.5 }}>{a.desc}</p>
+                              {a.persistent && totalMembers > 0 && (
+                                <div style={{ marginTop: 4 }}>
+                                  <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 4 }}>
+                                    <div style={{ flex: 1, height: 4, background: "#e2e8f0", borderRadius: 2 }}>
+                                      <div style={{ width: `${Math.round((resolvedCount / totalMembers) * 100)}%`, height: "100%", background: "#10b981", borderRadius: 2, transition: "width 0.3s" }} />
+                                    </div>
+                                    <span style={{ fontSize: 10, color: "#64748b", flexShrink: 0 }}>{resolvedCount}/{totalMembers} traités</span>
+                                  </div>
+                                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                                    {a.members.map(mid => {
+                                      const m = MOCK_MEMBERS.find(x => x.id === mid);
+                                      if (!m) return null;
+                                      const isDone = resolved.has(mid);
+                                      return (
+                                        <button key={mid} onClick={(e) => { e.stopPropagation(); resolveAlertMember(a.id, mid); }} style={{
+                                          padding: "3px 8px", borderRadius: 6, border: "none", cursor: isDone ? "default" : "pointer", fontSize: 10, fontWeight: 600,
+                                          background: isDone ? "#dcfce7" : "#fee2e2", color: isDone ? "#16a34a" : "#dc2626",
+                                          textDecoration: isDone ? "line-through" : "none", opacity: isDone ? 0.7 : 1
+                                        }}>
+                                          {isDone ? "✓ " : ""}{m.first_name} {m.last_name}
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                  {!allResolved && <p style={{ margin: "6px 0 0", fontSize: 10, color: "#f59e0b", fontWeight: 600 }}>⚠️ Cliquez sur chaque nom pour confirmer qu'une action a été effectuée</p>}
+                                </div>
+                              )}
+                              <p style={{ margin: "4px 0 0", fontSize: 10, color: "#cbd5e1" }}>
+                                {new Date(a.date).toLocaleDateString("fr")}
+                                {a.priority === "high" ? " · 🔴 Urgent" : a.priority === "medium" ? " · 🟡 Moyen" : ""}
+                              </p>
+                            </div>
+                            {/* Delete button — only for non-persistent or all-resolved */}
+                            {(!a.persistent || allResolved) && (
+                              <button
+                                className="alert-delete"
+                                onClick={(e) => { e.stopPropagation(); setAlerts(prev => prev.filter(x => x.id !== a.id)); }}
+                                style={{
+                                  padding: "0 14px", background: "#fef2f2", border: "none", borderLeft: "1px solid #fee2e2",
+                                  cursor: "pointer", color: "#ef4444", fontSize: 16, fontWeight: 700,
+                                  display: "flex", alignItems: "center", justifyContent: "center",
+                                }}
+                                title="Supprimer"
+                              >×</button>
+                            )}
                           </div>
-                          <p style={{ margin: "4px 0 0", fontSize: 11, color: "#94a3b8", lineHeight: 1.5 }}>{a.desc}</p>
-                          <p style={{ margin: "3px 0 0", fontSize: 10, color: "#cbd5e1" }}>{new Date(a.date).toLocaleDateString("fr")} {a.priority === "high" ? "· 🔴 Urgent" : a.priority === "medium" ? "· 🟡 Moyen" : ""}</p>
                         </div>
                       );
                     })}
-                    {alerts.length === 0 && (
-                      <div style={{ padding: "32px 20px", textAlign: "center", color: "#94a3b8", fontSize: 13 }}>
-                        ✅ Aucune alerte en attente
-                      </div>
-                    )}
                   </div>
                 </div>
               )}
@@ -6229,6 +6714,26 @@ export default function App() {
             </div>
           </div>
         </div>
+        {/* Offline indicator */}
+        {(() => {
+          const [isOnline, setIsOnline] = useState(navigator.onLine);
+          useEffect(() => {
+            const on = () => setIsOnline(true);
+            const off = () => setIsOnline(false);
+            window.addEventListener("online", on);
+            window.addEventListener("offline", off);
+            return () => { window.removeEventListener("online", on); window.removeEventListener("offline", off); };
+          }, []);
+          return !isOnline ? (
+            <div style={{ margin: "10px 32px 0", padding: "10px 16px", background: "#fef3c7", borderRadius: 10, display: "flex", alignItems: "center", gap: 10, border: "1px solid #fde68a" }}>
+              <span style={{ fontSize: 18 }}>📡</span>
+              <div style={{ flex: 1 }}>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#92400e" }}>Mode hors-ligne actif</p>
+                <p style={{ margin: 0, fontSize: 11, color: "#a16207" }}>Vos données sont sauvegardées localement et se synchroniseront automatiquement quand la connexion revient.</p>
+              </div>
+            </div>
+          ) : null;
+        })()}
 
         {/* PWA Install Banner */}
         {showInstallBanner && (
@@ -6237,12 +6742,12 @@ export default function App() {
               <span style={{ fontSize: 24 }}>📱</span>
               <div>
                 <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#fff" }}>Installer Lumen Church</p>
-                <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)" }}>Accédez à l'app depuis votre écran d'accueil</p>
+                <p style={{ margin: 0, fontSize: 12, color: "rgba(255,255,255,0.8)" }}>Fonctionne hors-ligne · Accès depuis l'écran d'accueil · Aucun App Store requis</p>
               </div>
             </div>
             <div style={{ display: "flex", gap: 8 }}>
               <button onClick={() => setShowInstallBanner(false)} style={{ padding: "8px 14px", borderRadius: 8, border: "1px solid rgba(255,255,255,0.3)", background: "transparent", color: "#fff", fontSize: 12, fontWeight: 600, cursor: "pointer" }}>Plus tard</button>
-              <button onClick={() => { if (installPrompt) { installPrompt.prompt(); installPrompt.userChoice.then(() => setShowInstallBanner(false)); } }} style={{ padding: "8px 18px", borderRadius: 8, border: "none", background: "#fff", color: "#0d9488", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>Installer</button>
+              <button onClick={() => { if (installPrompt) { installPrompt.prompt(); installPrompt.userChoice.then(() => setShowInstallBanner(false)); } }} style={{ padding: "8px 18px", borderRadius: 8, border: "none", background: "#fff", color: "#0d9488", fontSize: 12, fontWeight: 700, cursor: "pointer" }}>📲 Installer</button>
             </div>
           </div>
         )}
