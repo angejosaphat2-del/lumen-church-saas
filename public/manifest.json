@@ -1,13 +1,12 @@
 {
-  "name": "Lumen Church — Gestion d'Église",
-  "short_name": "Lumen Church",
-  "description": "Plateforme SaaS de gestion d'église. Membres, finances, événements, mentorat, quiz.",
+  "name": "Lumen Church",
+  "short_name": "Lumen",
+  "description": "Gestion d'église intelligente — Membres, Finances, Cultes",
   "start_url": "/",
   "display": "standalone",
-  "orientation": "portrait-primary",
-  "background_color": "#0f172a",
+  "background_color": "#0a3d38",
   "theme_color": "#0d9488",
-  "categories": ["business", "productivity", "lifestyle"],
+  "orientation": "portrait-primary",
   "lang": "fr",
   "icons": [
     {
@@ -29,26 +28,8 @@
       "purpose": "any maskable"
     },
     {
-      "src": "/icons/icon-144.png",
-      "sizes": "144x144",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-152.png",
-      "sizes": "152x152",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
       "src": "/icons/icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "/icons/icon-384.png",
-      "sizes": "384x384",
       "type": "image/png",
       "purpose": "any maskable"
     },
@@ -59,6 +40,36 @@
       "purpose": "any maskable"
     }
   ],
-  "screenshots": [],
-  "prefer_related_applications": false
+  "screenshots": [
+    {
+      "src": "/screenshots/dashboard.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "label": "Tableau de bord Lumen Church"
+    }
+  ],
+  "categories": ["productivity", "business", "utilities"],
+  "shortcuts": [
+    {
+      "name": "Membres",
+      "short_name": "Membres",
+      "description": "Accéder à la liste des membres",
+      "url": "/?page=members",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Finances",
+      "short_name": "Finances",
+      "description": "Voir les finances",
+      "url": "/?page=finances",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    },
+    {
+      "name": "Cultes",
+      "short_name": "Cultes",
+      "description": "Enregistrer un culte",
+      "url": "/?page=cultes",
+      "icons": [{ "src": "/icons/icon-96.png", "sizes": "96x96" }]
+    }
+  ]
 }
