@@ -16,14 +16,14 @@ import { PieChart, Pie, Cell, BarChart, Bar, LineChart, Line, XAxis, YAxis,
 // MOCK DATA
 // ═══════════════════════════════════════════════════════
 const MOCK_MEMBERS = [
-  { id: 1, first_name: "Jean", last_name: "Kouadio", gender: "M", phone: "+225 07 08 09 10", email: "jean.k@email.com", status: "actif", role: "pasteur", department: "Direction", join_date: "2020-01-15", photo: null, birthday_day: 15, birthday_month: 3, address: "Cocody, Abidjan", baptise: true, date_bapteme: "2020-04-12", bapteme_type: "eaux" },
-  { id: 2, first_name: "Marie", last_name: "Bamba", gender: "F", phone: "+225 05 12 34 56", email: "marie.b@email.com", status: "actif", role: "tresorier", department: "Finances", join_date: "2021-03-20", photo: null, birthday_day: 8, birthday_month: 7, address: "Plateau, Abidjan", baptise: true, date_bapteme: "2021-06-20", bapteme_type: "eaux" },
-  { id: 3, first_name: "Paul", last_name: "Yao", gender: "M", phone: "+225 01 23 45 67", email: "paul.y@email.com", status: "actif", role: "membre", department: "Louange", join_date: "2022-06-10", photo: null, birthday_day: 22, birthday_month: 11, address: "Yopougon, Abidjan", baptise: true, date_bapteme: "2022-09-04", bapteme_type: "eaux" },
-  { id: 4, first_name: "Esther", last_name: "Koné", gender: "F", phone: "+225 07 98 76 54", email: "esther.k@email.com", status: "actif", role: "secretaire", department: "Administration", join_date: "2021-09-05", photo: null, birthday_day: 3, birthday_month: 1, address: "Marcory, Abidjan", baptise: false, date_bapteme: "", bapteme_type: "" },
-  { id: 5, first_name: "David", last_name: "Tra", gender: "M", phone: "+225 05 55 66 77", email: "david.t@email.com", status: "inactif", role: "membre", department: "Jeunesse", join_date: "2023-01-12", photo: null, birthday_day: 19, birthday_month: 5, address: "Treichville, Abidjan", baptise: false, date_bapteme: "", bapteme_type: "" },
-  { id: 6, first_name: "Ruth", last_name: "Diallo", gender: "F", phone: "+225 01 44 55 66", email: "ruth.d@email.com", status: "actif", role: "membre", department: "Enfants", join_date: "2022-11-30", photo: null, birthday_day: 28, birthday_month: 9, address: "Abobo, Abidjan", baptise: true, date_bapteme: "2023-01-08", bapteme_type: "eaux" },
-  { id: 7, first_name: "Samuel", last_name: "Ouattara", gender: "M", phone: "+225 07 11 22 33", email: "samuel.o@email.com", status: "actif", role: "responsable_dept", department: "Intercession", join_date: "2020-08-18", photo: null, birthday_day: 12, birthday_month: 4, address: "Cocody, Abidjan", baptise: true, date_bapteme: "2020-10-18", bapteme_type: "eaux" },
-  { id: 8, first_name: "Grace", last_name: "Achi", gender: "F", phone: "+225 05 99 88 77", email: "grace.a@email.com", status: "actif", role: "membre", department: "Accueil", join_date: "2023-04-22", photo: null, birthday_day: 7, birthday_month: 12, address: "Adjamé, Abidjan", baptise: false, date_bapteme: "", bapteme_type: "" },
+  { id: 1, first_name: "Jean", last_name: "Kouadio", gender: "M", phone: "+225 07 08 09 10", email: "jean.k@email.com", status: "actif", role: "pasteur", department: "Direction", join_date: "2020-01-15", photo: null, birthday_day: 15, birthday_month: 3, address: "Cocody, Abidjan", baptise: true, date_bapteme: "2020-04-12", bapteme_type: "eaux", presence_pct: 96, quiz_points: 980, badges: ["🎯","🐑","💰","📅","🤗","🏗️"] },
+  { id: 2, first_name: "Marie", last_name: "Bamba", gender: "F", phone: "+225 05 12 34 56", email: "marie.b@email.com", status: "actif", role: "tresorier", department: "Finances", join_date: "2021-03-20", photo: null, birthday_day: 8, birthday_month: 7, address: "Plateau, Abidjan", baptise: true, date_bapteme: "2021-06-20", bapteme_type: "eaux", presence_pct: 88, quiz_points: 720, badges: ["🎯","🏠","💰"] },
+  { id: 3, first_name: "Paul", last_name: "Yao", gender: "M", phone: "+225 01 23 45 67", email: "paul.y@email.com", status: "actif", role: "membre", department: "Louange", join_date: "2022-06-10", photo: null, birthday_day: 22, birthday_month: 11, address: "Yopougon, Abidjan", baptise: true, date_bapteme: "2022-09-04", bapteme_type: "eaux", presence_pct: 74, quiz_points: 540, badges: ["🎯","🏠"] },
+  { id: 4, first_name: "Esther", last_name: "Koné", gender: "F", phone: "+225 07 98 76 54", email: "esther.k@email.com", status: "actif", role: "secretaire", department: "Administration", join_date: "2021-09-05", photo: null, birthday_day: 3, birthday_month: 1, address: "Marcory, Abidjan", baptise: false, date_bapteme: "", bapteme_type: "", presence_pct: 82, quiz_points: 420, badges: ["🎯","🏠","📅"] },
+  { id: 5, first_name: "David", last_name: "Tra", gender: "M", phone: "+225 05 55 66 77", email: "david.t@email.com", status: "inactif", role: "membre", department: "Jeunesse", join_date: "2023-01-12", photo: null, birthday_day: 19, birthday_month: 5, address: "Treichville, Abidjan", baptise: false, date_bapteme: "", bapteme_type: "", presence_pct: 35, quiz_points: 310, badges: ["🎯"] },
+  { id: 6, first_name: "Ruth", last_name: "Diallo", gender: "F", phone: "+225 01 44 55 66", email: "ruth.d@email.com", status: "actif", role: "membre", department: "Enfants", join_date: "2022-11-30", photo: null, birthday_day: 28, birthday_month: 9, address: "Abobo, Abidjan", baptise: true, date_bapteme: "2023-01-08", bapteme_type: "eaux", presence_pct: 91, quiz_points: 845, badges: ["🎯","🏠","🐑","📅"] },
+  { id: 7, first_name: "Samuel", last_name: "Ouattara", gender: "M", phone: "+225 07 11 22 33", email: "samuel.o@email.com", status: "actif", role: "responsable_dept", department: "Intercession", join_date: "2020-08-18", photo: null, birthday_day: 12, birthday_month: 4, address: "Cocody, Abidjan", baptise: true, date_bapteme: "2020-10-18", bapteme_type: "eaux", presence_pct: 95, quiz_points: 540, badges: ["🎯","🏠","🐑","💰"] },
+  { id: 8, first_name: "Grace", last_name: "Achi", gender: "F", phone: "+225 05 99 88 77", email: "grace.a@email.com", status: "actif", role: "membre", department: "Accueil", join_date: "2023-04-22", photo: null, birthday_day: 7, birthday_month: 12, address: "Adjamé, Abidjan", baptise: false, date_bapteme: "", bapteme_type: "", presence_pct: 78, quiz_points: 310, badges: ["🎯"] },
 ];
 
 const MOCK_VISITORS = [
@@ -159,15 +159,48 @@ const BAPTEME_TYPES = {
 const COLORS_CHART = ["#0d9488", "#3b82f6", "#8b5cf6", "#f59e0b", "#ec4899", "#10b981", "#ef4444"];
 
 // ═══════════════════════════════════════════════════════
-// UTILITY COMPONENTS
+// DESIGN TOKENS
+// ═══════════════════════════════════════════════════════
+const DS = {
+  // Refined teal palette
+  teal50:  "#f0fdfa",
+  teal100: "#ccfbf1",
+  teal400: "#2dd4bf",
+  teal600: "#0d9488",
+  teal700: "#0f766e",
+  teal900: "#064e3b",
+  // Neutrals
+  slate50:  "#f8fafc",
+  slate100: "#f1f5f9",
+  slate200: "#e2e8f0",
+  slate400: "#94a3b8",
+  slate600: "#475569",
+  slate800: "#1e293b",
+  slate900: "#0f172a",
+  // Radius
+  r8:  "8px",
+  r10: "10px",
+  r12: "12px",
+  r16: "16px",
+  r20: "20px",
+  // Shadows
+  shadowSm: "0 1px 2px rgba(0,0,0,0.05), 0 0 0 1px rgba(0,0,0,0.04)",
+  shadowMd: "0 4px 16px rgba(0,0,0,0.08), 0 1px 3px rgba(0,0,0,0.04)",
+  shadowLg: "0 12px 40px rgba(0,0,0,0.1), 0 2px 8px rgba(0,0,0,0.04)",
+  shadowXl: "0 24px 60px rgba(0,0,0,0.14), 0 4px 12px rgba(0,0,0,0.06)",
+};
+
+// ═══════════════════════════════════════════════════════
+// UTILITY COMPONENTS — Design upgraded
 // ═══════════════════════════════════════════════════════
 const Avatar = ({ name, size = 40, color = "#0d9488" }) => (
   <div style={{
     width: size, height: size, borderRadius: "50%",
-    background: `linear-gradient(135deg, ${color}, ${color}dd)`,
+    background: `linear-gradient(145deg, ${color}ee, ${color}99)`,
     display: "flex", alignItems: "center", justifyContent: "center",
-    color: "#fff", fontWeight: 700, fontSize: size * 0.4,
-    flexShrink: 0, letterSpacing: "0.5px"
+    color: "#fff", fontWeight: 700, fontSize: size * 0.38,
+    flexShrink: 0, letterSpacing: "0.3px",
+    boxShadow: `0 2px 8px ${color}40`,
   }}>
     {name?.charAt(0)?.toUpperCase() || "?"}
   </div>
@@ -175,47 +208,60 @@ const Avatar = ({ name, size = 40, color = "#0d9488" }) => (
 
 const Badge = ({ children, variant = "default", style = {} }) => {
   const variants = {
-    default: { background: "#0d948815", color: "#0d9488" },
-    success: { background: "#10b98115", color: "#10b981" },
-    warning: { background: "#f59e0b15", color: "#f59e0b" },
-    danger: { background: "#ef444415", color: "#ef4444" },
-    info: { background: "#3b82f615", color: "#3b82f6" },
-    purple: { background: "#8b5cf615", color: "#8b5cf6" },
+    default: { background: "#0d948812", color: "#0d9488", border: "1px solid #0d948825" },
+    success: { background: "#10b98112", color: "#059669", border: "1px solid #10b98125" },
+    warning: { background: "#f59e0b12", color: "#d97706", border: "1px solid #f59e0b25" },
+    danger:  { background: "#ef444412", color: "#dc2626", border: "1px solid #ef444425" },
+    info:    { background: "#3b82f612", color: "#2563eb", border: "1px solid #3b82f625" },
+    purple:  { background: "#8b5cf612", color: "#7c3aed", border: "1px solid #8b5cf625" },
   };
   return (
     <span style={{
       padding: "3px 10px", borderRadius: 20, fontSize: 11, fontWeight: 600,
-      letterSpacing: "0.3px", ...variants[variant], ...style
+      letterSpacing: "0.2px", display: "inline-flex", alignItems: "center",
+      ...variants[variant], ...style
     }}>{children}</span>
   );
 };
 
 const StatCard = ({ icon: Icon, title, value, change, positive, color = "#0d9488", onClick }) => (
   <div onClick={onClick} style={{
-    background: "#fff", borderRadius: 16, padding: "22px 24px",
-    boxShadow: "0 1px 3px rgba(0,0,0,0.04)", border: "1px solid #f1f5f9",
-    cursor: onClick ? "pointer" : "default", transition: "all 0.2s",
-    position: "relative", overflow: "hidden"
+    background: "#fff", borderRadius: DS.r16, padding: "22px 24px",
+    boxShadow: DS.shadowSm, border: `1px solid ${DS.slate100}`,
+    cursor: onClick ? "pointer" : "default", transition: "all 0.25s cubic-bezier(0.4,0,0.2,1)",
+    position: "relative", overflow: "hidden",
   }}
-  onMouseEnter={e => { if(onClick) e.currentTarget.style.transform = "translateY(-2px)"; e.currentTarget.style.boxShadow = "0 8px 25px rgba(0,0,0,0.08)"; }}
-  onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 1px 3px rgba(0,0,0,0.04)"; }}
+  onMouseEnter={e => {
+    if(onClick) e.currentTarget.style.transform = "translateY(-3px)";
+    e.currentTarget.style.boxShadow = DS.shadowLg;
+    e.currentTarget.style.borderColor = `${color}30`;
+  }}
+  onMouseLeave={e => {
+    e.currentTarget.style.transform = "translateY(0)";
+    e.currentTarget.style.boxShadow = DS.shadowSm;
+    e.currentTarget.style.borderColor = DS.slate100;
+  }}
   >
-    <div style={{ position: "absolute", top: 0, right: 0, width: 80, height: 80, background: `${color}08`, borderRadius: "0 0 0 80px" }} />
+    {/* Decorative top accent */}
+    <div style={{ position: "absolute", top: 0, left: 0, right: 0, height: 3, background: `linear-gradient(90deg, ${color}, ${color}60)`, borderRadius: "16px 16px 0 0" }} />
+    {/* Background glow */}
+    <div style={{ position: "absolute", top: -20, right: -20, width: 100, height: 100, background: `radial-gradient(circle, ${color}10, transparent 70%)`, borderRadius: "50%" }} />
     <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
       <div>
-        <p style={{ fontSize: 12, color: "#94a3b8", fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.8px", margin: 0 }}>{title}</p>
-        <p style={{ fontSize: 28, fontWeight: 800, color: "#0f172a", margin: "6px 0 0", letterSpacing: "-0.5px" }}>{value}</p>
+        <p style={{ fontSize: 11, color: DS.slate400, fontWeight: 700, textTransform: "uppercase", letterSpacing: "1px", margin: 0 }}>{title}</p>
+        <p style={{ fontSize: 30, fontWeight: 800, color: DS.slate900, margin: "8px 0 0", letterSpacing: "-1px", lineHeight: 1 }}>{value}</p>
         {change && (
-          <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 6 }}>
-            {positive ? <TrendingUp size={13} color="#10b981" /> : <TrendingDown size={13} color="#ef4444" />}
-            <span style={{ fontSize: 12, fontWeight: 600, color: positive ? "#10b981" : "#ef4444" }}>{change}</span>
-            <span style={{ fontSize: 11, color: "#94a3b8" }}>vs mois dernier</span>
+          <div style={{ display: "flex", alignItems: "center", gap: 4, marginTop: 8 }}>
+            {positive ? <TrendingUp size={12} color="#059669" /> : <TrendingDown size={12} color="#dc2626" />}
+            <span style={{ fontSize: 12, fontWeight: 700, color: positive ? "#059669" : "#dc2626" }}>{change}</span>
+            <span style={{ fontSize: 11, color: DS.slate400 }}>vs mois dernier</span>
           </div>
         )}
       </div>
       <div style={{
-        width: 44, height: 44, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center",
-        background: `linear-gradient(135deg, ${color}15, ${color}25)`
+        width: 46, height: 46, borderRadius: DS.r12, display: "flex", alignItems: "center", justifyContent: "center",
+        background: `linear-gradient(145deg, ${color}18, ${color}08)`,
+        border: `1px solid ${color}20`,
       }}>
         <Icon size={22} color={color} />
       </div>
@@ -225,23 +271,45 @@ const StatCard = ({ icon: Icon, title, value, change, positive, color = "#0d9488
 
 const Btn = ({ children, variant = "primary", size = "md", onClick, style = {}, icon: Icon, disabled }) => {
   const base = {
-    display: "inline-flex", alignItems: "center", gap: 6, border: "none", cursor: disabled ? "not-allowed" : "pointer",
-    fontWeight: 600, borderRadius: 10, transition: "all 0.2s", opacity: disabled ? 0.5 : 1,
+    display: "inline-flex", alignItems: "center", gap: 6,
+    border: "none", cursor: disabled ? "not-allowed" : "pointer",
+    fontWeight: 600, transition: "all 0.2s cubic-bezier(0.4,0,0.2,1)",
+    opacity: disabled ? 0.45 : 1, letterSpacing: "0.1px",
     fontSize: size === "sm" ? 12 : 13,
-    padding: size === "sm" ? "6px 12px" : "9px 18px",
+    padding: size === "sm" ? "6px 13px" : "9px 20px",
+    borderRadius: size === "sm" ? DS.r8 : DS.r12,
   };
   const variants = {
-    primary: { background: "linear-gradient(135deg, #0d9488, #0f766e)", color: "#fff" },
-    secondary: { background: "#f1f5f9", color: "#475569", border: "1px solid #e2e8f0" },
-    danger: { background: "#fef2f2", color: "#ef4444" },
-    ghost: { background: "transparent", color: "#64748b" },
+    primary: {
+      background: "linear-gradient(135deg, #0d9488 0%, #0f766e 100%)",
+      color: "#fff",
+      boxShadow: "0 2px 8px rgba(13,148,136,0.35), inset 0 1px 0 rgba(255,255,255,0.15)",
+    },
+    secondary: {
+      background: "#fff",
+      color: DS.slate600,
+      border: `1px solid ${DS.slate200}`,
+      boxShadow: DS.shadowSm,
+    },
+    danger: { background: "#fef2f2", color: "#dc2626", border: "1px solid #fecaca" },
+    ghost: { background: "transparent", color: DS.slate400 },
   };
   return (
     <button disabled={disabled} onClick={onClick} style={{ ...base, ...variants[variant], ...style }}
-      onMouseEnter={e => { if(!disabled) e.currentTarget.style.transform = "translateY(-1px)"; }}
-      onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; }}
+      onMouseEnter={e => {
+        if(!disabled) {
+          e.currentTarget.style.transform = "translateY(-1px)";
+          if(variant === "primary") e.currentTarget.style.boxShadow = "0 4px 16px rgba(13,148,136,0.45), inset 0 1px 0 rgba(255,255,255,0.15)";
+          if(variant === "secondary") e.currentTarget.style.boxShadow = DS.shadowMd;
+        }
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.transform = "translateY(0)";
+        if(variant === "primary") e.currentTarget.style.boxShadow = "0 2px 8px rgba(13,148,136,0.35), inset 0 1px 0 rgba(255,255,255,0.15)";
+        if(variant === "secondary") e.currentTarget.style.boxShadow = DS.shadowSm;
+      }}
     >
-      {Icon && <Icon size={size === "sm" ? 14 : 16} />}{children}
+      {Icon && <Icon size={size === "sm" ? 13 : 15} />}{children}
     </button>
   );
 };
@@ -251,23 +319,31 @@ const Modal = ({ open, onClose, title, children, width = 520 }) => {
   return (
     <div style={{
       position: "fixed", inset: 0, zIndex: 1000, display: "flex", alignItems: "center", justifyContent: "center",
-      background: "rgba(0,0,0,0.4)", backdropFilter: "blur(4px)"
+      background: "rgba(15,23,42,0.55)", backdropFilter: "blur(8px)",
     }} onClick={onClose}>
       <div onClick={e => e.stopPropagation()} style={{
-        background: "#fff", borderRadius: 20, width: "90%", maxWidth: width, maxHeight: "85vh",
-        overflow: "auto", boxShadow: "0 25px 50px rgba(0,0,0,0.15)", animation: "modalIn 0.25s ease"
+        background: "#fff", borderRadius: DS.r20, width: "90%", maxWidth: width, maxHeight: "88vh",
+        overflow: "auto", boxShadow: DS.shadowXl,
+        border: `1px solid ${DS.slate100}`,
+        animation: "modalIn 0.22s cubic-bezier(0.34,1.56,0.64,1)",
       }}>
         <div style={{
           display: "flex", justifyContent: "space-between", alignItems: "center",
-          padding: "20px 24px", borderBottom: "1px solid #f1f5f9", position: "sticky", top: 0, background: "#fff", zIndex: 1, borderRadius: "20px 20px 0 0"
+          padding: "22px 28px", borderBottom: `1px solid ${DS.slate100}`,
+          position: "sticky", top: 0, background: "#fff", zIndex: 1,
+          borderRadius: `${DS.r20} ${DS.r20} 0 0`,
         }}>
-          <h3 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: "#0f172a" }}>{title}</h3>
+          <h3 style={{ margin: 0, fontSize: 17, fontWeight: 800, color: DS.slate900, letterSpacing: "-0.3px" }}>{title}</h3>
           <button onClick={onClose} style={{
-            background: "#f8fafc", border: "none", borderRadius: 8, width: 32, height: 32,
-            display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer"
-          }}><X size={16} color="#64748b" /></button>
+            background: DS.slate100, border: "none", borderRadius: DS.r8, width: 32, height: 32,
+            display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
+            transition: "background 0.15s",
+          }}
+            onMouseEnter={e => e.currentTarget.style.background = DS.slate200}
+            onMouseLeave={e => e.currentTarget.style.background = DS.slate100}
+          ><X size={15} color={DS.slate600} /></button>
         </div>
-        <div style={{ padding: 24 }}>{children}</div>
+        <div style={{ padding: "24px 28px" }}>{children}</div>
       </div>
     </div>
   );
@@ -275,42 +351,51 @@ const Modal = ({ open, onClose, title, children, width = 520 }) => {
 
 const FormField = ({ label, children, required }) => (
   <div style={{ marginBottom: 16 }}>
-    <label style={{ display: "block", fontSize: 12, fontWeight: 600, color: "#475569", marginBottom: 6, letterSpacing: "0.3px" }}>
-      {label}{required && <span style={{ color: "#ef4444" }}> *</span>}
+    <label style={{ display: "block", fontSize: 12, fontWeight: 700, color: DS.slate600, marginBottom: 6, letterSpacing: "0.3px", textTransform: "uppercase" }}>
+      {label}{required && <span style={{ color: "#ef4444", marginLeft: 2 }}>*</span>}
     </label>
     {children}
   </div>
 );
 
 const inputStyle = {
-  width: "100%", padding: "10px 14px", borderRadius: 10, border: "1px solid #e2e8f0",
-  fontSize: 13, color: "#0f172a", outline: "none", transition: "all 0.2s",
-  background: "#fafbfc", boxSizing: "border-box"
+  width: "100%", padding: "10px 14px", borderRadius: DS.r10,
+  border: `1.5px solid ${DS.slate200}`,
+  fontSize: 13, color: DS.slate900, outline: "none", transition: "all 0.2s",
+  background: "#fff", boxSizing: "border-box",
+  fontFamily: "inherit",
 };
 
 const selectStyle = { ...inputStyle, appearance: "none", cursor: "pointer" };
 
 const EmptyState = ({ icon: Icon, title, description }) => (
-  <div style={{ textAlign: "center", padding: "60px 20px", color: "#94a3b8" }}>
+  <div style={{ textAlign: "center", padding: "70px 20px", color: DS.slate400 }}>
     <div style={{
-      width: 64, height: 64, borderRadius: 16, background: "#f1f5f9", display: "flex",
-      alignItems: "center", justifyContent: "center", margin: "0 auto 16px"
-    }}><Icon size={28} color="#cbd5e1" /></div>
-    <p style={{ fontWeight: 700, color: "#64748b", fontSize: 15, margin: "0 0 4px" }}>{title}</p>
-    <p style={{ fontSize: 13, margin: 0 }}>{description}</p>
+      width: 72, height: 72, borderRadius: 20,
+      background: `linear-gradient(145deg, ${DS.slate100}, ${DS.slate50})`,
+      border: `1px solid ${DS.slate200}`,
+      display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 20px",
+      boxShadow: DS.shadowSm,
+    }}><Icon size={30} color={DS.slate400} /></div>
+    <p style={{ fontWeight: 800, color: DS.slate600, fontSize: 15, margin: "0 0 6px", letterSpacing: "-0.2px" }}>{title}</p>
+    <p style={{ fontSize: 13, margin: 0, color: DS.slate400, lineHeight: 1.6 }}>{description}</p>
   </div>
 );
 
 const TabBar = ({ tabs, active, onChange }) => (
-  <div style={{ display: "flex", gap: 4, background: "#f1f5f9", borderRadius: 12, padding: 4, marginBottom: 20 }}>
+  <div style={{
+    display: "flex", gap: 3, background: DS.slate100, borderRadius: DS.r12, padding: 4, marginBottom: 24,
+    border: `1px solid ${DS.slate200}`,
+  }}>
     {tabs.map(t => (
       <button key={t.key} onClick={() => onChange(t.key)} style={{
-        flex: 1, padding: "8px 16px", borderRadius: 10, border: "none", cursor: "pointer",
+        flex: 1, padding: "8px 14px", borderRadius: DS.r10, border: "none", cursor: "pointer",
         background: active === t.key ? "#fff" : "transparent",
-        color: active === t.key ? "#0f172a" : "#64748b",
+        color: active === t.key ? DS.slate900 : DS.slate400,
         fontWeight: active === t.key ? 700 : 500, fontSize: 13,
-        boxShadow: active === t.key ? "0 1px 3px rgba(0,0,0,0.08)" : "none",
-        transition: "all 0.2s"
+        boxShadow: active === t.key ? DS.shadowSm : "none",
+        transition: "all 0.2s cubic-bezier(0.4,0,0.2,1)",
+        letterSpacing: "0.1px",
       }}>{t.label}</button>
     ))}
   </div>
@@ -335,7 +420,6 @@ const DashboardPage = ({ onNavigate, carouselSlides: propSlides }) => {
     { name: "Enfants", value: 25, color: "#10b981" },
   ];
 
-  // Carousel state — use props if provided, else fallback
   const [carouselIndex, setCarouselIndex] = useState(0);
   const carouselSlides = (propSlides && propSlides.length > 0) ? propSlides : INITIAL_CAROUSEL_SLIDES;
 
@@ -354,17 +438,20 @@ const DashboardPage = ({ onNavigate, carouselSlides: propSlides }) => {
 
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 28, flexWrap: "wrap", gap: 12 }}>
+      {/* Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
         <div>
-          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: "0 0 4px", letterSpacing: "-0.3px" }}>Tableau de bord</h2>
-          <p style={{ fontSize: 13, color: "#94a3b8", margin: 0 }}>Vue d'ensemble — {periodLabels[period]}</p>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: DS.slate900, margin: "0 0 3px", letterSpacing: "-0.5px" }}>Tableau de bord</h2>
+          <p style={{ fontSize: 13, color: DS.slate400, margin: 0, fontWeight: 500 }}>Vue d'ensemble — {periodLabels[period]}</p>
         </div>
-        <div style={{ display: "flex", gap: 4, background: "#f1f5f9", borderRadius: 10, padding: 3 }}>
+        <div style={{ display: "flex", gap: 3, background: DS.slate100, borderRadius: 12, padding: 4, border: `1px solid ${DS.slate200}` }}>
           {[{k:"day",l:"Jour"},{k:"week",l:"Semaine"},{k:"month",l:"Mois"},{k:"year",l:"Année"}].map(p => (
             <button key={p.k} onClick={() => setPeriod(p.k)} style={{
-              padding: "7px 14px", borderRadius: 8, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600,
-              background: period === p.k ? "#fff" : "transparent", color: period === p.k ? "#0f172a" : "#64748b",
-              boxShadow: period === p.k ? "0 1px 3px rgba(0,0,0,0.08)" : "none", transition: "all 0.15s"
+              padding: "7px 16px", borderRadius: 9, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600,
+              background: period === p.k ? "#fff" : "transparent",
+              color: period === p.k ? DS.slate900 : DS.slate400,
+              boxShadow: period === p.k ? DS.shadowSm : "none",
+              transition: "all 0.18s cubic-bezier(0.4,0,0.2,1)",
             }}>{p.l}</button>
           ))}
         </div>
@@ -372,119 +459,113 @@ const DashboardPage = ({ onNavigate, carouselSlides: propSlides }) => {
 
       {/* ═══ CAROUSEL ═══ */}
       <div style={{
-        position: "relative", borderRadius: 20, overflow: "hidden", marginBottom: 28,
-        background: currentSlide.gradient, transition: "background 0.6s ease",
-        boxShadow: "0 8px 30px rgba(0,0,0,0.12)"
+        position: "relative", borderRadius: 22, overflow: "hidden", marginBottom: 24,
+        background: currentSlide.gradient, transition: "background 0.7s ease",
+        boxShadow: "0 12px 40px rgba(0,0,0,0.18), 0 2px 8px rgba(0,0,0,0.08)",
       }}>
-        {/* Background pattern */}
-        <div style={{ position: "absolute", inset: 0, opacity: 0.06, backgroundImage: "radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 20%, white 1px, transparent 1px)", backgroundSize: "60px 60px, 40px 40px" }} />
-        <div style={{ position: "absolute", top: -40, right: -20, width: 200, height: 200, borderRadius: "50%", background: "rgba(255,255,255,0.08)" }} />
-        <div style={{ position: "absolute", bottom: -60, left: "30%", width: 250, height: 250, borderRadius: "50%", background: "rgba(255,255,255,0.05)" }} />
+        {/* Subtle dot pattern overlay */}
+        <div style={{ position: "absolute", inset: 0, opacity: 0.07, backgroundImage: "radial-gradient(circle, rgba(255,255,255,0.8) 1px, transparent 1px)", backgroundSize: "28px 28px" }} />
+        {/* Soft glow shapes */}
+        <div style={{ position: "absolute", top: -60, right: -30, width: 260, height: 260, borderRadius: "50%", background: "rgba(255,255,255,0.07)" }} />
+        <div style={{ position: "absolute", bottom: -80, left: "25%", width: 300, height: 300, borderRadius: "50%", background: "rgba(255,255,255,0.04)" }} />
 
-        <div style={{ position: "relative", padding: "36px 40px", minHeight: 180, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          {/* Left arrow */}
+        <div style={{ position: "relative", padding: "34px 40px", minHeight: 185, display: "flex", alignItems: "center", justifyContent: "space-between" }}>
           <button onClick={goPrev} style={{
-            width: 38, height: 38, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.25)",
-            background: "rgba(255,255,255,0.1)", backdropFilter: "blur(4px)",
+            width: 40, height: 40, borderRadius: "50%", border: "1.5px solid rgba(255,255,255,0.28)",
+            background: "rgba(255,255,255,0.12)", backdropFilter: "blur(8px)",
             display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
-            flexShrink: 0, transition: "all 0.2s"
+            flexShrink: 0, transition: "all 0.2s",
           }}
-          onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.25)"}
-          onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.1)"}
-          >
-            <ChevronLeft size={18} color="#fff" />
-          </button>
+            onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.28)"; e.currentTarget.style.transform = "scale(1.08)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.12)"; e.currentTarget.style.transform = "scale(1)"; }}
+          ><ChevronLeft size={17} color="#fff" /></button>
 
-          {/* Content */}
-          <div style={{ flex: 1, textAlign: "center", padding: "0 24px", animation: "fadeIn 0.4s ease" }} key={carouselIndex}>
-            <div style={{ fontSize: 42, marginBottom: 12 }}>{currentSlide.emoji}</div>
-            <h3 style={{ margin: "0 0 8px", fontSize: 22, fontWeight: 800, color: "#fff", letterSpacing: "-0.3px" }}>
+          <div style={{ flex: 1, textAlign: "center", padding: "0 28px" }} key={carouselIndex}>
+            <div style={{ fontSize: 44, marginBottom: 10, filter: "drop-shadow(0 4px 8px rgba(0,0,0,0.2))" }}>{currentSlide.emoji}</div>
+            <h3 style={{ margin: "0 0 8px", fontSize: 22, fontWeight: 800, color: "#fff", letterSpacing: "-0.4px", textShadow: "0 2px 8px rgba(0,0,0,0.15)" }}>
               {currentSlide.title}
             </h3>
-            <p style={{ margin: "0 0 18px", fontSize: 14, color: "rgba(255,255,255,0.8)", maxWidth: 500, marginLeft: "auto", marginRight: "auto" }}>
+            <p style={{ margin: "0 0 20px", fontSize: 13, color: "rgba(255,255,255,0.82)", maxWidth: 480, marginLeft: "auto", marginRight: "auto", lineHeight: 1.6 }}>
               {currentSlide.subtitle}
             </p>
             <button style={{
-              padding: "10px 24px", borderRadius: 12, border: "2px solid rgba(255,255,255,0.3)",
-              background: "rgba(255,255,255,0.15)", backdropFilter: "blur(4px)",
+              padding: "10px 26px", borderRadius: 12, border: "1.5px solid rgba(255,255,255,0.35)",
+              background: "rgba(255,255,255,0.18)", backdropFilter: "blur(8px)",
               color: "#fff", fontSize: 13, fontWeight: 700, cursor: "pointer",
-              transition: "all 0.2s", letterSpacing: "0.3px"
+              transition: "all 0.2s", letterSpacing: "0.2px",
+              boxShadow: "0 4px 12px rgba(0,0,0,0.12)",
             }}
-            onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.3)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.5)"; }}
-            onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.15)"; e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)"; }}
-            >
-              {currentSlide.cta}
-            </button>
+              onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.32)"; e.currentTarget.style.transform = "translateY(-1px)"; }}
+              onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.18)"; e.currentTarget.style.transform = "translateY(0)"; }}
+            >{currentSlide.cta} →</button>
           </div>
 
-          {/* Right arrow */}
           <button onClick={goNext} style={{
-            width: 38, height: 38, borderRadius: "50%", border: "1px solid rgba(255,255,255,0.25)",
-            background: "rgba(255,255,255,0.1)", backdropFilter: "blur(4px)",
+            width: 40, height: 40, borderRadius: "50%", border: "1.5px solid rgba(255,255,255,0.28)",
+            background: "rgba(255,255,255,0.12)", backdropFilter: "blur(8px)",
             display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer",
-            flexShrink: 0, transition: "all 0.2s"
+            flexShrink: 0, transition: "all 0.2s",
           }}
-          onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.25)"}
-          onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.1)"}
-          >
-            <ChevronRight size={18} color="#fff" />
-          </button>
+            onMouseEnter={e => { e.currentTarget.style.background = "rgba(255,255,255,0.28)"; e.currentTarget.style.transform = "scale(1.08)"; }}
+            onMouseLeave={e => { e.currentTarget.style.background = "rgba(255,255,255,0.12)"; e.currentTarget.style.transform = "scale(1)"; }}
+          ><ChevronRight size={17} color="#fff" /></button>
         </div>
 
-        {/* Dots indicator */}
-        <div style={{ display: "flex", justifyContent: "center", gap: 8, paddingBottom: 18 }}>
+        {/* Dots */}
+        <div style={{ display: "flex", justifyContent: "center", gap: 7, paddingBottom: 18 }}>
           {carouselSlides.map((_, i) => (
             <button key={i} onClick={() => goToSlide(i)} style={{
-              width: i === carouselIndex ? 24 : 8, height: 8, borderRadius: 4,
+              width: i === carouselIndex ? 26 : 7, height: 7, borderRadius: 4,
               background: i === carouselIndex ? "#fff" : "rgba(255,255,255,0.35)",
-              border: "none", cursor: "pointer", transition: "all 0.3s ease",
+              border: "none", cursor: "pointer", transition: "all 0.3s cubic-bezier(0.4,0,0.2,1)",
+              boxShadow: i === carouselIndex ? "0 2px 6px rgba(0,0,0,0.2)" : "none",
             }} />
           ))}
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 16, marginBottom: 28 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))", gap: 14, marginBottom: 22 }}>
         <StatCard icon={Users} title="Membres" value={MOCK_MEMBERS.length} change="+12%" positive color="#0d9488" onClick={() => onNavigate("members")} />
         <StatCard icon={UserPlus} title="Visiteurs" value={MOCK_VISITORS.length} change="+8%" positive color="#3b82f6" onClick={() => onNavigate("visitors")} />
         <StatCard icon={ArrowUpCircle} title="Entrées" value={`${(totalEntrees/1000).toFixed(0)}k`} change="+15%" positive color="#10b981" onClick={() => onNavigate("finances")} />
         <StatCard icon={Wallet} title="Solde" value={`${(solde/1000).toFixed(0)}k F`} change={solde > 0 ? "+5%" : "-3%"} positive={solde > 0} color="#8b5cf6" onClick={() => onNavigate("finances")} />
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 20, marginBottom: 20 }}>
-        <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9" }}>
-          <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 20px" }}>📈 Croissance des membres</h3>
+      <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: 16, marginBottom: 16 }}>
+        <div style={{ background: "#fff", borderRadius: DS.r16, padding: 24, border: `1px solid ${DS.slate100}`, boxShadow: DS.shadowSm }}>
+          <h3 style={{ fontSize: 14, fontWeight: 800, color: DS.slate900, margin: "0 0 20px", letterSpacing: "-0.2px" }}>📈 Croissance des membres</h3>
           <ResponsiveContainer width="100%" height={240}>
             <AreaChart data={GROWTH_DATA}>
               <defs>
                 <linearGradient id="gMembres" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="#0d9488" stopOpacity={0.3}/>
+                  <stop offset="0%" stopColor="#0d9488" stopOpacity={0.25}/>
                   <stop offset="100%" stopColor="#0d9488" stopOpacity={0}/>
                 </linearGradient>
               </defs>
               <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} />
-              <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} />
-              <Tooltip contentStyle={{ borderRadius: 12, border: "none", boxShadow: "0 4px 12px rgba(0,0,0,0.1)", fontSize: 12 }} />
-              <Area type="monotone" dataKey="membres" stroke="#0d9488" fill="url(#gMembres)" strokeWidth={2.5} />
-              <Area type="monotone" dataKey="visiteurs" stroke="#3b82f6" fill="#3b82f610" strokeWidth={2} />
+              <XAxis dataKey="month" tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+              <Tooltip contentStyle={{ borderRadius: 14, border: "none", boxShadow: DS.shadowLg, fontSize: 12, fontFamily: "inherit" }} />
+              <Area type="monotone" dataKey="membres" stroke="#0d9488" fill="url(#gMembres)" strokeWidth={2.5} dot={false} />
+              <Area type="monotone" dataKey="visiteurs" stroke="#3b82f6" fill="#3b82f610" strokeWidth={2} dot={false} />
             </AreaChart>
           </ResponsiveContainer>
         </div>
 
-        <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9" }}>
-          <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 16px" }}>👥 Répartition</h3>
+        <div style={{ background: "#fff", borderRadius: DS.r16, padding: 24, border: `1px solid ${DS.slate100}`, boxShadow: DS.shadowSm }}>
+          <h3 style={{ fontSize: 14, fontWeight: 800, color: DS.slate900, margin: "0 0 16px", letterSpacing: "-0.2px" }}>👥 Répartition</h3>
           <ResponsiveContainer width="100%" height={200}>
             <PieChart>
-              <Pie data={deptData} cx="50%" cy="50%" innerRadius={50} outerRadius={80} paddingAngle={3} dataKey="value">
+              <Pie data={deptData} cx="50%" cy="50%" innerRadius={52} outerRadius={82} paddingAngle={4} dataKey="value">
                 {deptData.map((d, i) => <Cell key={i} fill={d.color} />)}
               </Pie>
-              <Tooltip contentStyle={{ borderRadius: 10, border: "none", fontSize: 12 }} />
+              <Tooltip contentStyle={{ borderRadius: 12, border: "none", fontSize: 12, boxShadow: DS.shadowMd }} />
             </PieChart>
           </ResponsiveContainer>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 8, justifyContent: "center" }}>
-            {deptData.slice(0, 4).map((d, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 4, fontSize: 10, color: "#64748b" }}>
-                <div style={{ width: 8, height: 8, borderRadius: 4, background: d.color }} />
+            {deptData.map((d, i) => (
+              <div key={i} style={{ display: "flex", alignItems: "center", gap: 5, fontSize: 11, color: DS.slate600, fontWeight: 500 }}>
+                <div style={{ width: 9, height: 9, borderRadius: "50%", background: d.color, flexShrink: 0 }} />
                 {d.name}
               </div>
             ))}
@@ -492,59 +573,57 @@ const DashboardPage = ({ onNavigate, carouselSlides: propSlides }) => {
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 20 }}>
-        <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9" }}>
-          <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 16px" }}>💰 Finances du mois</h3>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 16 }}>
+        <div style={{ background: "#fff", borderRadius: DS.r16, padding: 22, border: `1px solid ${DS.slate100}`, boxShadow: DS.shadowSm }}>
+          <h3 style={{ fontSize: 14, fontWeight: 800, color: DS.slate900, margin: "0 0 16px", letterSpacing: "-0.2px" }}>💰 Finances du mois</h3>
           <ResponsiveContainer width="100%" height={180}>
             <BarChart data={FINANCE_CHART.slice(-3)}>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" />
-              <XAxis dataKey="month" tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} />
-              <YAxis tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickFormatter={v => `${v/1000}k`} />
-              <Tooltip contentStyle={{ borderRadius: 10, border: "none", fontSize: 11 }} formatter={v => `${v.toLocaleString()} F`} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f8fafc" />
+              <XAxis dataKey="month" tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} />
+              <YAxis tick={{ fontSize: 10, fill: "#94a3b8" }} axisLine={false} tickLine={false} tickFormatter={v => `${v/1000}k`} />
+              <Tooltip contentStyle={{ borderRadius: 12, border: "none", fontSize: 11, boxShadow: DS.shadowMd }} formatter={v => `${v.toLocaleString()} F`} />
               <Bar dataKey="entrees" fill="#10b981" radius={[6, 6, 0, 0]} />
-              <Bar dataKey="sorties" fill="#ef4444" radius={[6, 6, 0, 0]} />
+              <Bar dataKey="sorties" fill="#f87171" radius={[6, 6, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9" }}>
-          <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 16px" }}>📅 Prochains événements</h3>
+        <div style={{ background: "#fff", borderRadius: DS.r16, padding: 22, border: `1px solid ${DS.slate100}`, boxShadow: DS.shadowSm }}>
+          <h3 style={{ fontSize: 14, fontWeight: 800, color: DS.slate900, margin: "0 0 16px", letterSpacing: "-0.2px" }}>📅 Prochains événements</h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
             {upcomingEvents.map(ev => (
-              <div key={ev.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "8px 0", borderBottom: "1px solid #f8fafc" }}>
+              <div key={ev.id} style={{ display: "flex", alignItems: "center", gap: 11, padding: "8px 0", borderBottom: `1px solid ${DS.slate100}` }}>
                 <div style={{
-                  width: 40, height: 40, borderRadius: 10, display: "flex", flexDirection: "column",
-                  alignItems: "center", justifyContent: "center", background: "#0d948810", flexShrink: 0
+                  width: 42, height: 42, borderRadius: 12, display: "flex", flexDirection: "column",
+                  alignItems: "center", justifyContent: "center",
+                  background: "linear-gradient(145deg, #f0fdfa, #ccfbf1)", flexShrink: 0,
+                  border: "1px solid #0d948820",
                 }}>
-                  <span style={{ fontSize: 9, fontWeight: 700, color: "#0d9488", lineHeight: 1 }}>
-                    {MONTHS_FR[new Date(ev.date).getMonth()]}
-                  </span>
-                  <span style={{ fontSize: 15, fontWeight: 800, color: "#0d9488", lineHeight: 1.1 }}>
-                    {new Date(ev.date).getDate()}
-                  </span>
+                  <span style={{ fontSize: 9, fontWeight: 800, color: "#0d9488", lineHeight: 1, textTransform: "uppercase" }}>{MONTHS_FR[new Date(ev.date).getMonth()]}</span>
+                  <span style={{ fontSize: 16, fontWeight: 900, color: "#0d9488", lineHeight: 1.1 }}>{new Date(ev.date).getDate()}</span>
                 </div>
                 <div>
-                  <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{ev.title}</p>
-                  <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{ev.time} · {ev.location}</p>
+                  <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: DS.slate900 }}>{ev.title}</p>
+                  <p style={{ margin: 0, fontSize: 10, color: DS.slate400 }}>{ev.time} · {ev.location}</p>
                 </div>
               </div>
             ))}
           </div>
         </div>
 
-        <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9" }}>
-          <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 16px" }}>🎂 Anniversaires ce mois</h3>
+        <div style={{ background: "#fff", borderRadius: DS.r16, padding: 22, border: `1px solid ${DS.slate100}`, boxShadow: DS.shadowSm }}>
+          <h3 style={{ fontSize: 14, fontWeight: 800, color: DS.slate900, margin: "0 0 16px", letterSpacing: "-0.2px" }}>🎂 Anniversaires ce mois</h3>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {birthdays.length > 0 ? birthdays.map(m => (
-              <div key={m.id} style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <Avatar name={m.first_name} size={36} color="#f59e0b" />
-                <div>
-                  <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{m.first_name} {m.last_name}</p>
-                  <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{m.birthday_day} mars</p>
+              <div key={m.id} style={{ display: "flex", alignItems: "center", gap: 10, padding: "8px 10px", borderRadius: 12, background: "#fffbeb", border: "1px solid #fef3c7" }}>
+                <Avatar name={m.first_name} size={34} color="#f59e0b" />
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: DS.slate900 }}>{m.first_name} {m.last_name}</p>
+                  <p style={{ margin: 0, fontSize: 10, color: DS.slate400 }}>{m.birthday_day} mars</p>
                 </div>
-                <Gift size={16} color="#f59e0b" style={{ marginLeft: "auto" }} />
+                <Gift size={15} color="#f59e0b" />
               </div>
-            )) : <p style={{ fontSize: 12, color: "#94a3b8" }}>Aucun anniversaire ce mois</p>}
+            )) : <p style={{ fontSize: 12, color: DS.slate400 }}>Aucun anniversaire ce mois</p>}
           </div>
 
           <div style={{ marginTop: 20, padding: 14, background: "#f0fdfa", borderRadius: 12 }}>
@@ -606,6 +685,8 @@ const MembersPage = ({ userRole, churchName }) => {
     const matchDept = deptFilter === "all" || (m.departments||[]).includes(deptFilter);
     return matchSearch && matchFilter && matchDept;
   });
+
+  const [selectedMember, setSelectedMember] = useState(null);
 
   const statusOptions = ["actif", "passif", "sympathisant", "nouveau_converti"];
   const openNew = () => { setEditing(null); setForm(emptyForm); setShowModal(true); };
@@ -818,9 +899,10 @@ const MembersPage = ({ userRole, churchName }) => {
             </tr></thead>
             <tbody>
               {filtered.filter(m => filter === "baptise" ? m.baptise : true).map(m => (
-                <tr key={m.id} style={{ borderTop: "1px solid #f1f5f9" }}
+                <tr key={m.id} style={{ borderTop: "1px solid #f1f5f9", cursor: "pointer" }}
+                  onClick={() => setSelectedMember(selectedMember?.id === m.id ? null : m)}
                   onMouseEnter={e => e.currentTarget.style.background = "#fafbfc"}
-                  onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+                  onMouseLeave={e => e.currentTarget.style.background = selectedMember?.id === m.id ? "#f0fdfa" : "transparent"}>
                   <td style={{ padding: "12px 16px" }}>
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                       <MemberAvatar m={m} size={38} />
@@ -867,6 +949,84 @@ const MembersPage = ({ userRole, churchName }) => {
           <span>Actifs: {members.filter(m => m.status === "actif").length} · Baptisés: {members.filter(m => m.baptise).length} 💧</span>
         </div>
       </div>
+
+      {/* ── PROFIL MEMBRE (panel latéral) ── */}
+      {selectedMember && (() => {
+        const m = selectedMember;
+        const presencePct = m.presence_pct || 0;
+        const presenceColor = presencePct >= 80 ? "#10b981" : presencePct >= 50 ? "#f59e0b" : "#ef4444";
+        const memberBadges = m.badges || [];
+        return (
+          <div style={{ background: "#fff", borderRadius: DS.r16, border: `1px solid ${DS.slate100}`, padding: 24, marginTop: 16, boxShadow: DS.shadowMd, animation: "fadeIn 0.2s ease" }}>
+            {/* Header */}
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
+                <MemberAvatar m={m} size={56} />
+                <div>
+                  <h3 style={{ margin: 0, fontSize: 20, fontWeight: 800, color: DS.slate900, letterSpacing: "-0.4px" }}>{m.first_name} {m.last_name}</h3>
+                  <div style={{ display: "flex", gap: 6, marginTop: 4, flexWrap: "wrap" }}>
+                    <Badge variant={m.gender === "F" ? "info" : "default"}>{m.gender === "F" ? "Femme" : "Homme"}</Badge>
+                    <Badge variant="success">{m.status}</Badge>
+                    {m.baptise && <Badge variant="info">💧 Baptisé{m.gender === "F" ? "e" : ""}</Badge>}
+                  </div>
+                </div>
+              </div>
+              <div style={{ display: "flex", gap: 6 }}>
+                <Btn variant="secondary" size="sm" icon={Edit} onClick={() => openEdit(m)}>Modifier</Btn>
+                <Btn variant="ghost" size="sm" icon={X} onClick={() => setSelectedMember(null)} />
+              </div>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 14, marginBottom: 20 }}>
+              {/* Présence */}
+              <div style={{ background: DS.slate50, borderRadius: DS.r12, padding: "16px 18px", border: `1px solid ${DS.slate100}` }}>
+                <p style={{ margin: "0 0 4px", fontSize: 11, fontWeight: 700, color: DS.slate400, textTransform: "uppercase", letterSpacing: "0.8px" }}>Présence</p>
+                <div style={{ fontSize: 28, fontWeight: 900, color: presenceColor, lineHeight: 1 }}>{presencePct}%</div>
+                <div style={{ height: 5, background: DS.slate200, borderRadius: 4, marginTop: 8, overflow: "hidden" }}>
+                  <div style={{ width: `${presencePct}%`, height: "100%", background: `linear-gradient(90deg, ${presenceColor}, ${presenceColor}99)`, borderRadius: 4 }} />
+                </div>
+                <p style={{ margin: "5px 0 0", fontSize: 10, color: DS.slate400 }}>{presencePct >= 80 ? "Excellent" : presencePct >= 50 ? "Moyen" : "Faible"}</p>
+              </div>
+
+              {/* Quiz */}
+              <div style={{ background: DS.slate50, borderRadius: DS.r12, padding: "16px 18px", border: `1px solid ${DS.slate100}` }}>
+                <p style={{ margin: "0 0 4px", fontSize: 11, fontWeight: 700, color: DS.slate400, textTransform: "uppercase", letterSpacing: "0.8px" }}>Points Quiz</p>
+                <div style={{ fontSize: 28, fontWeight: 900, color: "#8b5cf6", lineHeight: 1 }}>{m.quiz_points || 0}</div>
+                <p style={{ margin: "8px 0 0", fontSize: 10, color: DS.slate400 }}>pts cumulés · classement</p>
+              </div>
+
+              {/* Ancienneté */}
+              <div style={{ background: DS.slate50, borderRadius: DS.r12, padding: "16px 18px", border: `1px solid ${DS.slate100}` }}>
+                <p style={{ margin: "0 0 4px", fontSize: 11, fontWeight: 700, color: DS.slate400, textTransform: "uppercase", letterSpacing: "0.8px" }}>Ancienneté</p>
+                <div style={{ fontSize: 28, fontWeight: 900, color: "#0d9488", lineHeight: 1 }}>
+                  {Math.floor((new Date() - new Date(m.join_date)) / (365.25 * 24 * 3600 * 1000))} <span style={{ fontSize: 14, fontWeight: 600 }}>ans</span>
+                </div>
+                <p style={{ margin: "8px 0 0", fontSize: 10, color: DS.slate400 }}>Depuis {new Date(m.join_date).toLocaleDateString("fr")}</p>
+              </div>
+            </div>
+
+            {/* Badges */}
+            {memberBadges.length > 0 && (
+              <div style={{ marginBottom: 16 }}>
+                <p style={{ margin: "0 0 10px", fontSize: 12, fontWeight: 700, color: DS.slate600 }}>🏅 Badges obtenus</p>
+                <div style={{ display: "flex", gap: 8, flexWrap: "wrap" }}>
+                  {memberBadges.map((b, i) => (
+                    <div key={i} style={{ width: 38, height: 38, borderRadius: 10, background: "linear-gradient(145deg, #f59e0b20, #f97316)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, border: "1px solid #f59e0b25", boxShadow: "0 2px 8px rgba(245,158,11,0.15)" }}>{b}</div>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Infos */}
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, fontSize: 12, color: DS.slate600 }}>
+              {m.phone && <div style={{ display: "flex", gap: 6, alignItems: "center" }}><Phone size={12} color={DS.slate400} />{m.phone}</div>}
+              {m.email && <div style={{ display: "flex", gap: 6, alignItems: "center" }}><Mail size={12} color={DS.slate400} />{m.email}</div>}
+              {(m.departments||[m.department]).filter(Boolean).length > 0 && <div style={{ display: "flex", gap: 6, alignItems: "center" }}><Building2 size={12} color={DS.slate400} />{(m.departments||[m.department]).filter(Boolean).join(", ")}</div>}
+              {m.address && <div style={{ display: "flex", gap: 6, alignItems: "center" }}><MapPin size={12} color={DS.slate400} />{m.address}</div>}
+            </div>
+          </div>
+        );
+      })()}
 
       {/* ── MODAL NOUVEAU/MODIFIER MEMBRE ── */}
       <Modal open={showModal} onClose={() => setShowModal(false)} title={editing ? "Modifier le membre" : "Nouveau membre"} width={620}>
@@ -1009,145 +1169,481 @@ const MembersPage = ({ userRole, churchName }) => {
 
 // VISITORS PAGE
 const VisitorsPage = () => {
-  const [visitors, setVisitors] = useState(MOCK_VISITORS.map(v => ({...v, email: "", address: "", followups: [], status: v.status || "nouveau" })));
-  const [showModal, setShowModal] = useState(false);
+  const ZONES = [
+    { name: "Cocody",      responsable: "Jean Kouadio",    phone: "+225 07 08 09 10", color: "#0d9488" },
+    { name: "Yopougon",   responsable: "Paul Yao",         phone: "+225 01 23 45 67", color: "#3b82f6" },
+    { name: "Marcory",    responsable: "Esther Koné",      phone: "+225 07 98 76 54", color: "#8b5cf6" },
+    { name: "Abobo",      responsable: "Ruth Diallo",      phone: "+225 01 44 55 66", color: "#f59e0b" },
+    { name: "Treichville",responsable: "David Tra",        phone: "+225 05 55 66 77", color: "#ec4899" },
+    { name: "Plateau",    responsable: "Marie Bamba",      phone: "+225 05 12 34 56", color: "#10b981" },
+    { name: "Adjamé",     responsable: "Grace Achi",       phone: "+225 05 99 88 77", color: "#ef4444" },
+    { name: "Koumassi",   responsable: "Samuel Ouattara",  phone: "+225 07 11 22 33", color: "#14b8a6" },
+    { name: "Autre",      responsable: "Jean Kouadio",     phone: "+225 07 08 09 10", color: "#64748b" },
+  ];
+
+  const getZoneFor = (address) => {
+    if (!address) return null;
+    return ZONES.find(z => address.toLowerCase().includes(z.name.toLowerCase())) || null;
+  };
+
+  const [visitors, setVisitors] = useState(MOCK_VISITORS.map(v => ({
+    ...v, email: "", address: v.address || "", followups: [], status: v.status || "nouveau",
+    zone: v.address ? (ZONES.find(z => v.address?.includes(z.name))?.name || "Autre") : "",
+    responsable_suivi: v.address ? (ZONES.find(z => v.address?.includes(z.name))?.responsable || "") : "",
+    responsable_phone: v.address ? (ZONES.find(z => v.address?.includes(z.name))?.phone || "") : "",
+  })));
+
+  const [showModal, setShowModal]   = useState(false);
   const [showDetail, setShowDetail] = useState(null);
   const [showFollowup, setShowFollowup] = useState(false);
-  const [editing, setEditing] = useState(null);
-  const [form, setForm] = useState({ first_name: "", last_name: "", phone: "", email: "", address: "", source: "", notes: "" });
+  const [editing, setEditing]   = useState(null);
+  const [dupWarning, setDupWarning] = useState(null);
+  const [zoneMatch, setZoneMatch]   = useState(null);
+  const [livedup, setLivedup]       = useState(null); // real-time dup while typing
+  const [viewMode, setViewMode]     = useState("list"); // "list" | "zones"
+  const [filterZone, setFilterZone] = useState("all");
+  const [filterStatus, setFilterStatus] = useState("all");
+  const [search, setSearch]         = useState("");
+
+  const emptyForm = { first_name: "", last_name: "", phone: "", email: "", address: "", zone: "", source: "", notes: "" };
+  const [form, setForm]         = useState(emptyForm);
   const [followForm, setFollowForm] = useState({ type: "Appel téléphonique", notes: "", next_date: "" });
-  const statusMap = { nouveau: { label: "Nouveau", variant: "info" }, suivi: { label: "En suivi", variant: "warning" }, regulier: { label: "Régulier", variant: "purple" }, converti: { label: "Converti", variant: "success" } };
+
+  const statusMap = {
+    nouveau:  { label: "Nouveau",    variant: "info"    },
+    suivi:    { label: "En suivi",   variant: "warning" },
+    regulier: { label: "Régulier",   variant: "purple"  },
+    converti: { label: "Converti",   variant: "success" },
+  };
   const statusFlow = ["nouveau", "suivi", "regulier", "converti"];
 
-  const handleSave = () => {
-    if (editing) { setVisitors(prev => prev.map(v => v.id === editing.id ? {...v, ...form} : v)); }
-    else { setVisitors(prev => [...prev, { ...form, id: Date.now(), visit_date: new Date().toISOString().split("T")[0], status: "nouveau", followups: [] }]); }
-    setShowModal(false); setEditing(null);
+  // ── Real-time duplicate check while typing ──
+  const checkDuplicateRT = (f) => {
+    const nameLower = `${f.first_name} ${f.last_name}`.toLowerCase().trim();
+    const phoneCleaned = f.phone?.replace(/\s/g, "");
+    if (!nameLower && !phoneCleaned) return [];
+    return visitors.filter(v => {
+      if (editing && v.id === editing.id) return false;
+      const vName = `${v.first_name} ${v.last_name}`.toLowerCase().trim();
+      const vPhone = v.phone?.replace(/\s/g, "");
+      return (nameLower.length > 4 && vName === nameLower) || (phoneCleaned?.length > 7 && vPhone === phoneCleaned);
+    });
   };
+
+  const handleFormChange = (field, value) => {
+    const newForm = { ...form, [field]: value };
+    setForm(newForm);
+    const dups = checkDuplicateRT(newForm);
+    setLivedup(dups.length > 0 ? dups : null);
+  };
+
+  const handleAddressChange = (address) => {
+    const newForm = { ...form, address };
+    const zone = ZONES.find(z => address.toLowerCase().includes(z.name.toLowerCase()));
+    if (zone) { newForm.zone = zone.name; setZoneMatch(zone); }
+    else setZoneMatch(null);
+    setForm(newForm);
+  };
+
+  const handleSave = (force = false) => {
+    if (!form.first_name.trim()) return;
+    if (livedup?.length > 0 && !force) { setDupWarning(livedup); return; }
+    setDupWarning(null);
+    const zone = ZONES.find(z => z.name === form.zone) || getZoneFor(form.address);
+    const payload = {
+      ...form,
+      zone: zone?.name || form.zone || "Autre",
+      responsable_suivi: zone?.responsable || "",
+      responsable_phone: zone?.phone || "",
+    };
+    if (editing) {
+      const updated = { ...editing, ...payload };
+      setVisitors(prev => prev.map(v => v.id === editing.id ? updated : v));
+      if (showDetail?.id === editing.id) setShowDetail(updated);
+    } else {
+      setVisitors(prev => [...prev, { ...payload, id: Date.now(), visit_date: new Date().toISOString().split("T")[0], status: "nouveau", followups: [] }]);
+    }
+    setShowModal(false); setEditing(null); setDupWarning(null); setZoneMatch(null); setLivedup(null);
+    setForm(emptyForm);
+  };
+
   const addFollowup = () => {
     if (!showDetail) return;
-    setVisitors(prev => prev.map(v => v.id === showDetail.id ? {...v, followups: [...(v.followups||[]), { ...followForm, date: new Date().toISOString().split("T")[0], id: Date.now() }]} : v));
-    setShowDetail(prev => ({...prev, followups: [...(prev.followups||[]), { ...followForm, date: new Date().toISOString().split("T")[0], id: Date.now() }]}));
+    const updated = { ...showDetail, followups: [...(showDetail.followups||[]), { ...followForm, date: new Date().toISOString().split("T")[0], id: Date.now() }] };
+    setVisitors(prev => prev.map(v => v.id === showDetail.id ? updated : v));
+    setShowDetail(updated);
     setShowFollowup(false); setFollowForm({ type: "Appel téléphonique", notes: "", next_date: "" });
   };
 
+  const openNew = () => { setEditing(null); setForm(emptyForm); setDupWarning(null); setZoneMatch(null); setLivedup(null); setShowModal(true); };
+  const openEdit = (v) => { setEditing(v); setForm({ ...v }); setDupWarning(null); setZoneMatch(null); setLivedup(null); setShowModal(true); };
+
+  // Filtered list
+  const filtered = visitors.filter(v => {
+    const matchSearch = !search || `${v.first_name} ${v.last_name} ${v.phone}`.toLowerCase().includes(search.toLowerCase());
+    const matchZone = filterZone === "all" || v.zone === filterZone;
+    const matchStatus = filterStatus === "all" || v.status === filterStatus;
+    return matchSearch && matchZone && matchStatus;
+  });
+
   return (
     <div>
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <div><h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Fiche Visiteur et Suivi</h2>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{visitors.length} visiteurs · {visitors.filter(v=>v.status==="converti").length} convertis</p></div>
-        <Btn icon={Plus} onClick={() => { setEditing(null); setForm({ first_name: "", last_name: "", phone: "", email: "", address: "", source: "", notes: "" }); setShowModal(true); }}>Nouveau visiteur</Btn>
-      </div>
-
-      <div style={{ display: "grid", gridTemplateColumns: showDetail ? "1fr 1fr" : "repeat(auto-fill, minmax(320px, 1fr))", gap: 16 }}>
-        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-          {visitors.map(v => (
-            <div key={v.id} onClick={() => setShowDetail(v)} style={{ background: "#fff", borderRadius: 14, padding: 18, border: showDetail?.id === v.id ? "2px solid #0d9488" : "1px solid #f1f5f9", cursor: "pointer", transition: "all 0.15s" }}>
-              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                  <Avatar name={v.first_name} size={36} color="#3b82f6" />
-                  <div>
-                    <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{v.first_name} {v.last_name}</p>
-                    <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{v.phone} · {new Date(v.visit_date).toLocaleDateString("fr")}</p>
-                  </div>
-                </div>
-                <Badge variant={statusMap[v.status]?.variant}>{statusMap[v.status]?.label}</Badge>
-              </div>
-            </div>
-          ))}
+      {/* Header */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 20, flexWrap: "wrap", gap: 12 }}>
+        <div>
+          <h2 style={{ fontSize: 24, fontWeight: 800, color: DS.slate900, margin: 0, letterSpacing: "-0.5px" }}>Visiteurs & Suivi</h2>
+          <p style={{ fontSize: 13, color: DS.slate400, margin: "4px 0 0", fontWeight: 500 }}>
+            {visitors.length} visiteurs · {visitors.filter(v => v.status === "converti").length} convertis · {visitors.filter(v => v.responsable_suivi).length} assignés à un responsable de zone
+          </p>
         </div>
-
-        {/* Detail panel */}
-        {showDetail && (
-          <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", padding: 24, position: "sticky", top: 20 }}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 20 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                <Avatar name={showDetail.first_name} size={48} color="#3b82f6" />
-                <div>
-                  <h3 style={{ margin: 0, fontSize: 18, fontWeight: 800, color: "#0f172a" }}>{showDetail.first_name} {showDetail.last_name}</h3>
-                  <Badge variant={statusMap[showDetail.status]?.variant}>{statusMap[showDetail.status]?.label}</Badge>
-                </div>
-              </div>
-              <div style={{ display: "flex", gap: 4 }}>
-                <Btn variant="ghost" size="sm" icon={Edit} onClick={() => { setEditing(showDetail); setForm({...showDetail}); setShowModal(true); }} />
-                <Btn variant="ghost" size="sm" icon={X} onClick={() => setShowDetail(null)} />
-              </div>
-            </div>
-
-            {/* Status change */}
-            <FormField label="Changer le statut">
-              <select style={selectStyle} value={showDetail.status} onChange={e => { const ns = e.target.value; setVisitors(prev => prev.map(v => v.id === showDetail.id ? {...v, status: ns} : v)); setShowDetail(prev => ({...prev, status: ns})); }}>
-                {statusFlow.map(s => <option key={s} value={s}>{statusMap[s]?.label}</option>)}
-              </select>
-            </FormField>
-            <p style={{ fontSize: 10, color: "#94a3b8", margin: "-8px 0 12px" }}>Nouveau → En suivi → Régulier → Converti</p>
-
-            {/* Infos */}
-            <div style={{ display: "flex", flexDirection: "column", gap: 8, marginBottom: 16, padding: 14, background: "#f8fafc", borderRadius: 10 }}>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#475569" }}><Phone size={12} />{showDetail.phone || "—"}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#475569" }}><Mail size={12} />{showDetail.email || "—"}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#475569" }}><MapPin size={12} />{showDetail.address || "—"}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#475569" }}><Calendar size={12} />Première visite : {showDetail.visit_date ? new Date(showDetail.visit_date).toLocaleDateString("fr") : "Inconnue"}</div>
-              <div style={{ display: "flex", alignItems: "center", gap: 6, fontSize: 12, color: "#475569" }}><Users size={12} />Source : {showDetail.source || "—"}</div>
-            </div>
-            {showDetail.notes && <p style={{ padding: 12, background: "#fffbeb", borderRadius: 8, fontSize: 12, color: "#92400e", margin: "0 0 16px" }}>📝 {showDetail.notes}</p>}
-
-            {/* Followup history */}
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
-              <h4 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>Historique de suivi ({(showDetail.followups||[]).length})</h4>
-              <Btn size="sm" icon={Plus} onClick={() => setShowFollowup(true)}>Ajouter</Btn>
-            </div>
-            {(showDetail.followups||[]).length === 0 && <p style={{ fontSize: 12, color: "#94a3b8", fontStyle: "italic" }}>Aucune action de suivi enregistrée</p>}
-            {(showDetail.followups||[]).map(f => (
-              <div key={f.id} style={{ padding: 10, borderLeft: "3px solid #0d9488", background: "#f8fafc", borderRadius: "0 8px 8px 0", marginBottom: 6 }}>
-                <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11 }}>
-                  <span style={{ fontWeight: 700, color: "#0d9488" }}>{f.type}</span>
-                  <span style={{ color: "#94a3b8" }}>{f.date}</span>
-                </div>
-                {f.notes && <p style={{ margin: "4px 0 0", fontSize: 11, color: "#475569" }}>{f.notes}</p>}
-                {f.next_date && <p style={{ margin: "2px 0 0", fontSize: 10, color: "#f59e0b" }}>Prochaine action : {f.next_date}</p>}
-              </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          <div style={{ display: "flex", background: DS.slate100, borderRadius: 10, padding: 3, border: `1px solid ${DS.slate200}` }}>
+            {[{k:"list",l:"📋 Liste"},{k:"zones",l:"🗺️ Zones"}].map(m => (
+              <button key={m.k} onClick={() => setViewMode(m.k)} style={{
+                padding: "7px 14px", borderRadius: 8, border: "none", cursor: "pointer", fontSize: 12, fontWeight: 600,
+                background: viewMode === m.k ? "#fff" : "transparent",
+                color: viewMode === m.k ? DS.slate900 : DS.slate400,
+                boxShadow: viewMode === m.k ? DS.shadowSm : "none", transition: "all 0.18s",
+              }}>{m.l}</button>
             ))}
           </div>
-        )}
+          <Btn icon={Plus} onClick={openNew}>Nouveau visiteur</Btn>
+        </div>
       </div>
 
-      {/* New/Edit visitor modal */}
-      <Modal open={showModal} onClose={() => { setShowModal(false); setEditing(null); }} title={editing ? "Modifier le visiteur" : "Nouveau visiteur"}>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16 }}>
-          <FormField label="Prénom *"><input style={inputStyle} value={form.first_name} onChange={e => setForm({...form, first_name: e.target.value})} /></FormField>
-          <FormField label="Nom *"><input style={inputStyle} value={form.last_name} onChange={e => setForm({...form, last_name: e.target.value})} /></FormField>
-          <FormField label="Téléphone"><input style={inputStyle} value={form.phone} onChange={e => setForm({...form, phone: e.target.value})} /></FormField>
-          <FormField label="Email"><input style={inputStyle} value={form.email} onChange={e => setForm({...form, email: e.target.value})} /></FormField>
+      {/* Stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 10, marginBottom: 18 }}>
+        {["nouveau","suivi","regulier","converti"].map(s => {
+          const count = visitors.filter(v => v.status === s).length;
+          const colors = { nouveau: "#3b82f6", suivi: "#f59e0b", regulier: "#8b5cf6", converti: "#10b981" };
+          const labels = { nouveau: "Nouveaux", suivi: "En suivi", regulier: "Réguliers", converti: "Convertis" };
+          return (
+            <div key={s} onClick={() => setFilterStatus(filterStatus === s ? "all" : s)} style={{
+              background: "#fff", borderRadius: DS.r12, padding: "14px 16px",
+              border: filterStatus === s ? `2px solid ${colors[s]}` : `1px solid ${DS.slate100}`,
+              boxShadow: DS.shadowSm, borderTop: `3px solid ${colors[s]}`,
+              cursor: "pointer", transition: "all 0.18s",
+            }}>
+              <div style={{ fontSize: 22, fontWeight: 900, color: colors[s] }}>{count}</div>
+              <div style={{ fontSize: 11, color: DS.slate400, fontWeight: 600, textTransform: "uppercase", letterSpacing: "0.5px" }}>{labels[s]}</div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* ── VUE ZONES ── */}
+      {viewMode === "zones" && (
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 14 }}>
+          {ZONES.map(z => {
+            const zVisitors = visitors.filter(v => v.zone === z.name);
+            const convertis = zVisitors.filter(v => v.status === "converti").length;
+            return (
+              <div key={z.name} onClick={() => { setViewMode("list"); setFilterZone(z.name); }} style={{
+                background: "#fff", borderRadius: DS.r16, padding: 20,
+                border: `1px solid ${DS.slate100}`, boxShadow: DS.shadowSm,
+                borderLeft: `4px solid ${z.color}`, cursor: "pointer", transition: "all 0.2s",
+              }}
+                onMouseEnter={e => { e.currentTarget.style.boxShadow = DS.shadowMd; e.currentTarget.style.transform = "translateY(-2px)"; }}
+                onMouseLeave={e => { e.currentTarget.style.boxShadow = DS.shadowSm; e.currentTarget.style.transform = "translateY(0)"; }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 12 }}>
+                  <div>
+                    <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: DS.slate900 }}>{z.name}</h3>
+                    <p style={{ margin: 0, fontSize: 11, color: DS.slate400 }}>{zVisitors.length} visiteur{zVisitors.length > 1 ? "s" : ""}</p>
+                  </div>
+                  <div style={{ width: 40, height: 40, borderRadius: 12, background: `${z.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                    <MapPin size={18} color={z.color} />
+                  </div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "9px 12px", background: `${z.color}08`, borderRadius: 10, border: `1px solid ${z.color}20`, marginBottom: 10 }}>
+                  <Avatar name={z.responsable} size={28} color={z.color} />
+                  <div>
+                    <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: DS.slate900 }}>{z.responsable}</p>
+                    <p style={{ margin: 0, fontSize: 10, color: DS.slate400 }}>Responsable · {z.phone}</p>
+                  </div>
+                </div>
+                <div style={{ display: "flex", gap: 8 }}>
+                  <div style={{ flex: 1, textAlign: "center", padding: "6px 0", background: DS.slate50, borderRadius: 8 }}>
+                    <div style={{ fontSize: 16, fontWeight: 900, color: z.color }}>{zVisitors.length}</div>
+                    <div style={{ fontSize: 9, color: DS.slate400, textTransform: "uppercase", letterSpacing: "0.5px" }}>Total</div>
+                  </div>
+                  <div style={{ flex: 1, textAlign: "center", padding: "6px 0", background: "#f0fdf4", borderRadius: 8 }}>
+                    <div style={{ fontSize: 16, fontWeight: 900, color: "#10b981" }}>{convertis}</div>
+                    <div style={{ fontSize: 9, color: DS.slate400, textTransform: "uppercase", letterSpacing: "0.5px" }}>Convertis</div>
+                  </div>
+                  <div style={{ flex: 1, textAlign: "center", padding: "6px 0", background: "#fffbeb", borderRadius: 8 }}>
+                    <div style={{ fontSize: 16, fontWeight: 900, color: "#f59e0b" }}>{zVisitors.filter(v => v.status === "suivi").length}</div>
+                    <div style={{ fontSize: 9, color: DS.slate400, textTransform: "uppercase", letterSpacing: "0.5px" }}>En suivi</div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
-        <FormField label="Adresse"><input style={inputStyle} value={form.address} onChange={e => setForm({...form, address: e.target.value})} /></FormField>
-        <FormField label="Source / Comment nous a-t-il connu ?">
-          <select style={selectStyle} value={form.source} onChange={e => setForm({...form, source: e.target.value})}>
-            <option value="">— Sélectionner —</option>
-            <option value="Bouche à oreille">Bouche à oreille</option>
-            <option value="Invitation d'un membre">Invitation d'un membre</option>
-            <option value="Réseaux sociaux">Réseaux sociaux</option>
-            <option value="Événement">Événement</option>
-            <option value="Passage devant l'église">Passage devant l'église</option>
-            <option value="Autre">Autre</option>
+      )}
+
+      {/* ── VUE LISTE ── */}
+      {viewMode === "list" && (
+        <>
+          {/* Filters */}
+          <div style={{ display: "flex", gap: 10, marginBottom: 16, flexWrap: "wrap" }}>
+            <div style={{ flex: 1, minWidth: 180, position: "relative" }}>
+              <Search size={14} color={DS.slate400} style={{ position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)" }} />
+              <input value={search} onChange={e => setSearch(e.target.value)} placeholder="Rechercher un visiteur..."
+                style={{ ...inputStyle, paddingLeft: 34 }} />
+            </div>
+            <select style={{ ...selectStyle, width: 160 }} value={filterZone} onChange={e => setFilterZone(e.target.value)}>
+              <option value="all">Toutes les zones</option>
+              {ZONES.map(z => <option key={z.name} value={z.name}>{z.name}</option>)}
+            </select>
+            <select style={{ ...selectStyle, width: 140 }} value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
+              <option value="all">Tous les statuts</option>
+              {statusFlow.map(s => <option key={s} value={s}>{statusMap[s].label}</option>)}
+            </select>
+            {(filterZone !== "all" || filterStatus !== "all" || search) && (
+              <Btn variant="secondary" size="sm" onClick={() => { setFilterZone("all"); setFilterStatus("all"); setSearch(""); }}>
+                Réinitialiser
+              </Btn>
+            )}
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: showDetail ? "1fr 1fr" : "repeat(auto-fill, minmax(300px, 1fr))", gap: 14 }}>
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {filtered.length === 0 && <EmptyState icon={UserPlus} title="Aucun visiteur trouvé" description="Modifiez vos filtres ou ajoutez un nouveau visiteur" />}
+              {filtered.map(v => {
+                const zone = ZONES.find(z => z.name === v.zone);
+                return (
+                  <div key={v.id} onClick={() => setShowDetail(v)} style={{
+                    background: "#fff", borderRadius: 14, padding: 16,
+                    border: showDetail?.id === v.id ? `2px solid #0d9488` : `1px solid ${DS.slate100}`,
+                    cursor: "pointer", transition: "all 0.15s", boxShadow: DS.shadowSm,
+                  }}
+                    onMouseEnter={e => { e.currentTarget.style.boxShadow = DS.shadowMd; e.currentTarget.style.transform = "translateY(-1px)"; }}
+                    onMouseLeave={e => { e.currentTarget.style.boxShadow = DS.shadowSm; e.currentTarget.style.transform = "translateY(0)"; }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                        <Avatar name={v.first_name} size={38} color={zone?.color || "#3b82f6"} />
+                        <div>
+                          <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: DS.slate900 }}>{v.first_name} {v.last_name}</p>
+                          <p style={{ margin: 0, fontSize: 11, color: DS.slate400 }}>{v.phone} · {new Date(v.visit_date).toLocaleDateString("fr")}</p>
+                        </div>
+                      </div>
+                      <Badge variant={statusMap[v.status]?.variant}>{statusMap[v.status]?.label}</Badge>
+                    </div>
+                    {v.zone && (
+                      <div style={{ marginTop: 10, display: "flex", alignItems: "center", gap: 8, padding: "7px 10px", background: `${zone?.color || "#0d9488"}08`, borderRadius: 8, border: `1px solid ${zone?.color || "#0d9488"}20` }}>
+                        <MapPin size={12} color={zone?.color || "#0d9488"} />
+                        <span style={{ fontSize: 11, fontWeight: 700, color: zone?.color || "#0d9488" }}>{v.zone}</span>
+                        {v.responsable_suivi && (
+                          <>
+                            <span style={{ color: DS.slate200 }}>·</span>
+                            <span style={{ fontSize: 11, color: DS.slate600 }}>Suivi : <strong>{v.responsable_suivi}</strong></span>
+                          </>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+            {/* Detail panel */}
+            {showDetail && (
+              <div style={{ background: "#fff", borderRadius: 16, border: `1px solid ${DS.slate100}`, padding: 24, position: "sticky", top: 20, boxShadow: DS.shadowMd, maxHeight: "82vh", overflowY: "auto" }}>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 18 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <Avatar name={showDetail.first_name} size={48} color={ZONES.find(z => z.name === showDetail.zone)?.color || "#3b82f6"} />
+                    <div>
+                      <h3 style={{ margin: 0, fontSize: 17, fontWeight: 800, color: DS.slate900, letterSpacing: "-0.3px" }}>{showDetail.first_name} {showDetail.last_name}</h3>
+                      <Badge variant={statusMap[showDetail.status]?.variant}>{statusMap[showDetail.status]?.label}</Badge>
+                    </div>
+                  </div>
+                  <div style={{ display: "flex", gap: 4 }}>
+                    <Btn variant="ghost" size="sm" icon={Edit} onClick={() => openEdit(showDetail)} />
+                    <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer ${showDetail.first_name} ?`)) { setVisitors(prev => prev.filter(v => v.id !== showDetail.id)); setShowDetail(null); } }} />
+                    <Btn variant="ghost" size="sm" icon={X} onClick={() => setShowDetail(null)} />
+                  </div>
+                </div>
+
+                {/* Zone assignment card */}
+                {showDetail.zone && (() => {
+                  const z = ZONES.find(zz => zz.name === showDetail.zone);
+                  return (
+                    <div style={{ padding: "14px 16px", background: `linear-gradient(135deg, ${z?.color || "#0d9488"}12, ${z?.color || "#0d9488"}06)`, borderRadius: 14, border: `1px solid ${z?.color || "#0d9488"}30`, marginBottom: 16 }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 10 }}>
+                        <MapPin size={14} color={z?.color || "#0d9488"} />
+                        <span style={{ fontSize: 13, fontWeight: 800, color: z?.color || "#0d9488" }}>Zone : {showDetail.zone}</span>
+                      </div>
+                      {showDetail.responsable_suivi && (
+                        <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                          <Avatar name={showDetail.responsable_suivi} size={34} color={z?.color || "#0d9488"} />
+                          <div>
+                            <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: DS.slate900 }}>{showDetail.responsable_suivi}</p>
+                            <p style={{ margin: 0, fontSize: 11, color: DS.slate400 }}>Responsable de zone · {showDetail.responsable_phone}</p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+                  );
+                })()}
+
+                <FormField label="Changer le statut">
+                  <select style={selectStyle} value={showDetail.status} onChange={e => {
+                    const updated = { ...showDetail, status: e.target.value };
+                    setVisitors(prev => prev.map(v => v.id === showDetail.id ? updated : v));
+                    setShowDetail(updated);
+                  }}>
+                    {statusFlow.map(s => <option key={s} value={s}>{statusMap[s]?.label}</option>)}
+                  </select>
+                </FormField>
+
+                <div style={{ display: "flex", flexDirection: "column", gap: 7, marginBottom: 14, padding: 12, background: DS.slate50, borderRadius: 10 }}>
+                  {[
+                    [Phone, showDetail.phone || "—"],
+                    [Mail,  showDetail.email || "—"],
+                    [MapPin, showDetail.address || "—"],
+                    [Calendar, `Visite : ${showDetail.visit_date ? new Date(showDetail.visit_date).toLocaleDateString("fr") : "—"}`],
+                    [Users, `Source : ${showDetail.source || "—"}`],
+                  ].map(([Icon, text], i) => (
+                    <div key={i} style={{ display: "flex", alignItems: "center", gap: 7, fontSize: 12, color: DS.slate600 }}>
+                      <Icon size={12} color={DS.slate400} />{text}
+                    </div>
+                  ))}
+                </div>
+
+                {showDetail.notes && <p style={{ padding: "10px 12px", background: "#fffbeb", borderRadius: 9, fontSize: 12, color: "#92400e", margin: "0 0 14px", lineHeight: 1.5, border: "1px solid #fef3c7" }}>📝 {showDetail.notes}</p>}
+
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 10 }}>
+                  <h4 style={{ margin: 0, fontSize: 13, fontWeight: 800, color: DS.slate900 }}>Actions de suivi ({(showDetail.followups||[]).length})</h4>
+                  <Btn size="sm" icon={Plus} onClick={() => setShowFollowup(true)}>Ajouter</Btn>
+                </div>
+                {(showDetail.followups||[]).length === 0 && <p style={{ fontSize: 12, color: DS.slate400, fontStyle: "italic" }}>Aucune action enregistrée</p>}
+                {(showDetail.followups||[]).map(f => (
+                  <div key={f.id} style={{ padding: 10, borderLeft: "3px solid #0d9488", background: DS.slate50, borderRadius: "0 9px 9px 0", marginBottom: 7 }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", fontSize: 11 }}>
+                      <span style={{ fontWeight: 700, color: "#0d9488" }}>{f.type}</span>
+                      <span style={{ color: DS.slate400 }}>{f.date}</span>
+                    </div>
+                    {f.notes && <p style={{ margin: "4px 0 0", fontSize: 11, color: DS.slate600 }}>{f.notes}</p>}
+                    {f.next_date && <p style={{ margin: "3px 0 0", fontSize: 10, color: "#d97706", fontWeight: 600 }}>⏰ Prochaine action : {f.next_date}</p>}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </>
+      )}
+
+      {/* ── MODAL NOUVEAU/MODIFIER VISITEUR ── */}
+      <Modal open={showModal} onClose={() => { setShowModal(false); setEditing(null); setDupWarning(null); setZoneMatch(null); setLivedup(null); }} title={editing ? "Modifier le visiteur" : "Nouveau visiteur"}>
+
+        {/* LIVE duplicate alert — shown while typing */}
+        {livedup && livedup.length > 0 && !dupWarning && (
+          <div style={{ padding: "12px 14px", background: "#fef9c3", border: "2px solid #fde047", borderRadius: 12, marginBottom: 16, display: "flex", gap: 10, alignItems: "flex-start" }}>
+            <span style={{ fontSize: 18, flexShrink: 0 }}>⚠️</span>
+            <div style={{ flex: 1 }}>
+              <p style={{ margin: "0 0 6px", fontSize: 13, fontWeight: 800, color: "#92400e" }}>Visiteur potentiellement déjà enregistré</p>
+              {livedup.map(d => (
+                <div key={d.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 0", borderBottom: "1px solid #fde68a" }}>
+                  <Avatar name={d.first_name} size={24} color="#d97706" />
+                  <div>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: "#92400e" }}>{d.first_name} {d.last_name}</span>
+                    <span style={{ fontSize: 11, color: "#a16207", marginLeft: 8 }}>{d.phone} · visité le {new Date(d.visit_date).toLocaleDateString("fr")}</span>
+                  </div>
+                  <Badge variant="warning">{statusMap[d.status]?.label}</Badge>
+                </div>
+              ))}
+              <p style={{ margin: "8px 0 0", fontSize: 11, color: "#92400e", fontStyle: "italic" }}>Vérifiez si c'est la même personne avant d'enregistrer.</p>
+            </div>
+          </div>
+        )}
+
+        {/* SAVE-time duplicate confirmation */}
+        {dupWarning && dupWarning.length > 0 && (
+          <div style={{ padding: "14px 16px", background: "#fff1f2", border: "2px solid #fda4af", borderRadius: 12, marginBottom: 16 }}>
+            <p style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 800, color: "#be123c" }}>🚫 Ce visiteur semble déjà exister. Que voulez-vous faire ?</p>
+            {dupWarning.map(d => (
+              <div key={d.id} style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 0" }}>
+                <Avatar name={d.first_name} size={28} color="#e11d48" />
+                <div>
+                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#be123c" }}>{d.first_name} {d.last_name}</p>
+                  <p style={{ margin: 0, fontSize: 11, color: "#9f1239" }}>{d.phone} · Zone : {d.zone} · {statusMap[d.status]?.label}</p>
+                </div>
+              </div>
+            ))}
+            <div style={{ display: "flex", gap: 8, marginTop: 12 }}>
+              <Btn size="sm" variant="secondary" onClick={() => setDupWarning(null)}>← Corriger les infos</Btn>
+              <Btn size="sm" variant="danger" onClick={() => handleSave(true)}>Ajouter quand même</Btn>
+            </div>
+          </div>
+        )}
+
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+          <FormField label="Prénom *"><input style={inputStyle} value={form.first_name} onChange={e => handleFormChange("first_name", e.target.value)} /></FormField>
+          <FormField label="Nom *"><input style={inputStyle} value={form.last_name} onChange={e => handleFormChange("last_name", e.target.value)} /></FormField>
+          <FormField label="Téléphone"><input style={inputStyle} value={form.phone} onChange={e => handleFormChange("phone", e.target.value)} placeholder="+225 07 00 00 00" /></FormField>
+          <FormField label="Email"><input style={inputStyle} type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></FormField>
+        </div>
+
+        <FormField label="Adresse / Quartier">
+          <input style={inputStyle} value={form.address} onChange={e => handleAddressChange(e.target.value)} placeholder="Ex: Cocody Angré, Yopougon Selmer, Marcory Zone 4..." />
+        </FormField>
+
+        {/* Zone auto-match feedback */}
+        {zoneMatch ? (
+          <div style={{ padding: "12px 14px", background: "linear-gradient(135deg, #f0fdfa, #ccfbf1)", borderRadius: 12, border: `2px solid ${zoneMatch.color}40`, marginTop: -8, marginBottom: 14, display: "flex", alignItems: "center", gap: 12 }}>
+            <div style={{ width: 36, height: 36, borderRadius: 10, background: `${zoneMatch.color}15`, display: "flex", alignItems: "center", justifyContent: "center" }}>
+              <MapPin size={16} color={zoneMatch.color} />
+            </div>
+            <div style={{ flex: 1 }}>
+              <p style={{ margin: 0, fontSize: 12, fontWeight: 800, color: zoneMatch.color }}>✓ Zone détectée : {zoneMatch.name}</p>
+              <p style={{ margin: 0, fontSize: 11, color: DS.slate600 }}>Responsable assigné automatiquement : <strong>{zoneMatch.responsable}</strong> ({zoneMatch.phone})</p>
+            </div>
+          </div>
+        ) : form.address ? (
+          <div style={{ padding: "10px 14px", background: "#fffbeb", borderRadius: 10, border: "1px solid #fde68a", marginTop: -8, marginBottom: 14 }}>
+            <p style={{ margin: 0, fontSize: 11, color: "#92400e" }}>Zone non reconnue automatiquement — sélectionnez manuellement ci-dessous.</p>
+          </div>
+        ) : null}
+
+        <FormField label="Zone de résidence">
+          <select style={selectStyle} value={form.zone} onChange={e => {
+            const z = ZONES.find(z => z.name === e.target.value);
+            setForm(f => ({ ...f, zone: e.target.value }));
+            setZoneMatch(z || null);
+          }}>
+            <option value="">— Sélectionner une zone —</option>
+            {ZONES.map(z => <option key={z.name} value={z.name}>{z.name} → Resp: {z.responsable}</option>)}
           </select>
         </FormField>
-        <FormField label="Notes"><textarea style={{...inputStyle, minHeight: 60, resize: "vertical"}} value={form.notes} onChange={e => setForm({...form, notes: e.target.value})} /></FormField>
+
+        <FormField label="Source / Comment nous a-t-il connu ?">
+          <select style={selectStyle} value={form.source} onChange={e => setForm({ ...form, source: e.target.value })}>
+            <option value="">— Sélectionner —</option>
+            {["Bouche à oreille","Invitation d'un membre","Réseaux sociaux","Événement","Passage devant l'église","Autre"].map(s => <option key={s}>{s}</option>)}
+          </select>
+        </FormField>
+
+        <FormField label="Notes"><textarea style={{ ...inputStyle, minHeight: 60, resize: "vertical" }} value={form.notes} onChange={e => setForm({ ...form, notes: e.target.value })} /></FormField>
+
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
-          <Btn variant="secondary" onClick={() => { setShowModal(false); setEditing(null); }}>Annuler</Btn>
-          <Btn onClick={handleSave}>{editing ? "Enregistrer" : "Ajouter"}</Btn>
+          <Btn variant="secondary" onClick={() => { setShowModal(false); setEditing(null); setDupWarning(null); setZoneMatch(null); setLivedup(null); }}>Annuler</Btn>
+          <Btn onClick={() => handleSave(false)} disabled={!form.first_name.trim()}
+            style={livedup?.length > 0 ? { background: "linear-gradient(135deg, #d97706, #b45309)" } : {}}>
+            {livedup?.length > 0 ? "⚠️ " : ""}{editing ? "Enregistrer" : "Ajouter le visiteur"}
+          </Btn>
         </div>
       </Modal>
 
       {/* Followup modal */}
       <Modal open={showFollowup} onClose={() => setShowFollowup(false)} title="Ajouter une action de suivi">
         <FormField label="Type d'action">
-          <select style={selectStyle} value={followForm.type} onChange={e => setFollowForm({...followForm, type: e.target.value})}>
-            <option>Appel téléphonique</option><option>Visite à domicile</option><option>Email</option><option>SMS</option><option>WhatsApp</option>
+          <select style={selectStyle} value={followForm.type} onChange={e => setFollowForm({ ...followForm, type: e.target.value })}>
+            {["Appel téléphonique","Visite à domicile","Email","SMS","WhatsApp","Rencontre en personne"].map(t => <option key={t}>{t}</option>)}
           </select>
         </FormField>
-        <FormField label="Notes / Commentaires"><textarea style={{...inputStyle, minHeight: 60, resize: "vertical"}} value={followForm.notes} onChange={e => setFollowForm({...followForm, notes: e.target.value})} /></FormField>
-        <FormField label="Prochaine action prévue (optionnel)"><input style={inputStyle} type="date" value={followForm.next_date} onChange={e => setFollowForm({...followForm, next_date: e.target.value})} /></FormField>
+        <FormField label="Notes"><textarea style={{ ...inputStyle, minHeight: 70, resize: "vertical" }} value={followForm.notes} onChange={e => setFollowForm({ ...followForm, notes: e.target.value })} /></FormField>
+        <FormField label="Prochaine action prévue (optionnel)"><input style={inputStyle} type="date" value={followForm.next_date} onChange={e => setFollowForm({ ...followForm, next_date: e.target.value })} /></FormField>
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
           <Btn variant="secondary" onClick={() => setShowFollowup(false)}>Annuler</Btn>
           <Btn onClick={addFollowup}>Enregistrer</Btn>
@@ -1156,13 +1652,23 @@ const VisitorsPage = () => {
     </div>
   );
 };
-
 // FINANCES PAGE
-const FinancesPage = () => {
+const FinancesPage = ({ userRole = "membre" }) => {
   const [tab, setTab] = useState("overview");
   const [period, setPeriod] = useState("month");
   const [showModal, setShowModal] = useState(false);
-  const [transactions, setTransactions] = useState(MOCK_FINANCES);
+  const canSeeDimes = ["pasteur", "tresorier", "super_admin"].includes(userRole);
+
+  // Filter transactions: hide dimes for non-authorized roles
+  const [allTransactions, setAllTransactions] = useState(MOCK_FINANCES);
+  const transactions = canSeeDimes ? allTransactions : allTransactions.filter(t => t.category !== "dimes");
+  const setTransactions = canSeeDimes
+    ? setAllTransactions
+    : (fn) => setAllTransactions(prev => {
+        const updated = typeof fn === "function" ? fn(prev) : fn;
+        return updated;
+      });
+
   const [form, setForm] = useState({ type: "entree", category: "dimes", subcategory: "", amount: "", description: "", method: "especes" });
 
   const totalEntrees = transactions.filter(t => t.type === "entree").reduce((s, t) => s + t.amount, 0);
@@ -1212,6 +1718,12 @@ const FinancesPage = () => {
 
   return (
     <div>
+      {!canSeeDimes && (
+        <div style={{ padding: "10px 16px", background: "#fef9c3", border: "1px solid #fde68a", borderRadius: 12, marginBottom: 16, display: "flex", alignItems: "center", gap: 10, fontSize: 12, color: "#92400e", fontWeight: 600 }}>
+          <Shield size={14} color="#d97706" />
+          Les dîmes sont masquées pour votre rôle. Seuls le pasteur et le trésorier peuvent les consulter.
+        </div>
+      )}
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24, flexWrap: "wrap", gap: 12 }}>
         <div>
           <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Finances</h2>
@@ -1326,7 +1838,8 @@ const FinancesPage = () => {
             <select style={selectStyle} value={form.category} onChange={e => setForm({ ...form, category: e.target.value, subcategory: "" })}>
               {form.type === "entree" ? (
                 <>
-                  <option value="dimes">Dîmes</option><option value="offrandes_culte">Offrandes culte</option>
+                  {canSeeDimes && <option value="dimes">Dîmes</option>}
+                  <option value="offrandes_culte">Offrandes culte</option>
                   <option value="offrandes_speciales">Offrandes spéciales</option><option value="dons">Dons</option>
                   <option value="quete">Quête</option><option value="projet_special">Projet spécial</option>
                 </>
@@ -1761,15 +2274,31 @@ const DepartmentsPage = () => {
             </div>
             <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 16px" }}>Responsable : {selectedDept.leader} · {selectedDept.members_count} membres</p>
             <h4 style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 700 }}>Membres du département</h4>
-            {(selectedDept.members||[]).map((m, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "8px 0", borderBottom: "1px solid #f8fafc" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                  <Avatar name={m} size={28} color={selectedDept.color} />
-                  <span style={{ fontSize: 13, color: "#0f172a" }}>{m}</span>
+            {(selectedDept.members||[]).map((mName, i) => {
+              const fullMember = MOCK_MEMBERS.find(m => `${m.first_name} ${m.last_name}` === mName || m.first_name === mName);
+              const pct = fullMember?.presence_pct || Math.floor(60 + Math.random() * 35);
+              const pColor = pct >= 80 ? "#10b981" : pct >= 50 ? "#f59e0b" : "#ef4444";
+              const lvl = fullMember?.quiz_points ? Math.floor(fullMember.quiz_points / 300) + 1 : 1;
+              const lvlNames = ["","Semeur","Berger","Serviteur","Leader","Apôtre"];
+              return (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 0", borderBottom: "1px solid #f8fafc" }}>
+                  <Avatar name={mName} size={30} color={selectedDept.color} />
+                  <div style={{ flex: 1 }}>
+                    <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: DS.slate900 }}>{mName}</p>
+                    <div style={{ display: "flex", align: "center", gap: 6, marginTop: 3 }}>
+                      <span style={{ fontSize: 10, color: DS.slate400 }}>Niv. {lvl} {lvlNames[Math.min(lvl,5)]}</span>
+                    </div>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: 13, fontWeight: 800, color: pColor }}>{pct}%</div>
+                    <div style={{ width: 50, height: 3, background: DS.slate100, borderRadius: 2, marginTop: 3, overflow: "hidden" }}>
+                      <div style={{ width: `${pct}%`, height: "100%", background: pColor, borderRadius: 2 }} />
+                    </div>
+                    <div style={{ fontSize: 9, color: DS.slate400, marginTop: 2 }}>présence</div>
+                  </div>
                 </div>
-                <Badge variant="success">Actif</Badge>
-              </div>
-            ))}
+              );
+            })}
             <div style={{ marginTop: 16 }}>
               <Btn variant="secondary" size="sm" icon={Download} onClick={() => {
                 const csv = `Département: ${selectedDept.name}\nResponsable: ${selectedDept.leader}\n\nMembres:\n` + (selectedDept.members||[]).map((m,i) => `${i+1}. ${m}`).join("\n");
@@ -1794,7 +2323,19 @@ const DepartmentsPage = () => {
 };
 
 // CULTES PAGE (Church Services) — with nominal attendance roll call
-const CultesPage = () => {
+const CultesPage = ({ userRole = "pasteur" }) => {
+  // Qui peut marquer les présences
+  const canMarkPresence = [
+    "pasteur","admin","super_admin","secretaire",
+    "responsable_dept","responsable_comite","responsable_groupe",
+    "responsable_adjoint_dept","responsable_adjoint_comite","responsable_adjoint_groupe"
+  ].includes(userRole);
+
+  // Département/groupe du responsable connecté (simulation)
+  const userDept = userRole === "responsable_dept" ? "Louange"
+    : userRole === "responsable_comite" ? "Comité d'organisation"
+    : userRole === "responsable_groupe" ? "Groupe Alpha"
+    : null; // null = voit tout (pasteur/admin/secrétaire)
   const [cultes, setCultes] = useState([
     { id: 1, date: "2026-03-22", type: "Culte dominical", hommes: 82, femmes: 95, jeunes: 28, enfants: 10, offrande: 180000, theme: "La foi qui déplace les montagnes", predicateur: "Pasteur Kouadio" },
     { id: 2, date: "2026-03-15", type: "Culte dominical", hommes: 75, femmes: 88, jeunes: 25, enfants: 10, offrande: 165000, theme: "Marcher dans la lumière", predicateur: "Pasteur Kouadio" },
@@ -1816,7 +2357,15 @@ const CultesPage = () => {
   const totalPres = (c) => (c.hommes||0) + (c.femmes||0) + (c.jeunes||0) + (c.enfants||0);
 
   const openAppel = () => {
-    setAppelList(MOCK_MEMBERS.map(m => ({ ...m, present: true })));
+    // Responsable sees only their dept/comité/groupe; pasteur/admin sees all
+    const members = userDept
+      ? MOCK_MEMBERS.filter(m =>
+          (m.departments||[m.department]).filter(Boolean).includes(userDept) ||
+          (m.committees||[]).includes(userDept) ||
+          (m.groups||[]).includes(userDept)
+        )
+      : MOCK_MEMBERS;
+    setAppelList(members.map(m => ({ ...m, present: true })));
     setAppelSearch("");
     setAppelDept("all");
     setShowAppelModal(true);
@@ -1899,6 +2448,22 @@ const CultesPage = () => {
 
       {/* APPEL NOMINAL MODAL */}
       <Modal open={showAppelModal} onClose={() => setShowAppelModal(false)} title="Appel nominal du culte" width={620}>
+
+        {/* Workflow scope banner */}
+        {userDept ? (
+          <div style={{ padding: "10px 14px", background: "linear-gradient(135deg, #eff6ff, #dbeafe)", borderRadius: 12, marginBottom: 14, border: "1px solid #bfdbfe", display: "flex", alignItems: "center", gap: 10 }}>
+            <Shield size={16} color="#2563eb" />
+            <div>
+              <p style={{ margin: 0, fontSize: 12, fontWeight: 800, color: "#1d4ed8" }}>Vue restreinte — {userDept}</p>
+              <p style={{ margin: 0, fontSize: 11, color: "#3b82f6" }}>Vous ne voyez que les membres de votre {userRole.includes("comite") ? "comité" : userRole.includes("groupe") ? "groupe" : "département"}.</p>
+            </div>
+          </div>
+        ) : (
+          <div style={{ padding: "10px 14px", background: "#f0fdfa", borderRadius: 12, marginBottom: 14, border: "1px solid #0d948820", display: "flex", alignItems: "center", gap: 10 }}>
+            <Users size={14} color="#0d9488" />
+            <p style={{ margin: 0, fontSize: 11, color: "#0d9488", fontWeight: 600 }}>Vue complète — tous les membres de l'église</p>
+          </div>
+        )}
         {/* Sticky header with counters */}
         <div style={{ padding: "14px 16px", background: "#f0fdfa", borderRadius: 12, marginBottom: 16, display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: 8 }}>
           <div style={{ display: "flex", gap: 16 }}>
@@ -2374,85 +2939,118 @@ const LoginPage = ({ onLogin, onRegister, onJoinChurch }) => {
     }, 800);
   };
 
+  const fieldStyle = {
+    width: "100%", padding: "13px 16px", borderRadius: 12,
+    border: "1.5px solid rgba(255,255,255,0.12)",
+    background: "rgba(255,255,255,0.06)", color: "#fff", fontSize: 14,
+    outline: "none", boxSizing: "border-box", transition: "border-color 0.2s",
+    fontFamily: "inherit",
+  };
+
   return (
     <div style={{
-      minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center",
-      background: "linear-gradient(135deg, #0f172a 0%, #134e4a 50%, #0f172a 100%)",
-      position: "relative", overflow: "hidden"
+      minHeight: "100vh", display: "flex", position: "relative", overflow: "hidden",
+      background: "linear-gradient(145deg, #040d0b 0%, #071a17 35%, #0a2e28 65%, #040d0b 100%)",
     }}>
-      <div style={{ position: "absolute", inset: 0, opacity: 0.03, backgroundImage: "url('data:image/svg+xml,...')", backgroundSize: "30px 30px" }} />
-      <div style={{ position: "absolute", top: "10%", left: "15%", width: 300, height: 300, borderRadius: "50%", background: "radial-gradient(circle, #0d948830, transparent)", filter: "blur(60px)" }} />
-      <div style={{ position: "absolute", bottom: "10%", right: "15%", width: 250, height: 250, borderRadius: "50%", background: "radial-gradient(circle, #3b82f620, transparent)", filter: "blur(60px)" }} />
+      {/* Geometric background pattern */}
+      <div style={{ position: "absolute", inset: 0, opacity: 0.04, backgroundImage: "repeating-linear-gradient(0deg, #0d9488 0px, transparent 1px, transparent 60px, #0d9488 60px), repeating-linear-gradient(90deg, #0d9488 0px, transparent 1px, transparent 60px, #0d9488 60px)", backgroundSize: "60px 60px" }} />
 
-      <div style={{
-        width: "90%", maxWidth: 420, background: "rgba(255,255,255,0.03)", borderRadius: 24,
-        backdropFilter: "blur(20px)", border: "1px solid rgba(255,255,255,0.08)",
-        padding: "48px 40px", boxShadow: "0 25px 50px rgba(0,0,0,0.3)", position: "relative", zIndex: 1
-      }}>
-        <div style={{ textAlign: "center", marginBottom: 36 }}>
-          <div style={{
-            width: 64, height: 64, borderRadius: 18, margin: "0 auto 16px",
-            background: "linear-gradient(135deg, #0d9488, #10b981)", display: "flex",
-            alignItems: "center", justifyContent: "center",
-            boxShadow: "0 8px 32px rgba(13,148,136,0.4)"
-          }}>
-            <Church size={32} color="#fff" />
+      {/* Glow orbs */}
+      <div style={{ position: "absolute", top: "8%", left: "12%", width: 400, height: 400, borderRadius: "50%", background: "radial-gradient(circle, rgba(13,148,136,0.15), transparent 70%)", filter: "blur(40px)" }} />
+      <div style={{ position: "absolute", bottom: "12%", right: "10%", width: 350, height: 350, borderRadius: "50%", background: "radial-gradient(circle, rgba(16,185,129,0.1), transparent 70%)", filter: "blur(50px)" }} />
+      <div style={{ position: "absolute", top: "50%", left: "50%", transform: "translate(-50%,-50%)", width: 600, height: 600, borderRadius: "50%", background: "radial-gradient(circle, rgba(13,148,136,0.05), transparent 60%)" }} />
+
+      {/* Left branding panel — only visible on large screens */}
+      <div style={{ flex: 1, display: "flex", flexDirection: "column", justifyContent: "center", padding: "60px 80px", maxWidth: 560, position: "relative", zIndex: 1 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 64 }}>
+          <div style={{ width: 48, height: 48, borderRadius: 14, background: "linear-gradient(145deg, #0d9488, #10b981)", display: "flex", alignItems: "center", justifyContent: "center", boxShadow: "0 8px 24px rgba(13,148,136,0.4)" }}>
+            <Church size={24} color="#fff" />
           </div>
-          <h1 style={{ fontSize: 24, fontWeight: 800, color: "#fff", margin: "0 0 6px", letterSpacing: "-0.5px" }}>
-            Lumen Church
-          </h1>
-          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.5)", margin: 0 }}>
-            Plateforme de gestion d'église
-          </p>
+          <span style={{ fontSize: 20, fontWeight: 800, color: "#fff", letterSpacing: "-0.3px" }}>Lumen Church</span>
         </div>
 
-        {error && (
-          <div style={{ padding: "10px 14px", background: "rgba(239,68,68,0.15)", border: "1px solid rgba(239,68,68,0.3)", borderRadius: 10, marginBottom: 16, display: "flex", alignItems: "center", gap: 8 }}>
-            <AlertCircle size={14} color="#ef4444" />
-            <span style={{ fontSize: 12, color: "#fca5a5" }}>{error}</span>
-          </div>
-        )}
+        <h2 style={{ fontSize: 42, fontWeight: 800, color: "#fff", margin: "0 0 20px", lineHeight: 1.15, letterSpacing: "-1px" }}>
+          Gérez votre église<br /><span style={{ color: "#2dd4bf" }}>avec clarté.</span>
+        </h2>
+        <p style={{ fontSize: 16, color: "rgba(255,255,255,0.45)", lineHeight: 1.7, margin: "0 0 48px", maxWidth: 380 }}>
+          Membres, finances, cultes, présences — tout ce dont votre communauté a besoin, dans une seule plateforme.
+        </p>
 
-        <div style={{ marginBottom: 18 }}>
-          <label style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 6 }}>Email</label>
-          <input value={email} onChange={e => { setEmail(e.target.value); setError(""); }} placeholder="votre@email.com"
-            onKeyDown={e => e.key === "Enter" && handleLogin()}
-            style={{
-              width: "100%", padding: "12px 16px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)",
-              background: "rgba(255,255,255,0.05)", color: "#fff", fontSize: 14, outline: "none",
-              boxSizing: "border-box"
-            }}
-          />
+        {/* Stats */}
+        <div style={{ display: "flex", gap: 32 }}>
+          {[["500+","Églises"], ["50k+","Membres gérés"], ["99.9%","Disponibilité"]].map(([val, lbl]) => (
+            <div key={lbl}>
+              <div style={{ fontSize: 24, fontWeight: 900, color: "#2dd4bf", letterSpacing: "-0.5px" }}>{val}</div>
+              <div style={{ fontSize: 12, color: "rgba(255,255,255,0.4)", marginTop: 2, fontWeight: 500 }}>{lbl}</div>
+            </div>
+          ))}
         </div>
-        <div style={{ marginBottom: 20 }}>
-          <label style={{ fontSize: 12, fontWeight: 600, color: "rgba(255,255,255,0.6)", display: "block", marginBottom: 6 }}>Mot de passe</label>
-          <input value={password} onChange={e => { setPassword(e.target.value); setError(""); }} type="password"
-            onKeyDown={e => e.key === "Enter" && handleLogin()}
-            style={{
-              width: "100%", padding: "12px 16px", borderRadius: 12, border: "1px solid rgba(255,255,255,0.1)",
-              background: "rgba(255,255,255,0.05)", color: "#fff", fontSize: 14, outline: "none",
-              boxSizing: "border-box"
-            }}
-          />
-        </div>
+      </div>
 
-        <button onClick={handleLogin} disabled={loading} style={{
-          width: "100%", padding: "14px", borderRadius: 12, border: "none",
-          background: "linear-gradient(135deg, #0d9488, #10b981)", color: "#fff",
-          fontSize: 15, fontWeight: 700, cursor: "pointer", transition: "all 0.2s",
-          boxShadow: "0 4px 15px rgba(13,148,136,0.4)", letterSpacing: "0.3px",
-          opacity: loading ? 0.7 : 1
+      {/* Right login card */}
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "center", flex: "0 0 480px", padding: "40px 40px", position: "relative", zIndex: 1 }}>
+        <div style={{
+          width: "100%", maxWidth: 420,
+          background: "rgba(255,255,255,0.04)",
+          borderRadius: 24, border: "1px solid rgba(255,255,255,0.1)",
+          padding: "44px 40px",
+          boxShadow: "0 32px 80px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.08)",
+          backdropFilter: "blur(24px)",
         }}>
-          {loading ? "Connexion..." : "Se connecter"}
-        </button>
+          <h3 style={{ fontSize: 24, fontWeight: 800, color: "#fff", margin: "0 0 6px", letterSpacing: "-0.4px" }}>Connexion</h3>
+          <p style={{ fontSize: 13, color: "rgba(255,255,255,0.4)", margin: "0 0 32px" }}>Accédez à votre espace de gestion</p>
 
+          {error && (
+            <div style={{ padding: "11px 14px", background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.25)", borderRadius: 10, marginBottom: 18, display: "flex", alignItems: "center", gap: 8 }}>
+              <AlertCircle size={14} color="#f87171" />
+              <span style={{ fontSize: 12, color: "#fca5a5", fontWeight: 500 }}>{error}</span>
+            </div>
+          )}
 
-        <p style={{ textAlign: "center", marginTop: 16, fontSize: 12, color: "rgba(255,255,255,0.35)" }}>
-          Pasteur / Admin ? <span onClick={onRegister} style={{ color: "#0d9488", cursor: "pointer", fontWeight: 600 }}>Inscrire mon église</span>
-        </p>
-        <p style={{ textAlign: "center", marginTop: 8, fontSize: 12, color: "rgba(255,255,255,0.35)" }}>
-          Membre ? <span onClick={onJoinChurch} style={{ color: "#3b82f6", cursor: "pointer", fontWeight: 600 }}>Rejoindre une église</span>
-        </p>
+          <div style={{ marginBottom: 16 }}>
+            <label style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", display: "block", marginBottom: 7, letterSpacing: "0.8px", textTransform: "uppercase" }}>Email</label>
+            <input value={email} onChange={e => { setEmail(e.target.value); setError(""); }}
+              placeholder="votre@email.com" onKeyDown={e => e.key === "Enter" && handleLogin()}
+              style={fieldStyle}
+              onFocus={e => e.target.style.borderColor = "rgba(13,148,136,0.7)"}
+              onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.12)"}
+            />
+          </div>
+          <div style={{ marginBottom: 28 }}>
+            <label style={{ fontSize: 11, fontWeight: 700, color: "rgba(255,255,255,0.5)", display: "block", marginBottom: 7, letterSpacing: "0.8px", textTransform: "uppercase" }}>Mot de passe</label>
+            <input value={password} onChange={e => { setPassword(e.target.value); setError(""); }}
+              type="password" onKeyDown={e => e.key === "Enter" && handleLogin()}
+              style={fieldStyle}
+              onFocus={e => e.target.style.borderColor = "rgba(13,148,136,0.7)"}
+              onBlur={e => e.target.style.borderColor = "rgba(255,255,255,0.12)"}
+            />
+          </div>
+
+          <button onClick={handleLogin} disabled={loading} style={{
+            width: "100%", padding: "14px", borderRadius: 13, border: "none",
+            background: "linear-gradient(135deg, #0d9488 0%, #059669 100%)",
+            color: "#fff", fontSize: 15, fontWeight: 700, cursor: loading ? "wait" : "pointer",
+            transition: "all 0.22s", letterSpacing: "0.2px",
+            boxShadow: "0 4px 20px rgba(13,148,136,0.45), inset 0 1px 0 rgba(255,255,255,0.2)",
+            opacity: loading ? 0.8 : 1,
+          }}
+            onMouseEnter={e => { if(!loading) { e.currentTarget.style.transform = "translateY(-1px)"; e.currentTarget.style.boxShadow = "0 8px 28px rgba(13,148,136,0.55), inset 0 1px 0 rgba(255,255,255,0.2)"; }}}
+            onMouseLeave={e => { e.currentTarget.style.transform = "translateY(0)"; e.currentTarget.style.boxShadow = "0 4px 20px rgba(13,148,136,0.45), inset 0 1px 0 rgba(255,255,255,0.2)"; }}
+          >
+            {loading ? "Connexion en cours..." : "Se connecter →"}
+          </button>
+
+          <div style={{ marginTop: 24, paddingTop: 24, borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+            <p style={{ textAlign: "center", fontSize: 13, color: "rgba(255,255,255,0.35)", margin: "0 0 8px" }}>
+              Pasteur / Admin ?{" "}
+              <span onClick={onRegister} style={{ color: "#2dd4bf", cursor: "pointer", fontWeight: 700 }}>Inscrire mon église</span>
+            </p>
+            <p style={{ textAlign: "center", fontSize: 13, color: "rgba(255,255,255,0.35)", margin: 0 }}>
+              Membre ?{" "}
+              <span onClick={onJoinChurch} style={{ color: "#60a5fa", cursor: "pointer", fontWeight: 700 }}>Rejoindre une église</span>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );
@@ -3316,12 +3914,29 @@ const CommitteesPage = () => {
             </div>
             <p style={{ fontSize: 12, color: "#64748b", margin: "0 0 16px" }}>{selectedCom.description} · Resp: {selectedCom.leader}</p>
             <h4 style={{ margin: "0 0 10px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Membres ({(selectedCom.members||[]).length})</h4>
-            {(selectedCom.members||[]).map((m, i) => (
-              <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, padding: "8px 0", borderBottom: "1px solid #f8fafc" }}>
-                <Avatar name={m} size={28} color={selectedCom.color} />
-                <span style={{ fontSize: 13, color: "#0f172a" }}>{m}</span>
-              </div>
-            ))}
+            {(selectedCom.members||[]).map((mName, i) => {
+              const fullMember = MOCK_MEMBERS.find(m => `${m.first_name} ${m.last_name}` === mName || m.first_name === mName);
+              const pct = fullMember?.presence_pct || Math.floor(60 + (i * 7) % 35);
+              const pColor = pct >= 80 ? "#10b981" : pct >= 50 ? "#f59e0b" : "#ef4444";
+              const lvl = fullMember?.quiz_points ? Math.floor(fullMember.quiz_points / 300) + 1 : 1;
+              const lvlNames = ["","Semeur","Berger","Serviteur","Leader","Apôtre"];
+              return (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, padding: "9px 0", borderBottom: "1px solid #f8fafc" }}>
+                  <Avatar name={mName} size={30} color={selectedCom.color} />
+                  <div style={{ flex: 1 }}>
+                    <p style={{ margin: 0, fontSize: 12, fontWeight: 700, color: DS.slate900 }}>{mName}</p>
+                    <p style={{ margin: 0, fontSize: 10, color: DS.slate400 }}>Niv. {lvl} {lvlNames[Math.min(lvl, 5)]}</p>
+                  </div>
+                  <div style={{ textAlign: "right" }}>
+                    <div style={{ fontSize: 13, fontWeight: 800, color: pColor }}>{pct}%</div>
+                    <div style={{ width: 44, height: 3, background: DS.slate100, borderRadius: 2, marginTop: 3, overflow: "hidden" }}>
+                      <div style={{ width: `${pct}%`, height: "100%", background: pColor, borderRadius: 2 }} />
+                    </div>
+                    <div style={{ fontSize: 9, color: DS.slate400, marginTop: 2 }}>présence</div>
+                  </div>
+                </div>
+              );
+            })}
           </div>
         )}
       </div>
@@ -3484,11 +4099,49 @@ const TestimonialsPage = () => {
               </div>
             </div>
             <p style={{ margin: 0, fontSize: 13, color: "#475569", lineHeight: 1.6, fontStyle: "italic" }}>"{t.content}"</p>
-            {t.media !== "texte" && t.mediaUrl && (
-              <div style={{ marginTop: 10, padding: "8px 12px", background: t.media === "video" ? "#eff6ff" : "#fdf4ff", borderRadius: 8, display: "flex", alignItems: "center", gap: 8 }}>
-                <span style={{ fontSize: 16 }}>{mediaIcons[t.media]}</span>
-                <span style={{ fontSize: 11, color: "#64748b" }}>{t.media === "video" ? "Vidéo" : "Audio"} : </span>
-                <span style={{ fontSize: 11, color: "#3b82f6", fontWeight: 600 }}>{t.mediaUrl}</span>
+            {t.media === "video" && t.mediaUrl && (() => {
+              // Convert any YouTube URL to embed URL
+              const getEmbedUrl = (url) => {
+                if (!url) return null;
+                // youtube.com/watch?v=ID
+                const m1 = url.match(/youtube\.com\/watch\?v=([a-zA-Z0-9_-]{11})/);
+                if (m1) return `https://www.youtube.com/embed/${m1[1]}`;
+                // youtu.be/ID
+                const m2 = url.match(/youtu\.be\/([a-zA-Z0-9_-]{11})/);
+                if (m2) return `https://www.youtube.com/embed/${m2[1]}`;
+                // Already an embed URL
+                if (url.includes("/embed/")) return url;
+                return null;
+              };
+              const embedUrl = getEmbedUrl(t.mediaUrl);
+              if (embedUrl && !embedUrl.includes("exemple")) {
+                return (
+                  <div style={{ marginTop: 14, borderRadius: 12, overflow: "hidden", border: `1px solid ${DS.slate100}`, boxShadow: DS.shadowSm }}>
+                    <iframe
+                      src={embedUrl}
+                      width="100%" height="220"
+                      style={{ display: "block", border: "none" }}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      title={t.title}
+                    />
+                  </div>
+                );
+              }
+              return (
+                <div style={{ marginTop: 10, padding: "10px 14px", background: "#eff6ff", borderRadius: 10, border: "1px solid #bfdbfe", display: "flex", alignItems: "center", gap: 10 }}>
+                  <span style={{ fontSize: 18 }}>🎥</span>
+                  <div>
+                    <p style={{ margin: 0, fontSize: 11, color: "#64748b" }}>Vidéo YouTube</p>
+                    <a href={t.mediaUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#2563eb", fontWeight: 600, textDecoration: "none" }}>{t.mediaUrl}</a>
+                  </div>
+                </div>
+              );
+            })()}
+            {t.media === "audio" && t.mediaUrl && (
+              <div style={{ marginTop: 10, padding: "10px 14px", background: "#fdf4ff", borderRadius: 10, border: "1px solid #e9d5ff", display: "flex", alignItems: "center", gap: 10 }}>
+                <span style={{ fontSize: 18 }}>🎙️</span>
+                <a href={t.mediaUrl} target="_blank" rel="noopener noreferrer" style={{ fontSize: 12, color: "#7c3aed", fontWeight: 600, textDecoration: "none" }}>{t.mediaUrl}</a>
               </div>
             )}
           </div>
@@ -4851,60 +5504,92 @@ const RewardsPage = ({ achievements = [], xp = 0, level = 1 }) => {
 
   const levelNames = { 1: "Semeur", 2: "Berger", 3: "Serviteur", 4: "Leader", 5: "Apôtre" };
   const levelColors = { 1: "#3b82f6", 2: "#0d9488", 3: "#8b5cf6", 4: "#f59e0b", 5: "#ec4899" };
+  const lc = levelColors[level] || "#0d9488";
 
   return (
     <div>
-      <div style={{ marginBottom: 24 }}>
-        <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Récompenses & Badges</h2>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>{done.length}/{achievements.length} badges obtenus · Niveau {level}</p>
+      <div style={{ marginBottom: 20 }}>
+        <h2 style={{ fontSize: 24, fontWeight: 800, color: DS.slate900, margin: 0, letterSpacing: "-0.5px" }}>Récompenses & Badges</h2>
+        <p style={{ fontSize: 13, color: DS.slate400, margin: "4px 0 0", fontWeight: 500 }}>{done.length}/{achievements.length} badges obtenus · Niveau {level} — {levelNames[level] || "Fidèle"}</p>
       </div>
 
-      {/* XP Bar */}
-      <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9", marginBottom: 20, display: "flex", alignItems: "center", gap: 20 }}>
+      {/* XP Hero card */}
+      <div style={{
+        background: `linear-gradient(135deg, ${lc} 0%, ${lc}cc 100%)`,
+        borderRadius: 22, padding: "28px 32px", marginBottom: 20,
+        display: "flex", alignItems: "center", gap: 24, position: "relative", overflow: "hidden",
+        boxShadow: `0 12px 36px ${lc}40, 0 4px 12px ${lc}20`,
+      }}>
+        {/* Background shapes */}
+        <div style={{ position: "absolute", top: -40, right: -40, width: 200, height: 200, borderRadius: "50%", background: "rgba(255,255,255,0.08)" }} />
+        <div style={{ position: "absolute", bottom: -60, left: "40%", width: 180, height: 180, borderRadius: "50%", background: "rgba(255,255,255,0.05)" }} />
+
         <div style={{
-          width: 72, height: 72, borderRadius: "50%", flexShrink: 0,
-          background: `linear-gradient(135deg, ${levelColors[level] || "#0d9488"}, ${levelColors[level] || "#0d9488"}aa)`,
+          width: 84, height: 84, borderRadius: "50%", flexShrink: 0,
+          background: "rgba(255,255,255,0.22)", backdropFilter: "blur(8px)",
           display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center",
-          boxShadow: `0 4px 20px ${levelColors[level] || "#0d9488"}40`
+          border: "2px solid rgba(255,255,255,0.35)",
+          boxShadow: "0 4px 16px rgba(0,0,0,0.15)",
         }}>
-          <span style={{ fontSize: 11, fontWeight: 700, color: "#fff", opacity: 0.8 }}>NIV.</span>
-          <span style={{ fontSize: 26, fontWeight: 900, color: "#fff", lineHeight: 1 }}>{level}</span>
+          <span style={{ fontSize: 10, fontWeight: 800, color: "rgba(255,255,255,0.75)", letterSpacing: "1px", textTransform: "uppercase" }}>Niv.</span>
+          <span style={{ fontSize: 32, fontWeight: 900, color: "#fff", lineHeight: 1 }}>{level}</span>
         </div>
-        <div style={{ flex: 1 }}>
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 8 }}>
+
+        <div style={{ flex: 1, position: "relative" }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-end", marginBottom: 10 }}>
             <div>
-              <span style={{ fontSize: 16, fontWeight: 800, color: "#0f172a" }}>{levelNames[level] || "Fidèle"}</span>
-              <span style={{ fontSize: 12, color: "#94a3b8", marginLeft: 8 }}>→ {levelNames[level + 1] || "Niveau max"}</span>
+              <h3 style={{ margin: 0, fontSize: 22, fontWeight: 900, color: "#fff", letterSpacing: "-0.4px" }}>{levelNames[level] || "Fidèle"}</h3>
+              <p style={{ margin: "2px 0 0", fontSize: 13, color: "rgba(255,255,255,0.7)" }}>
+                → {levelNames[level + 1] || "Niveau maximum"} · {xpForNextLevel - xp} XP restants
+              </p>
             </div>
-            <span style={{ fontSize: 13, fontWeight: 700, color: "#0d9488" }}>{xp} / {xpForNextLevel} XP</span>
+            <span style={{ fontSize: 20, fontWeight: 900, color: "#fff" }}>{xp} <span style={{ fontSize: 13, fontWeight: 600, opacity: 0.75 }}>/ {xpForNextLevel} XP</span></span>
           </div>
-          <div style={{ width: "100%", height: 10, background: "#f1f5f9", borderRadius: 5, overflow: "hidden" }}>
+          <div style={{ height: 10, background: "rgba(255,255,255,0.2)", borderRadius: 5, overflow: "hidden" }}>
             <div style={{
               width: `${xpProgress}%`, height: "100%", borderRadius: 5,
-              background: `linear-gradient(90deg, ${levelColors[level] || "#0d9488"}, ${levelColors[level] || "#10b981"})`,
-              transition: "width 0.5s ease"
+              background: "rgba(255,255,255,0.9)",
+              boxShadow: "0 0 12px rgba(255,255,255,0.6)",
+              transition: "width 0.7s cubic-bezier(0.4,0,0.2,1)",
             }} />
           </div>
-          <p style={{ margin: "6px 0 0", fontSize: 11, color: "#94a3b8" }}>
-            {xpForNextLevel - xp} XP pour atteindre le niveau {level + 1} — {levelNames[level + 1] || "Niveau maximum"}
-          </p>
+          <div style={{ display: "flex", gap: 20, marginTop: 14 }}>
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 18, fontWeight: 900, color: "#fff" }}>{done.length}</div>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.65)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Badges</div>
+            </div>
+            <div style={{ width: 1, background: "rgba(255,255,255,0.2)" }} />
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 18, fontWeight: 900, color: "#fff" }}>{level}</div>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.65)", textTransform: "uppercase", letterSpacing: "0.5px" }}>Niveau</div>
+            </div>
+            <div style={{ width: 1, background: "rgba(255,255,255,0.2)" }} />
+            <div style={{ textAlign: "center" }}>
+              <div style={{ fontSize: 18, fontWeight: 900, color: "#fff" }}>{xp}</div>
+              <div style={{ fontSize: 10, color: "rgba(255,255,255,0.65)", textTransform: "uppercase", letterSpacing: "0.5px" }}>XP total</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, marginBottom: 20 }}>
-        {/* Badges obtenus */}
-        <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9" }}>
-          <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 16px", display: "flex", alignItems: "center", gap: 8 }}>
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 16 }}>
+        {/* Earned badges */}
+        <div style={{ background: "#fff", borderRadius: DS.r16, padding: 22, border: `1px solid ${DS.slate100}`, boxShadow: DS.shadowSm }}>
+          <h3 style={{ fontSize: 14, fontWeight: 800, color: DS.slate900, margin: "0 0 14px", display: "flex", alignItems: "center", gap: 8, letterSpacing: "-0.2px" }}>
             🏆 Badges obtenus <Badge variant="success">{done.length}</Badge>
           </h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-            {done.length === 0 && <p style={{ fontSize: 12, color: "#94a3b8" }}>Complétez des actions pour débloquer des badges !</p>}
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {done.length === 0 && <p style={{ fontSize: 12, color: DS.slate400, fontStyle: "italic" }}>Complétez des actions pour débloquer vos premiers badges !</p>}
             {done.map(a => (
-              <div key={a.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", background: "#f0fdfa", borderRadius: 10, border: "1px solid #0d948820" }}>
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: "linear-gradient(135deg, #f59e0b, #f97316)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0 }}>{a.icon}</div>
+              <div key={a.id} style={{
+                display: "flex", alignItems: "center", gap: 12, padding: "12px 14px",
+                background: "linear-gradient(135deg, #f0fdfa, #f8fffe)",
+                borderRadius: 12, border: "1px solid #0d948820",
+              }}>
+                <div style={{ width: 40, height: 40, borderRadius: 12, background: "linear-gradient(145deg, #f59e0b, #f97316)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0, boxShadow: "0 3px 10px rgba(245,158,11,0.3)" }}>{a.icon}</div>
                 <div style={{ flex: 1 }}>
-                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{a.name}</p>
-                  <p style={{ margin: 0, fontSize: 11, color: "#64748b" }}>{a.desc}</p>
+                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: DS.slate900 }}>{a.name}</p>
+                  <p style={{ margin: 0, fontSize: 11, color: DS.slate400 }}>{a.desc}</p>
                 </div>
                 <Badge variant="warning">+{a.xp} XP</Badge>
               </div>
@@ -4912,18 +5597,21 @@ const RewardsPage = ({ achievements = [], xp = 0, level = 1 }) => {
           </div>
         </div>
 
-        {/* Badges à débloquer */}
-        <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9" }}>
-          <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 16px", display: "flex", alignItems: "center", gap: 8 }}>
+        {/* Locked badges */}
+        <div style={{ background: "#fff", borderRadius: DS.r16, padding: 22, border: `1px solid ${DS.slate100}`, boxShadow: DS.shadowSm }}>
+          <h3 style={{ fontSize: 14, fontWeight: 800, color: DS.slate900, margin: "0 0 14px", display: "flex", alignItems: "center", gap: 8, letterSpacing: "-0.2px" }}>
             🔒 À débloquer <Badge variant="info">{pending.length}</Badge>
           </h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {pending.map(a => (
-              <div key={a.id} style={{ display: "flex", alignItems: "center", gap: 12, padding: "10px 14px", background: "#f8fafc", borderRadius: 10, border: "1px solid #f1f5f9", opacity: 0.7 }}>
-                <div style={{ width: 40, height: 40, borderRadius: 10, background: "#e2e8f0", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0, filter: "grayscale(1)" }}>{a.icon}</div>
+              <div key={a.id} style={{
+                display: "flex", alignItems: "center", gap: 12, padding: "12px 14px",
+                background: DS.slate50, borderRadius: 12, border: `1px solid ${DS.slate100}`, opacity: 0.72,
+              }}>
+                <div style={{ width: 40, height: 40, borderRadius: 12, background: DS.slate200, display: "flex", alignItems: "center", justifyContent: "center", fontSize: 20, flexShrink: 0, filter: "grayscale(1)" }}>{a.icon}</div>
                 <div style={{ flex: 1 }}>
-                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#64748b" }}>{a.name}</p>
-                  <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{a.desc}</p>
+                  <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: DS.slate600 }}>{a.name}</p>
+                  <p style={{ margin: 0, fontSize: 11, color: DS.slate400 }}>{a.desc}</p>
                 </div>
                 <Badge variant="default">+{a.xp} XP</Badge>
               </div>
@@ -4932,29 +5620,31 @@ const RewardsPage = ({ achievements = [], xp = 0, level = 1 }) => {
         </div>
       </div>
 
-      {/* Classement */}
-      <div style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9" }}>
-        <h3 style={{ fontSize: 15, fontWeight: 700, color: "#0f172a", margin: "0 0 16px" }}>🏅 Classement de l'église</h3>
+      {/* Leaderboard */}
+      <div style={{ background: "#fff", borderRadius: DS.r16, padding: 22, border: `1px solid ${DS.slate100}`, boxShadow: DS.shadowSm }}>
+        <h3 style={{ fontSize: 14, fontWeight: 800, color: DS.slate900, margin: "0 0 16px", letterSpacing: "-0.2px" }}>🏅 Classement de l'église</h3>
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {leaderboard.map((p, i) => (
             <div key={i} style={{
-              display: "flex", alignItems: "center", gap: 14, padding: "12px 16px", borderRadius: 12,
-              background: i === 0 ? "linear-gradient(135deg, #fefce8, #fef9c3)" : "#fafbfc",
-              border: i === 0 ? "1px solid #f59e0b30" : "1px solid #f1f5f9"
+              display: "flex", alignItems: "center", gap: 14, padding: "13px 16px", borderRadius: 14,
+              background: i === 0 ? "linear-gradient(135deg, #fffbeb, #fef3c7)" : DS.slate50,
+              border: i === 0 ? "1px solid #fde68a" : `1px solid ${DS.slate100}`,
+              boxShadow: i === 0 ? "0 4px 14px rgba(245,158,11,0.12)" : "none",
             }}>
               <div style={{
-                width: 28, height: 28, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
-                background: i === 0 ? "#f59e0b" : i === 1 ? "#94a3b8" : i === 2 ? "#b45309" : "#f1f5f9",
-                color: i < 3 ? "#fff" : "#64748b", fontSize: 12, fontWeight: 800, flexShrink: 0
-              }}>{i + 1}</div>
-              <Avatar name={p.name} size={36} color={levelColors[p.level] || "#0d9488"} />
+                width: 30, height: 30, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center",
+                background: i === 0 ? "linear-gradient(135deg, #f59e0b, #f97316)" : i === 1 ? "#94a3b8" : i === 2 ? "#cd7f32" : DS.slate100,
+                color: i < 3 ? "#fff" : DS.slate400, fontSize: i < 3 ? 14 : 12, fontWeight: 900, flexShrink: 0,
+                boxShadow: i === 0 ? "0 3px 10px rgba(245,158,11,0.4)" : "none",
+              }}>{i < 3 ? ["🥇","🥈","🥉"][i] : i + 1}</div>
+              <Avatar name={p.name} size={38} color={levelColors[p.level] || "#0d9488"} />
               <div style={{ flex: 1 }}>
-                <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{p.name}</p>
-                <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{p.role} · Niv. {p.level} {levelNames[p.level]}</p>
+                <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: DS.slate900 }}>{p.name}</p>
+                <p style={{ margin: 0, fontSize: 11, color: DS.slate400 }}>{p.role} · Niv. {p.level} {levelNames[p.level]}</p>
               </div>
               <div style={{ textAlign: "right" }}>
-                <p style={{ margin: 0, fontSize: 13, fontWeight: 800, color: "#0d9488" }}>{p.xp} XP</p>
-                <p style={{ margin: 0, fontSize: 10, color: "#94a3b8" }}>{p.badges} badges</p>
+                <p style={{ margin: 0, fontSize: 15, fontWeight: 900, color: i === 0 ? "#d97706" : DS.slate900 }}>{p.xp} XP</p>
+                <p style={{ margin: 0, fontSize: 10, color: DS.slate400 }}>{p.badges} badge{p.badges > 1 ? "s" : ""}</p>
               </div>
             </div>
           ))}
@@ -5024,13 +5714,103 @@ export default function App() {
     { id: 6, name: "Évangélisation", emoji: "📢", start: "2026-11-01", end: "2026-11-30", active: false, custom: false },
   ]);
   const currentSeason = seasons.find(s => s.active) || seasons[0];
-  const [alerts] = useState([
-    { id: 1, type: "birthday", title: "🎂 3 anniversaires cette semaine", desc: "Grace Achi (7 mars), Paul Yao (12 mars)", read: false, date: "2026-03-21" },
-    { id: 2, type: "visitor", title: "👤 Nouveau visiteur non suivi", desc: "Adama Sanogo — visite il y a 5 jours, aucun suivi", read: false, date: "2026-03-21" },
-    { id: 3, type: "finance", title: "💰 Objectif dîmes atteint à 85%", desc: "Il manque 150 000 F pour atteindre l'objectif mensuel", read: true, date: "2026-03-20" },
-    { id: 4, type: "attendance", title: "📉 Baisse de présence -12%", desc: "La présence au culte a diminué par rapport au mois dernier", read: false, date: "2026-03-19" },
-    { id: 5, type: "member", title: "⚠️ 2 membres inactifs depuis 30j", desc: "David Tra, Moïse Dembélé — aucune présence depuis 1 mois", read: true, date: "2026-03-18" },
-  ]);
+  // ── Système d'alertes dynamiques ──
+  const generateAlerts = () => {
+    const today = new Date();
+    const dayOfWeek = today.getDay(); // 0=Dim, 1=Lun... 6=Sam
+    const todayStr = today.toISOString().split("T")[0];
+    const alerts = [];
+
+    // 1. Alertes anniversaires
+    const thisMonth = today.getMonth() + 1;
+    const birthdayMembers = MOCK_MEMBERS.filter(m => m.birthday_month === thisMonth);
+    if (birthdayMembers.length > 0) {
+      alerts.push({
+        id: "bday-" + thisMonth,
+        type: "birthday",
+        title: `🎂 ${birthdayMembers.length} anniversaire${birthdayMembers.length > 1 ? "s" : ""} ce mois`,
+        desc: birthdayMembers.slice(0, 3).map(m => `${m.first_name} ${m.last_name}`).join(", "),
+        read: false,
+        date: todayStr,
+        priority: "low",
+      });
+    }
+
+    // 2. Alertes absences dimanche — générées le jour même (dimanche = 0)
+    // Simulé : on suppose que le dernier culte était ce dimanche
+    const lastSundayDate = (() => {
+      const d = new Date(today);
+      const diff = (d.getDay() === 0) ? 0 : d.getDay();
+      d.setDate(d.getDate() - diff);
+      return d.toISOString().split("T")[0];
+    })();
+
+    // Membres absents au dernier culte (simulation : ceux avec statut passif ou inactif)
+    const absentMembers = MOCK_MEMBERS.filter(m =>
+      m.status === "passif" || m.status === "inactif" || m.status === "sympathisant"
+    );
+
+    if (absentMembers.length > 0) {
+      // Alerte immédiate le dimanche
+      alerts.push({
+        id: "absent-" + lastSundayDate,
+        type: "attendance",
+        title: `⚠️ ${absentMembers.length} membre${absentMembers.length > 1 ? "s" : ""} absent${absentMembers.length > 1 ? "s" : ""} au culte`,
+        desc: `${absentMembers.slice(0, 3).map(m => `${m.first_name} ${m.last_name}`).join(", ")}${absentMembers.length > 3 ? ` et ${absentMembers.length - 3} autre(s)` : ""} — absents le dimanche ${new Date(lastSundayDate).toLocaleDateString("fr")}`,
+        read: dayOfWeek !== 0, // Non lu si c'est dimanche, lu sinon
+        date: lastSundayDate,
+        priority: "high",
+        members: absentMembers.map(m => m.id),
+      });
+    }
+
+    // 3. Membres absents depuis plusieurs dimanches consécutifs (>= 2)
+    const chronicallyAbsent = MOCK_MEMBERS.filter(m => m.status === "passif");
+    if (chronicallyAbsent.length > 0) {
+      alerts.push({
+        id: "chronic-absent",
+        type: "attendance",
+        title: `📉 ${chronicallyAbsent.length} membre${chronicallyAbsent.length > 1 ? "s" : ""} inactif${chronicallyAbsent.length > 1 ? "s" : ""} depuis ≥ 2 dimanches`,
+        desc: chronicallyAbsent.map(m => `${m.first_name} ${m.last_name}`).join(", "),
+        read: false,
+        date: todayStr,
+        priority: "medium",
+      });
+    }
+
+    // 4. Visiteurs sans suivi
+    const unsupported = [{ id: 99, first_name: "Adama", last_name: "Sanogo" }]; // mock
+    alerts.push({
+      id: "visitor-followup",
+      type: "visitor",
+      title: "👤 Visiteur sans suivi depuis 5 jours",
+      desc: "Adama Sanogo — première visite il y a 5 jours, aucun suivi enregistré",
+      read: false,
+      date: todayStr,
+      priority: "medium",
+    });
+
+    // 5. Finance
+    alerts.push({
+      id: "finance-goal",
+      type: "finance",
+      title: "💰 Objectif dîmes atteint à 85%",
+      desc: "Il manque 150 000 F pour atteindre l'objectif mensuel",
+      read: true,
+      date: todayStr,
+      priority: "low",
+    });
+
+    // Sort: high priority first, then by date desc
+    return alerts.sort((a, b) => {
+      const prio = { high: 0, medium: 1, low: 2 };
+      return (prio[a.priority] || 1) - (prio[b.priority] || 1);
+    });
+  };
+
+  const [alerts, setAlerts] = useState(generateAlerts);
+  const markAlertRead = (id) => setAlerts(prev => prev.map(a => a.id === id ? { ...a, read: true } : a));
+  const markAllRead = () => setAlerts(prev => prev.map(a => ({ ...a, read: true })));
   const [showAlerts, setShowAlerts] = useState(false);
   const [achievements, setAchievements] = useState([
     { id: 1, name: "Premier pas", desc: "Créer votre compte", done: true, icon: "🎯", xp: 50 },
@@ -5165,14 +5945,53 @@ export default function App() {
     ? () => <RewardsPage achievements={achievements} xp={xp} level={level} />
     : page === "quiz"
     ? () => <QuizPage userRole={userRole} />
+    : page === "finances"
+    ? () => <FinancesPage userRole={userRole} />
+    : page === "cultes"
+    ? () => <CultesPage userRole={userRole} />
+    : page === "members"
+    ? () => <MembersPage userRole={userRole} churchName={churchData.name} />
+    : page === "dashboard"
     ? () => <DashboardPage onNavigate={setPage} carouselSlides={carouselSlides} />
     : PAGES[page]?.component || DashboardPage;
 
   return (
-    <div style={{ minHeight: "100vh", background: "#f8fafc", display: "flex" }}>
+    <div style={{ minHeight: "100vh", background: "linear-gradient(160deg, #f8fafc 0%, #f0fdfa 50%, #f8fafc 100%)", display: "flex" }}>
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap');
         * { box-sizing: border-box; }
-        @keyframes xpPop { 0% { opacity:0; transform:translateY(10px) scale(0.8); } 50% { opacity:1; transform:translateY(-10px) scale(1.1); } 100% { opacity:0; transform:translateY(-30px) scale(0.9); } }
+        body, button, input, select, textarea { font-family: 'DM Sans', system-ui, sans-serif; }
+        h1,h2,h3 { font-family: 'DM Sans', system-ui, sans-serif; }
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #cbd5e1; }
+        input:focus, select:focus, textarea:focus {
+          border-color: #0d9488 !important;
+          box-shadow: 0 0 0 3px rgba(13,148,136,0.12) !important;
+        }
+        @keyframes xpPop {
+          0%   { opacity:0; transform:translateY(12px) scale(0.8); }
+          40%  { opacity:1; transform:translateY(-14px) scale(1.08); }
+          100% { opacity:0; transform:translateY(-34px) scale(0.95); }
+        }
+        @keyframes fadeIn {
+          from { opacity:0; transform:translateY(6px); }
+          to   { opacity:1; transform:translateY(0); }
+        }
+        @keyframes modalIn {
+          from { opacity:0; transform:scale(0.94) translateY(12px); }
+          to   { opacity:1; transform:scale(1) translateY(0); }
+        }
+        @keyframes slideIn {
+          from { opacity:0; transform:translateX(-10px); }
+          to   { opacity:1; transform:translateX(0); }
+        }
+        .nav-btn-item { transition: all 0.18s cubic-bezier(0.4,0,0.2,1); }
+        .nav-btn-item:hover { background: rgba(255,255,255,0.09) !important; color: rgba(255,255,255,0.9) !important; }
+        .page-content { animation: fadeIn 0.28s ease; }
+        @media (max-width: 768px) { .sidebar-desktop { display: none !important; } .main-content { margin-left: 0 !important; } }
+        @media (min-width: 769px) { .mobile-header { display: none !important; } }
       `}</style>
 
       {/* XP Popup */}
@@ -5190,69 +6009,86 @@ export default function App() {
 
       {/* SIDEBAR - Desktop */}
       <div className="sidebar-desktop" style={{
-        width: 260, position: "fixed", top: 0, left: 0, bottom: 0, zIndex: 50,
-        background: "linear-gradient(180deg, #0f4f4a 0%, #0a3632 100%)",
-        display: "flex", flexDirection: "column", boxShadow: "4px 0 20px rgba(0,0,0,0.1)"
+        width: 264, position: "fixed", top: 0, left: 0, bottom: 0, zIndex: 50,
+        background: "linear-gradient(180deg, #0a3d38 0%, #072e2a 50%, #051f1c 100%)",
+        display: "flex", flexDirection: "column",
+        boxShadow: "4px 0 32px rgba(0,0,0,0.18), 1px 0 0 rgba(255,255,255,0.04)",
       }}>
-        <div style={{ padding: "24px 20px", borderBottom: "1px solid rgba(255,255,255,0.08)" }}>
+        {/* Logo */}
+        <div style={{ padding: "22px 20px 18px", borderBottom: "1px solid rgba(255,255,255,0.07)" }}>
           <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
             <div style={{
-              width: 40, height: 40, borderRadius: 12, display: "flex", alignItems: "center", justifyContent: "center",
-              background: "linear-gradient(135deg, #0d9488, #10b981)", boxShadow: "0 4px 12px rgba(13,148,136,0.3)"
+              width: 42, height: 42, borderRadius: 13, display: "flex", alignItems: "center", justifyContent: "center",
+              background: "linear-gradient(145deg, #0d9488, #10b981)",
+              boxShadow: "0 4px 16px rgba(13,148,136,0.45), inset 0 1px 0 rgba(255,255,255,0.2)",
             }}>
-              <Church size={20} color="#fff" />
+              <Church size={21} color="#fff" />
             </div>
             <div>
-              <h1 style={{ fontSize: 16, fontWeight: 800, color: "#fff", margin: 0 }}>Lumen Church</h1>
-              <p style={{ fontSize: 10, color: "rgba(255,255,255,0.45)", margin: 0, letterSpacing: "0.5px" }}>SaaS Gestion d'Église</p>
+              <h1 style={{ fontSize: 16, fontWeight: 800, color: "#fff", margin: 0, letterSpacing: "-0.3px" }}>Lumen Church</h1>
+              <p style={{ fontSize: 10, color: "rgba(255,255,255,0.38)", margin: 0, letterSpacing: "0.8px", textTransform: "uppercase" }}>SaaS · Gestion d'Église</p>
             </div>
           </div>
         </div>
 
-        <nav style={{ flex: 1, padding: "16px 12px", overflowY: "auto" }}>
+        <nav style={{ flex: 1, padding: "14px 10px", overflowY: "auto" }}>
           {Object.entries(filteredPages).map(([key, { label, icon: Icon }]) => {
             const displayLabel = key === "departments" ? terminology.departments : key === "committees" ? terminology.committees : label;
             const active = page === key;
             return (
-              <button key={key} onClick={() => setPage(key)} style={{
-                display: "flex", alignItems: "center", gap: 12, width: "100%", padding: "11px 14px",
-                borderRadius: 10, border: "none", cursor: "pointer", marginBottom: 3, transition: "all 0.15s",
-                background: active ? "rgba(13,148,136,0.2)" : "transparent",
-                color: active ? "#5eead4" : "rgba(255,255,255,0.55)",
-              }}
-              onMouseEnter={e => { if (!active) e.currentTarget.style.background = "rgba(255,255,255,0.05)"; }}
-              onMouseLeave={e => { if (!active) e.currentTarget.style.background = "transparent"; }}
-              >
-                <Icon size={18} />
-                <span style={{ fontSize: 13, fontWeight: active ? 700 : 500 }}>{displayLabel}</span>
-                {key === "finances" && <Badge variant="success" style={{ marginLeft: "auto", fontSize: 9, padding: "2px 6px" }}>NEW</Badge>}
+              <button key={key} onClick={() => setPage(key)}
+                className="nav-btn-item"
+                style={{
+                  display: "flex", alignItems: "center", gap: 11, width: "100%", padding: "10px 13px",
+                  borderRadius: 11, border: "none", cursor: "pointer", marginBottom: 2,
+                  background: active ? "rgba(13,148,136,0.22)" : "transparent",
+                  color: active ? "#5eead4" : "rgba(255,255,255,0.52)",
+                  fontWeight: active ? 700 : 500, fontSize: 13,
+                  boxShadow: active ? "inset 0 0 0 1px rgba(13,148,136,0.35)" : "none",
+                  textAlign: "left",
+                }}>
+                <Icon size={16} style={{ flexShrink: 0 }} />
+                <span>{displayLabel}</span>
+                {key === "finances" && <Badge variant="success" style={{ marginLeft: "auto", fontSize: 9, padding: "1px 6px" }}>NEW</Badge>}
               </button>
             );
           })}
         </nav>
 
-        <div style={{ padding: "16px 16px 20px", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-          {/* XP mini bar */}
-          <div style={{ marginBottom: 12, padding: "8px 12px", background: "rgba(255,255,255,0.05)", borderRadius: 10, cursor: "pointer" }} onClick={() => setPage("rewards")}>
-            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 5 }}>
-              <span style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.5)", letterSpacing: "0.5px" }}>NIVEAU {level}</span>
-              <span style={{ fontSize: 10, fontWeight: 700, color: "#0d9488" }}>{xp} XP</span>
+        <div style={{ padding: "12px 14px 18px", borderTop: "1px solid rgba(255,255,255,0.07)" }}>
+          {/* XP Bar */}
+          <div style={{
+            background: "rgba(255,255,255,0.05)", borderRadius: 12, padding: "10px 12px", marginBottom: 12,
+            cursor: "pointer", border: "1px solid rgba(255,255,255,0.07)", transition: "all 0.2s",
+          }} id="xp-btn"
+            onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.09)"}
+            onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
+            onClick={() => setPage("rewards")}>
+            <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 6 }}>
+              <span style={{ fontSize: 10, fontWeight: 700, color: "rgba(255,255,255,0.45)", letterSpacing: "0.8px", textTransform: "uppercase" }}>Niveau {level}</span>
+              <span style={{ fontSize: 10, fontWeight: 700, color: "#2dd4bf" }}>{xp} XP</span>
             </div>
-            <div style={{ width: "100%", height: 4, background: "rgba(255,255,255,0.1)", borderRadius: 2, overflow: "hidden" }}>
-              <div style={{ width: `${xpProgress}%`, height: "100%", background: "linear-gradient(90deg, #0d9488, #10b981)", borderRadius: 2, transition: "width 0.5s" }} />
+            <div style={{ height: 4, background: "rgba(255,255,255,0.1)", borderRadius: 4, overflow: "hidden" }}>
+              <div style={{ width: `${xpProgress}%`, height: "100%", background: "linear-gradient(90deg, #0d9488, #10b981, #34d399)", borderRadius: 4, transition: "width 0.6s ease" }} />
             </div>
+            <p style={{ margin: "5px 0 0", fontSize: 10, color: "rgba(255,255,255,0.3)" }}>Voir mes récompenses →</p>
           </div>
+          {/* User row */}
           <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <Avatar name="Jean" size={36} color="#0d9488" />
-            <div style={{ flex: 1 }}>
-              <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#fff" }}>Pasteur Jean</p>
-              <p style={{ margin: 0, fontSize: 10, color: "rgba(255,255,255,0.4)" }}>{userRole === "super_admin" ? "Super Admin" : userRole.charAt(0).toUpperCase() + userRole.slice(1).replace("_", " ")}</p>
+            <Avatar name="Jean" size={34} color="#0d9488" />
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#fff", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>Pasteur Jean</p>
+              <p style={{ margin: 0, fontSize: 10, color: "rgba(255,255,255,0.38)", textTransform: "capitalize" }}>{userRole?.replace(/_/g, " ")}</p>
             </div>
             <button onClick={() => setAppState("login")} style={{
-              background: "rgba(255,255,255,0.05)", border: "none", borderRadius: 8,
-              width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center", cursor: "pointer"
-            }}>
-              <LogOut size={14} color="rgba(255,255,255,0.5)" />
+              background: "rgba(255,255,255,0.07)", border: "none", borderRadius: 9,
+              width: 32, height: 32, display: "flex", alignItems: "center", justifyContent: "center",
+              cursor: "pointer", transition: "background 0.15s",
+            }}
+              onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.14)"}
+              onMouseLeave={e => e.currentTarget.style.background = "rgba(255,255,255,0.07)"}
+            >
+              <LogOut size={14} color="rgba(255,255,255,0.45)" />
             </button>
           </div>
         </div>
@@ -5315,64 +6151,81 @@ export default function App() {
       )}
 
       {/* MAIN CONTENT */}
-      <div className="main-content" style={{ flex: 1, marginLeft: 260, minHeight: "100vh" }}>
+      <div className="main-content" style={{ flex: 1, marginLeft: 264, minHeight: "100vh" }}>
         {/* Top bar */}
         <div style={{
-          position: "sticky", top: 0, zIndex: 30, background: "rgba(248,250,252,0.85)",
-          backdropFilter: "blur(10px)", borderBottom: "1px solid #f1f5f9",
-          padding: "14px 32px", display: "flex", justifyContent: "space-between", alignItems: "center"
+          position: "sticky", top: 0, zIndex: 30,
+          background: "rgba(248,250,252,0.88)",
+          backdropFilter: "blur(16px) saturate(180%)",
+          borderBottom: "1px solid rgba(226,232,240,0.8)",
+          padding: "13px 32px", display: "flex", justifyContent: "space-between", alignItems: "center",
         }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ fontSize: 12, color: "#94a3b8" }}>⛪</span>
-            <span style={{ fontSize: 12, fontWeight: 600, color: "#94a3b8" }}>{churchData.name || "Mon Église"}</span>
-            <span style={{ color: "#e2e8f0" }}>·</span>
-            <h3 style={{ margin: 0, fontSize: 16, fontWeight: 700, color: "#0f172a" }}>{PAGES[page]?.label || "Tableau de bord"}</h3>
+          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+            <span style={{ fontSize: 13, color: "#94a3b8", fontWeight: 500 }}>⛪ {churchData.name || "Mon Église"}</span>
+            <span style={{ color: "#e2e8f0", fontSize: 16 }}>·</span>
+            <h3 style={{ margin: 0, fontSize: 16, fontWeight: 800, color: "#0f172a", letterSpacing: "-0.3px" }}>{PAGES[page]?.label || "Tableau de bord"}</h3>
           </div>
-          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
             <div style={{ position: "relative" }}>
-              <div onClick={() => setShowAlerts(!showAlerts)} style={{ cursor: "pointer", position: "relative" }}>
-                <Bell size={19} color="#64748b" />
+              <div onClick={() => setShowAlerts(!showAlerts)} style={{ cursor: "pointer", position: "relative", padding: 6 }}>
+                <Bell size={18} color="#64748b" />
                 {unreadAlerts > 0 && (
                   <div style={{
-                    position: "absolute", top: -4, right: -4, width: 16, height: 16, borderRadius: "50%",
-                    background: "#ef4444", color: "#fff", fontSize: 9, fontWeight: 700,
-                    display: "flex", alignItems: "center", justifyContent: "center"
+                    position: "absolute", top: 2, right: 2, width: 15, height: 15, borderRadius: "50%",
+                    background: "linear-gradient(135deg, #ef4444, #dc2626)", color: "#fff",
+                    fontSize: 9, fontWeight: 800, display: "flex", alignItems: "center", justifyContent: "center",
+                    boxShadow: "0 2px 6px rgba(239,68,68,0.5)",
                   }}>{unreadAlerts}</div>
                 )}
               </div>
               {showAlerts && (
                 <div style={{
-                  position: "absolute", top: "calc(100% + 12px)", right: -80, width: 380, maxHeight: 420,
-                  background: "#fff", borderRadius: 16, boxShadow: "0 12px 40px rgba(0,0,0,0.12)",
-                  border: "1px solid #f1f5f9", overflow: "hidden", zIndex: 100
+                  position: "absolute", top: "calc(100% + 12px)", right: -80, width: 400, maxHeight: 480,
+                  background: "#fff", borderRadius: 18, boxShadow: "0 16px 48px rgba(0,0,0,0.12)",
+                  border: "1px solid #f1f5f9", overflow: "hidden", zIndex: 100,
+                  animation: "fadeIn 0.18s ease",
                 }}>
-                  <div style={{ padding: "14px 18px", borderBottom: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                    <h4 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>Alertes ({unreadAlerts} non lues)</h4>
-                    <span style={{ fontSize: 11, color: "#0d9488", cursor: "pointer", fontWeight: 600 }}>Tout marquer lu</span>
+                  <div style={{ padding: "14px 20px", borderBottom: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    <h4 style={{ margin: 0, fontSize: 14, fontWeight: 800, color: "#0f172a" }}>Alertes <span style={{ color: "#94a3b8", fontWeight: 500 }}>({unreadAlerts} non lues)</span></h4>
+                    <span style={{ fontSize: 11, color: "#0d9488", cursor: "pointer", fontWeight: 700 }} onClick={markAllRead}>Tout marquer lu</span>
                   </div>
-                  <div style={{ overflowY: "auto", maxHeight: 340 }}>
-                    {alerts.map(a => (
-                      <div key={a.id} style={{
-                        padding: "12px 18px", borderBottom: "1px solid #f8fafc", cursor: "pointer",
-                        background: a.read ? "transparent" : "#f0fdfa"
-                      }}>
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                          <p style={{ margin: 0, fontSize: 13, fontWeight: a.read ? 500 : 700, color: "#0f172a" }}>{a.title}</p>
-                          {!a.read && <div style={{ width: 8, height: 8, borderRadius: "50%", background: "#0d9488", flexShrink: 0 }} />}
+                  <div style={{ overflowY: "auto", maxHeight: 400 }}>
+                    {alerts.map(a => {
+                      const priorityColors = { high: "#ef4444", medium: "#f59e0b", low: "#94a3b8" };
+                      return (
+                        <div key={a.id} onClick={() => markAlertRead(a.id)} style={{
+                          padding: "13px 20px", borderBottom: "1px solid #f8fafc", cursor: "pointer",
+                          background: a.read ? "transparent" : "#f0fdfa", transition: "background 0.15s",
+                          borderLeft: a.read ? "3px solid transparent" : `3px solid ${priorityColors[a.priority] || "#0d9488"}`,
+                        }}
+                          onMouseEnter={e => e.currentTarget.style.background = "#fafbfc"}
+                          onMouseLeave={e => e.currentTarget.style.background = a.read ? "transparent" : "#f0fdfa"}
+                        >
+                          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                            <p style={{ margin: 0, fontSize: 13, fontWeight: a.read ? 500 : 700, color: "#0f172a", flex: 1, lineHeight: 1.4 }}>{a.title}</p>
+                            {!a.read && <div style={{ width: 8, height: 8, borderRadius: "50%", background: priorityColors[a.priority] || "#0d9488", flexShrink: 0, marginTop: 4, marginLeft: 8 }} />}
+                          </div>
+                          <p style={{ margin: "4px 0 0", fontSize: 11, color: "#94a3b8", lineHeight: 1.5 }}>{a.desc}</p>
+                          <p style={{ margin: "3px 0 0", fontSize: 10, color: "#cbd5e1" }}>{new Date(a.date).toLocaleDateString("fr")} {a.priority === "high" ? "· 🔴 Urgent" : a.priority === "medium" ? "· 🟡 Moyen" : ""}</p>
                         </div>
-                        <p style={{ margin: "3px 0 0", fontSize: 11, color: "#94a3b8" }}>{a.desc}</p>
-                        <p style={{ margin: "3px 0 0", fontSize: 10, color: "#cbd5e1" }}>{a.date}</p>
+                      );
+                    })}
+                    {alerts.length === 0 && (
+                      <div style={{ padding: "32px 20px", textAlign: "center", color: "#94a3b8", fontSize: 13 }}>
+                        ✅ Aucune alerte en attente
                       </div>
-                    ))}
+                    )}
                   </div>
                 </div>
               )}
             </div>
-            <div style={{ width: 1, height: 24, background: "#e2e8f0" }} />
-            <div style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer" }}>
-              <Avatar name="Jean" size={32} color="#0d9488" />
-              <span style={{ fontSize: 13, fontWeight: 600, color: "#0f172a" }}>Pasteur Jean</span>
-              <ChevronDown size={14} color="#94a3b8" />
+            <div style={{ width: 1, height: 22, background: "#e2e8f0" }} />
+            <div style={{ display: "flex", alignItems: "center", gap: 9, cursor: "pointer", padding: "4px 8px", borderRadius: 10, transition: "background 0.15s" }}
+              onMouseEnter={e => e.currentTarget.style.background = "#f1f5f9"}
+              onMouseLeave={e => e.currentTarget.style.background = "transparent"}>
+              <Avatar name="Jean" size={30} color="#0d9488" />
+              <span style={{ fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Pasteur Jean</span>
+              <ChevronDown size={13} color="#94a3b8" />
             </div>
           </div>
         </div>
@@ -5395,7 +6248,7 @@ export default function App() {
         )}
 
         {/* Page content */}
-        <div style={{ padding: "28px 32px", animation: "fadeIn 0.3s ease" }}>
+        <div style={{ padding: "28px 32px" }} className="page-content">
           <CurrentPage onNavigate={setPage} userRole={userRole} />
         </div>
       </div>
