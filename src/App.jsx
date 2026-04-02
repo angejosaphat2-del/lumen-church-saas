@@ -909,7 +909,18 @@ const MembersPage = ({ userRole, churchName }) => {
           </FormField>
           <FormField label="Téléphone"><input style={inputStyle} value={form.phone} onChange={e => setForm({ ...form, phone: e.target.value })} /></FormField>
           <FormField label="Email"><input style={inputStyle} type="email" value={form.email} onChange={e => setForm({ ...form, email: e.target.value })} /></FormField>
-          <FormField label="Date de naissance"><input style={inputStyle} type="date" value={form.birth_date} onChange={e => setForm({ ...form, birth_date: e.target.value })} /></FormField>
+          <FormField label="Date de naissance (jour/mois)">
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+              <select style={selectStyle} value={form.birthday_day || ""} onChange={e => setForm({ ...form, birthday_day: parseInt(e.target.value) })}>
+                <option value="">Jour</option>
+                {Array.from({length:31},(_,i)=>i+1).map(d => <option key={d} value={d}>{d}</option>)}
+              </select>
+              <select style={selectStyle} value={form.birthday_month || ""} onChange={e => setForm({ ...form, birthday_month: parseInt(e.target.value) })}>
+                <option value="">Mois</option>
+                {["Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"].map((m,i) => <option key={i+1} value={i+1}>{m}</option>)}
+              </select>
+            </div>
+          </FormField>
           <FormField label="Parcours membre">
             <select style={selectStyle} value={form.parcours} onChange={e => setForm({ ...form, parcours: e.target.value })}>
               {parcoursSteps.map(p => <option key={p} value={p}>{parcoursLabels[p]}</option>)}
@@ -1700,14 +1711,6 @@ const DepartmentsPage = () => {
   const [form, setForm] = useState({ name: "", leader: "", color: "#0d9488" });
   const totalMembers = departments.reduce((s, d) => s + d.members_count, 0);
 
-  const moveDept = (idx, dir) => {
-    const arr = [...departments];
-    const swap = idx + dir;
-    if (swap < 0 || swap >= arr.length) return;
-    [arr[idx], arr[swap]] = [arr[swap], arr[idx]];
-    setDepartments(arr);
-  };
-
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
@@ -1740,9 +1743,7 @@ const DepartmentsPage = () => {
                     <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>Resp: {d.leader} · {d.members_count} membres</p>
                   </div>
                 </div>
-                <div style={{ display: "flex", gap: 2 }} onClick={e => e.stopPropagation()}>
-                  <button onClick={() => moveDept(idx, -1)} disabled={idx === 0} style={{ width: 26, height: 26, borderRadius: 6, border: "1px solid #e2e8f0", background: "#f8fafc", cursor: idx === 0 ? "not-allowed" : "pointer", opacity: idx === 0 ? 0.3 : 1, fontSize: 10 }}>▲</button>
-                  <button onClick={() => moveDept(idx, 1)} disabled={idx === departments.length - 1} style={{ width: 26, height: 26, borderRadius: 6, border: "1px solid #e2e8f0", background: "#f8fafc", cursor: idx === departments.length - 1 ? "not-allowed" : "pointer", opacity: idx === departments.length - 1 ? 0.3 : 1, fontSize: 10 }}>▼</button>
+                <div onClick={e => e.stopPropagation()}>
                   <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer ${d.name} ?`)) setDepartments(prev => prev.filter(x => x.id !== d.id)); }} />
                 </div>
               </div>
@@ -2204,29 +2205,66 @@ const SettingsPage = ({ seasons, setSeasons, terminology, setTerminology, carous
           <Btn variant="secondary" icon={Lock}>Changer le mot de passe</Btn>
         </div>
 
+
         <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9", marginTop: 20 }}>
           <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 20px", display: "flex", alignItems: "center", gap: 8 }}>
             📋 Mentions légales & Confidentialité
           </h3>
-          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-            {[
-              { title: "Conditions d'utilisation", desc: "Cadre juridique d'utilisation de la plateforme Lumen Church" },
-              { title: "Politique de confidentialité", desc: "Comment nous protégeons et traitons les données personnelles de vos membres" },
-              { title: "Protection des données (RGPD)", desc: "Conformité aux normes de protection des données personnelles" },
-              { title: "Politique de cookies", desc: "Utilisation des cookies et traceurs sur la plateforme" },
-              { title: "Mentions légales", desc: "Informations légales sur l'éditeur de la plateforme" },
-            ].map((item, i) => (
-              <div key={i} style={{ padding: "14px 16px", background: "#f8fafc", borderRadius: 10, cursor: "pointer", transition: "all 0.15s", display: "flex", justifyContent: "space-between", alignItems: "center" }}
-                onMouseEnter={e => e.currentTarget.style.background = "#f0fdfa"}
-                onMouseLeave={e => e.currentTarget.style.background = "#f8fafc"}>
-                <div>
-                  <p style={{ margin: 0, fontSize: 13, fontWeight: 600, color: "#0f172a" }}>{item.title}</p>
-                  <p style={{ margin: "2px 0 0", fontSize: 11, color: "#94a3b8" }}>{item.desc}</p>
-                </div>
-                <ChevronRight size={16} color="#94a3b8" />
+          {(() => {
+            const [openDoc, setOpenDoc] = useState(null);
+            const docs = [
+              {
+                title: "Conditions d'utilisation",
+                desc: "Cadre juridique d'utilisation de la plateforme Lumen Church",
+                content: `CONDITIONS GÉNÉRALES D'UTILISATION — Lumen Church SaaS\nVersion en vigueur au 1er avril 2026\n\n1. OBJET\nLumen Church SaaS est une plateforme de gestion d'église à destination des pasteurs, administrateurs et membres d'églises chrétiennes. En accédant à la plateforme, vous acceptez les présentes conditions.\n\n2. ACCÈS AU SERVICE\nL'accès est réservé aux personnes majeures ou aux mineurs sous responsabilité d'un adulte. Chaque église dispose d'un espace isolé (multi-tenant). Le pasteur principal est responsable de la gestion des accès.\n\n3. RESPONSABILITÉS\nLumen Church SaaS met à disposition les outils. L'église est responsable des données qu'elle saisit et de leur exactitude. La plateforme ne saurait être tenue responsable de l'usage qui en est fait.\n\n4. PROPRIÉTÉ INTELLECTUELLE\nLe code, le design et la marque Lumen Church sont protégés. Toute reproduction sans autorisation est interdite.\n\n5. RÉSILIATION\nL'abonnement peut être résilié à tout moment. Les données sont conservées 30 jours après résiliation avant suppression définitive.\n\n6. LOI APPLICABLE\nLes présentes conditions sont régies par le droit ivoirien.`
+              },
+              {
+                title: "Politique de confidentialité",
+                desc: "Comment nous protégeons et traitons les données personnelles de vos membres",
+                content: `POLITIQUE DE CONFIDENTIALITÉ — Lumen Church SaaS\n\n1. DONNÉES COLLECTÉES\nNous collectons uniquement les données nécessaires au fonctionnement : nom, prénom, téléphone, email, rôle dans l'église, présences aux cultes, données financières (dîmes et offrandes).\n\n2. FINALITÉ\nCes données servent exclusivement à la gestion interne de l'église. Elles ne sont jamais vendues ni partagées avec des tiers.\n\n3. HÉBERGEMENT\nLes données sont hébergées sur des serveurs sécurisés (Supabase/AWS) avec chiffrement en transit (HTTPS) et au repos.\n\n4. DURÉE DE CONSERVATION\nLes données sont conservées pendant toute la durée de l'abonnement + 30 jours après résiliation.\n\n5. DROITS DES UTILISATEURS\nChaque membre peut demander l'accès, la rectification ou la suppression de ses données en contactant l'administrateur de son église ou notre support.\n\n6. CONTACT\nPour toute question : support@lumenchurch.app`
+              },
+              {
+                title: "Protection des données (RGPD)",
+                desc: "Conformité aux normes de protection des données personnelles",
+                content: `PROTECTION DES DONNÉES PERSONNELLES\n\n1. RESPONSABLE DU TRAITEMENT\nChaque église utilisant Lumen Church est responsable du traitement des données de ses membres. Lumen Church SaaS agit en tant que sous-traitant.\n\n2. BASE LÉGALE\nLe traitement est fondé sur :\n• L'exécution du contrat (gestion des membres)\n• Le consentement explicite pour les données sensibles\n• L'intérêt légitime pour les statistiques internes\n\n3. TRANSFERTS INTERNATIONAUX\nLes données peuvent être stockées dans l'Union Européenne ou aux États-Unis (AWS). Des garanties appropriées sont en place (clauses contractuelles types).\n\n4. SÉCURITÉ\n• Chiffrement TLS pour toutes les communications\n• Mots de passe hachés (bcrypt)\n• Accès basé sur les rôles (RBAC)\n• Journalisation des accès\n\n5. DROITS\nDroit d'accès, rectification, effacement, portabilité, limitation et opposition. Contactez : support@lumenchurch.app`
+              },
+              {
+                title: "Politique de cookies",
+                desc: "Utilisation des cookies et traceurs sur la plateforme",
+                content: `POLITIQUE DE COOKIES\n\nLumen Church SaaS utilise un nombre minimal de cookies :\n\n• COOKIES ESSENTIELS (obligatoires)\n  - Session utilisateur : maintien de la connexion\n  - Préférences interface : thème, langue\n  Ces cookies ne peuvent pas être désactivés.\n\n• COOKIES ANALYTIQUES (optionnels)\n  - Statistiques d'utilisation anonymisées\n  - Aucune donnée personnelle transmise à des tiers\n  Vous pouvez les désactiver dans les paramètres.\n\n• COOKIES TIERS\n  - Aucun cookie publicitaire ou de tracking tiers\n  - Leaflet (cartes) : données de tuiles sans cookies personnels\n\nConformément à la loi, votre consentement est requis pour les cookies non essentiels.`
+              },
+              {
+                title: "Mentions légales",
+                desc: "Informations légales sur l'éditeur de la plateforme",
+                content: `MENTIONS LÉGALES\n\nÉDITEUR\nLumen Church SaaS\nPlateforme de gestion d'église pour l'Afrique francophone\nContact : support@lumenchurch.app\n\nHÉBERGEMENT\nSupabase Inc. / Amazon Web Services\nServeurs localisés en Europe (UE)\n\nPROPRIÉTÉ INTELLECTUELLE\nTous les éléments de la plateforme (code, design, marque, contenu) sont protégés par le droit d'auteur. Toute reproduction, même partielle, est interdite sans autorisation écrite préalable.\n\nRESPONSABILITÉ\nLumen Church SaaS s'efforce d'assurer l'exactitude des informations présentes sur la plateforme mais ne saurait être tenu responsable des erreurs ou omissions.\n\nLitige : tout litige sera soumis à la juridiction compétente d'Abidjan, Côte d'Ivoire.`
+              },
+            ];
+            return (
+              <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                {docs.map((item, i) => (
+                  <div key={i} style={{ borderRadius: 12, border: "1px solid #f1f5f9", overflow: "hidden" }}>
+                    <div onClick={() => setOpenDoc(openDoc === i ? null : i)} style={{
+                      padding: "14px 18px", background: openDoc === i ? "#f0fdfa" : "#f8fafc", cursor: "pointer",
+                      display: "flex", justifyContent: "space-between", alignItems: "center", transition: "background 0.15s"
+                    }}
+                      onMouseEnter={e => e.currentTarget.style.background = "#f0fdfa"}
+                      onMouseLeave={e => e.currentTarget.style.background = openDoc === i ? "#f0fdfa" : "#f8fafc"}>
+                      <div>
+                        <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{item.title}</p>
+                        <p style={{ margin: "2px 0 0", fontSize: 11, color: "#94a3b8" }}>{item.desc}</p>
+                      </div>
+                      <ChevronDown size={16} color="#94a3b8" style={{ transform: openDoc === i ? "rotate(180deg)" : "none", transition: "transform 0.2s", flexShrink: 0 }} />
+                    </div>
+                    {openDoc === i && (
+                      <div style={{ padding: "16px 20px", background: "#fff", borderTop: "1px solid #f1f5f9" }}>
+                        <pre style={{ margin: 0, fontSize: 12, color: "#475569", lineHeight: 1.8, whiteSpace: "pre-wrap", fontFamily: "inherit" }}>{item.content}</pre>
+                      </div>
+                    )}
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
+            );
+          })()}
         </div>
 
         <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9", marginTop: 20 }}>
@@ -2269,7 +2307,7 @@ const SettingsPage = ({ seasons, setSeasons, terminology, setTerminology, carous
           </h3>
           <p style={{ fontSize: 12, color: "#94a3b8", margin: "0 0 16px" }}>Définissez qui a le droit de marquer les présences lors des cultes</p>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-            {["Pasteur", "Administrateur", "Secrétaire", "Responsable Département", "Comité des présences"].map((role, i) => {
+            {["Pasteur", "Administrateur", "Secrétaire", "Responsable Département", "Responsable Comité", "Responsable Groupe", "Responsable adjoint département", "Responsable adjoint comité", "Responsable adjoint groupe"].map((role, i) => {
               const [checked, setChecked] = useState(i < 3);
               return (
                 <label key={role} onClick={() => setChecked(!checked)} style={{
@@ -2408,24 +2446,6 @@ const LoginPage = ({ onLogin, onRegister, onJoinChurch }) => {
           {loading ? "Connexion..." : "Se connecter"}
         </button>
 
-        {/* Demo accounts */}
-        <details style={{ marginTop: 18 }}>
-          <summary style={{ fontSize: 11, color: "rgba(255,255,255,0.3)", cursor: "pointer", textAlign: "center" }}>Comptes de démo</summary>
-          <div style={{ marginTop: 8, padding: 12, background: "rgba(255,255,255,0.03)", borderRadius: 10, border: "1px solid rgba(255,255,255,0.06)" }}>
-            {Object.entries(DEMO_ACCOUNTS).map(([em, { password: pw, role }]) => (
-              <div key={em} onClick={() => { setEmail(em); setPassword(pw); setError(""); }} style={{
-                padding: "6px 8px", cursor: "pointer", borderRadius: 6, fontSize: 10, color: "rgba(255,255,255,0.5)",
-                display: "flex", justifyContent: "space-between", transition: "background 0.15s"
-              }}
-              onMouseEnter={e => e.currentTarget.style.background = "rgba(255,255,255,0.05)"}
-              onMouseLeave={e => e.currentTarget.style.background = "transparent"}
-              >
-                <span>{em}</span>
-                <span style={{ color: "#0d9488", fontWeight: 600 }}>{role}</span>
-              </div>
-            ))}
-          </div>
-        </details>
 
         <p style={{ textAlign: "center", marginTop: 16, fontSize: 12, color: "rgba(255,255,255,0.35)" }}>
           Pasteur / Admin ? <span onClick={onRegister} style={{ color: "#0d9488", cursor: "pointer", fontWeight: 600 }}>Inscrire mon église</span>
@@ -3261,14 +3281,6 @@ const CommitteesPage = () => {
   const [form, setForm] = useState({ name: "", description: "", leader: "" });
   const comColors = ["#8b5cf6", "#f59e0b", "#3b82f6", "#10b981", "#ec4899", "#0d9488"];
 
-  const moveCom = (idx, dir) => {
-    const arr = [...committees];
-    const swap = idx + dir;
-    if (swap < 0 || swap >= arr.length) return;
-    [arr[idx], arr[swap]] = [arr[swap], arr[idx]];
-    setCommittees(arr);
-  };
-
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
@@ -3287,8 +3299,6 @@ const CommitteesPage = () => {
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 4 }} onClick={e => e.stopPropagation()}>
                   <Badge variant="default">{(c.members||[]).length} membres</Badge>
-                  <button onClick={() => moveCom(idx, -1)} disabled={idx === 0} style={{ width: 24, height: 24, borderRadius: 5, border: "1px solid #e2e8f0", background: "#f8fafc", cursor: idx === 0 ? "not-allowed" : "pointer", opacity: idx === 0 ? 0.3 : 1, fontSize: 10 }}>▲</button>
-                  <button onClick={() => moveCom(idx, 1)} disabled={idx === committees.length - 1} style={{ width: 24, height: 24, borderRadius: 5, border: "1px solid #e2e8f0", background: "#f8fafc", cursor: idx === committees.length - 1 ? "not-allowed" : "pointer", opacity: idx === committees.length - 1 ? 0.3 : 1, fontSize: 10 }}>▼</button>
                   <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer ${c.name} ?`)) setCommittees(prev => prev.filter(x => x.id !== c.id)); }} />
                 </div>
               </div>
@@ -3657,129 +3667,403 @@ const MentorshipsPage = () => {
 // ═══════════════════════════════════════════════════════
 // QUIZ PAGE
 // ═══════════════════════════════════════════════════════
-const QuizPage = () => {
+const QuizPage = ({ userRole }) => {
   const [tab, setTab] = useState("quiz");
-  const [quizzes, setQuizzes] = useState([
-    { id: 1, title: "Les patriarches de la Bible", category: "Ancien Testament", difficulty: "facile", questions: 10, plays: 45, avg_score: 72 },
-    { id: 2, title: "Les miracles de Jésus", category: "Nouveau Testament", difficulty: "moyen", questions: 15, plays: 38, avg_score: 65 },
-    { id: 3, title: "Les épîtres de Paul", category: "Nouveau Testament", difficulty: "difficile", questions: 20, plays: 22, avg_score: 58 },
-  ]);
-  const [showModal, setShowModal] = useState(false);
-  const [form, setForm] = useState({ title: "", category: "Ancien Testament", difficulty: "facile", questions: "10" });
-  const diffColors = { facile: "#10b981", moyen: "#f59e0b", difficile: "#ef4444" };
 
-  // Mock rankings
-  const topScorers = [
-    { name: "Grace Achi", score: 920, group: "Flamme de Feu", avatar: "G" },
-    { name: "David Tra", score: 870, group: "Les Conquérants", avatar: "D" },
-    { name: "Ruth Diallo", score: 845, group: "Flamme de Feu", avatar: "R" },
-    { name: "Paul Yao", score: 810, group: "Les Conquérants", avatar: "P" },
-    { name: "Sarah Touré", score: 790, group: "Armée de Dieu", avatar: "S" },
-  ];
-  const groupRanking = [
-    { name: "Flamme de Feu", total: 4200, members: 12, avg: 350, color: "#ef4444" },
-    { name: "Les Conquérants", total: 3800, members: 10, avg: 380, color: "#3b82f6" },
-    { name: "Armée de Dieu", total: 3500, members: 11, avg: 318, color: "#10b981" },
-  ];
+  // ── DATA ──
+  const [quizzes, setQuizzes] = useState([
+    {
+      id: 1, title: "Les patriarches de la Bible", category: "Ancien Testament", difficulty: "facile",
+      timer_per_question: 30, group_type: "individuel", status: "actif",
+      questions: [
+        { id: 1, text: "Qui était le premier homme créé par Dieu ?", points: 10, options: ["Adam","Noé","Abraham","Moïse"], answer: 0 },
+        { id: 2, text: "Quel âge avait Mathusalem à sa mort ?", points: 20, options: ["850 ans","900 ans","969 ans","1000 ans"], answer: 2 },
+        { id: 3, text: "Combien d'enfants avait Jacob ?", points: 15, options: ["10","12","14","8"], answer: 1 },
+      ]
+    },
+    {
+      id: 2, title: "Les miracles de Jésus", category: "Nouveau Testament", difficulty: "moyen",
+      timer_per_question: 20, group_type: "departement", status: "actif",
+      questions: [
+        { id: 1, text: "Quel fut le premier miracle de Jésus ?", points: 10, options: ["Multiplication des pains","Eau en vin","Résurrection de Lazare","Guérison d'un aveugle"], answer: 1 },
+        { id: 2, text: "Combien de pains Jésus a-t-il multipliés pour 5000 personnes ?", points: 10, options: ["2","5","7","12"], answer: 1 },
+      ]
+    },
+  ]);
+
+  const [sessions, setSessions] = useState([
+    { id: 1, quiz_id: 1, quiz_title: "Les patriarches de la Bible", date: "2026-03-20", participants: 24, results_revealed: true,
+      scores: [
+        { name: "Grace Achi", dept: "Accueil", score: 45, total: 45, rank: 1 },
+        { name: "Paul Yao", dept: "Louange", score: 40, total: 45, rank: 2 },
+        { name: "Ruth Diallo", dept: "Enfants", score: 35, total: 45, rank: 3 },
+        { name: "David Tra", dept: "Jeunesse", score: 30, total: 45, rank: 4 },
+      ]
+    },
+    { id: 2, quiz_id: 2, quiz_title: "Les miracles de Jésus", date: "2026-03-15", participants: 18, results_revealed: false,
+      scores: [
+        { name: "Samuel Ouattara", dept: "Intercession", score: 20, total: 20, rank: 1 },
+        { name: "Marie Bamba", dept: "Finances", score: 18, total: 20, rank: 2 },
+      ]
+    },
+  ]);
+
+  // ── MODALS ──
+  const [showQuizModal, setShowQuizModal] = useState(false);
+  const [showSessionModal, setShowSessionModal] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [editingQuiz, setEditingQuiz] = useState(null);
+  const [selectedQuiz, setSelectedQuiz] = useState(null);
+
+  const [quizForm, setQuizForm] = useState({
+    title: "", category: "Ancien Testament", difficulty: "facile",
+    timer_per_question: 30, group_type: "individuel", questions: []
+  });
+  const [newQ, setNewQ] = useState({ text: "", points: 10, options: ["","","",""], answer: 0 });
+  const [addingQ, setAddingQ] = useState(false);
+
+  const diffColors = { facile: "#10b981", moyen: "#f59e0b", difficile: "#ef4444" };
+  const canManage = ["pasteur","admin","super_admin"].includes(userRole);
+
+  // Global ranking — cumul all revealed sessions
+  const globalRanking = (() => {
+    const map = {};
+    sessions.filter(s => s.results_revealed).forEach(s => {
+      s.scores.forEach(sc => {
+        if (!map[sc.name]) map[sc.name] = { name: sc.name, dept: sc.dept, total: 0, quizzes: 0 };
+        map[sc.name].total += sc.score;
+        map[sc.name].quizzes += 1;
+      });
+    });
+    return Object.values(map).sort((a,b) => b.total - a.total);
+  })();
+
+  // Dept ranking — sum by dept
+  const deptRanking = (() => {
+    const map = {};
+    sessions.filter(s => s.results_revealed).forEach(s => {
+      s.scores.forEach(sc => {
+        if (!map[sc.dept]) map[sc.dept] = { dept: sc.dept, total: 0, members: new Set() };
+        map[sc.dept].total += sc.score;
+        map[sc.dept].members.add(sc.name);
+      });
+    });
+    return Object.values(map).map(d => ({ ...d, members: d.members.size })).sort((a,b) => b.total - a.total);
+  })();
+
+  const openNewQuiz = () => {
+    setEditingQuiz(null);
+    setQuizForm({ title: "", category: "Ancien Testament", difficulty: "facile", timer_per_question: 30, group_type: "individuel", questions: [] });
+    setAddingQ(false);
+    setShowQuizModal(true);
+  };
+  const openEditQuiz = (q) => {
+    setEditingQuiz(q);
+    setQuizForm({ ...q });
+    setAddingQ(false);
+    setShowQuizModal(true);
+  };
+  const saveQuiz = () => {
+    if (!quizForm.title.trim()) return;
+    if (editingQuiz) {
+      setQuizzes(prev => prev.map(q => q.id === editingQuiz.id ? { ...q, ...quizForm } : q));
+    } else {
+      setQuizzes(prev => [...prev, { ...quizForm, id: Date.now(), status: "actif" }]);
+    }
+    setShowQuizModal(false);
+  };
+  const addQuestion = () => {
+    if (!newQ.text.trim() || newQ.options.some(o => !o.trim())) return;
+    setQuizForm(f => ({ ...f, questions: [...f.questions, { ...newQ, id: Date.now() }] }));
+    setNewQ({ text: "", points: 10, options: ["","","",""], answer: 0 });
+    setAddingQ(false);
+  };
+  const removeQuestion = (qid) => setQuizForm(f => ({ ...f, questions: f.questions.filter(q => q.id !== qid) }));
+
+  const revealResults = (sessionId) => {
+    setSessions(prev => prev.map(s => s.id === sessionId ? { ...s, results_revealed: true } : s));
+  };
+  const deleteSession = (sessionId) => {
+    setSessions(prev => prev.filter(s => s.id !== sessionId));
+  };
+  const deleteAllHistory = () => {
+    setSessions([]);
+    setShowDeleteModal(false);
+  };
+
+  const totalPoints = (q) => q.questions.reduce((s, qu) => s + qu.points, 0);
 
   return (
     <div>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
-        <div><h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Jeux & Quiz</h2>
-        <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Quiz bibliques · Concours · Classements</p></div>
-        <Btn icon={Plus} onClick={() => { setForm({ title: "", category: "Ancien Testament", difficulty: "facile", questions: "10" }); setShowModal(true); }}>Créer un quiz</Btn>
+        <div>
+          <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Jeux & Quiz</h2>
+          <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Quiz bibliques · Concours · Classements</p>
+        </div>
+        <div style={{ display: "flex", gap: 8 }}>
+          {canManage && tab === "historique" && sessions.length > 0 && (
+            <Btn variant="danger" icon={Trash2} onClick={() => setShowDeleteModal(true)}>Effacer l'historique</Btn>
+          )}
+          {canManage && tab === "quiz" && (
+            <Btn icon={Plus} onClick={openNewQuiz}>Créer un quiz</Btn>
+          )}
+        </div>
       </div>
 
-      <TabBar tabs={[{ key: "quiz", label: "Quiz" }, { key: "classement", label: "Classement individuel" }, { key: "groupes", label: "Classement groupes" }]} active={tab} onChange={setTab} />
+      <TabBar tabs={[
+        { key: "quiz", label: "📝 Quiz" },
+        { key: "historique", label: "📋 Sessions & Résultats" },
+        { key: "classement", label: "🏆 Classement individuel" },
+        { key: "collectif", label: "🏛️ Classement collectif" },
+      ]} active={tab} onChange={setTab} />
 
+      {/* ══ QUIZ LIST ══ */}
       {tab === "quiz" && (
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 16 }}>
           {quizzes.map(q => (
             <div key={q.id} style={{ background: "#fff", borderRadius: 16, padding: 22, border: "1px solid #f1f5f9", position: "relative" }}>
-              <button onClick={() => setQuizzes(prev => prev.filter(x => x.id !== q.id))} style={{ position: "absolute", top: 12, right: 12, background: "none", border: "none", cursor: "pointer", opacity: 0.3 }}><Trash2 size={14} /></button>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", marginBottom: 14 }}>
                 <div style={{ width: 46, height: 46, borderRadius: 14, background: "#f59e0b15", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22 }}>📝</div>
-                <Badge variant="default" style={{ background: `${diffColors[q.difficulty]}15`, color: diffColors[q.difficulty] }}>{q.difficulty}</Badge>
-              </div>
-              <h3 style={{ margin: "0 0 4px", fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{q.title}</h3>
-              <p style={{ margin: "0 0 12px", fontSize: 12, color: "#94a3b8" }}>{q.category} · {q.questions} questions</p>
-              <div style={{ display: "flex", justifyContent: "space-between", paddingTop: 12, borderTop: "1px solid #f1f5f9", fontSize: 12 }}>
-                <span style={{ color: "#64748b" }}>{q.plays} parties</span>
-                <span style={{ fontWeight: 700, color: "#0d9488" }}>Moy: {q.avg_score}%</span>
-              </div>
-            </div>
-          ))}
-          {quizzes.length === 0 && <EmptyState icon={Star} title="Aucun quiz" description="Créez votre premier quiz" />}
-        </div>
-      )}
-
-      {tab === "classement" && (
-        <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", overflow: "hidden" }}>
-          <div style={{ padding: "16px 20px", borderBottom: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-            <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>🏆 Top scoreurs individuels</h3>
-            <Btn variant="secondary" size="sm" icon={Download} onClick={() => {
-              const csv = "Rang,Nom,Score,Groupe\n" + topScorers.map((s,i) => `${i+1},${s.name},${s.score},${s.group}`).join("\n");
-              const b = new Blob([csv], {type:"text/csv"}); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href=u; a.download="classement_individuel.csv"; a.click();
-            }}>Export</Btn>
-          </div>
-          {topScorers.map((s, i) => (
-            <div key={i} style={{ padding: "14px 20px", display: "flex", alignItems: "center", gap: 14, borderBottom: "1px solid #f8fafc", background: i < 3 ? "#fffbeb" : "transparent" }}>
-              <div style={{ width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: i < 3 ? 18 : 13, fontWeight: 800, color: i === 0 ? "#f59e0b" : i === 1 ? "#94a3b8" : i === 2 ? "#b45309" : "#64748b", background: i < 3 ? `${i === 0 ? "#f59e0b" : i === 1 ? "#94a3b8" : "#b45309"}15` : "#f8fafc" }}>
-                {i < 3 ? ["🥇","🥈","🥉"][i] : i + 1}
-              </div>
-              <Avatar name={s.name} size={36} color={i === 0 ? "#f59e0b" : "#0d9488"} />
-              <div style={{ flex: 1 }}>
-                <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{s.name}</p>
-                <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{s.group}</p>
-              </div>
-              <span style={{ fontSize: 18, fontWeight: 800, color: i === 0 ? "#f59e0b" : "#0f172a" }}>{s.score} pts</span>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {tab === "groupes" && (
-        <div>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: 16, marginBottom: 20 }}>
-            {groupRanking.map((g, i) => (
-              <div key={i} style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9", borderTop: `4px solid ${g.color}`, textAlign: "center" }}>
-                <div style={{ fontSize: 28, marginBottom: 8 }}>{["🥇","🥈","🥉"][i]}</div>
-                <h3 style={{ margin: "0 0 4px", fontSize: 16, fontWeight: 800, color: "#0f172a" }}>{g.name}</h3>
-                <div style={{ fontSize: 28, fontWeight: 900, color: g.color, margin: "8px 0" }}>{g.total} pts</div>
-                <div style={{ display: "flex", justifyContent: "center", gap: 16, fontSize: 12, color: "#64748b" }}>
-                  <span>{g.members} membres</span>
-                  <span>Moy: {g.avg} pts</span>
+                <div style={{ display: "flex", gap: 4 }}>
+                  <Badge variant="default" style={{ background: `${diffColors[q.difficulty]}15`, color: diffColors[q.difficulty] }}>{q.difficulty}</Badge>
+                  {canManage && <Btn variant="ghost" size="sm" icon={Edit} onClick={() => openEditQuiz(q)} />}
+                  {canManage && <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm(`Supprimer "${q.title}" ?`)) setQuizzes(prev => prev.filter(x => x.id !== q.id)); }} />}
                 </div>
               </div>
-            ))}
-          </div>
-          <div style={{ display: "flex", gap: 8 }}>
-            <Btn variant="secondary" size="sm" icon={Download} onClick={() => {
-              const csv = "Rang,Groupe,Total,Membres,Moyenne\n" + groupRanking.map((g,i) => `${i+1},${g.name},${g.total},${g.members},${g.avg}`).join("\n");
-              const b = new Blob([csv], {type:"text/csv"}); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href=u; a.download="classement_groupes.csv"; a.click();
-            }}>Exporter classement</Btn>
-          </div>
+              <h3 style={{ margin: "0 0 4px", fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{q.title}</h3>
+              <p style={{ margin: "0 0 12px", fontSize: 12, color: "#94a3b8" }}>{q.category}</p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 14 }}>
+                <span style={{ fontSize: 11, padding: "3px 8px", background: "#f0fdfa", color: "#0d9488", borderRadius: 6, fontWeight: 600 }}>⏱ {q.timer_per_question}s / question</span>
+                <span style={{ fontSize: 11, padding: "3px 8px", background: "#eff6ff", color: "#3b82f6", borderRadius: 6, fontWeight: 600 }}>
+                  {q.group_type === "individuel" ? "👤 Individuel" : q.group_type === "departement" ? "🏢 Par département" : q.group_type === "comite" ? "💼 Par comité" : "🔵 Par groupe"}
+                </span>
+                <span style={{ fontSize: 11, padding: "3px 8px", background: "#f8fafc", color: "#64748b", borderRadius: 6, fontWeight: 600 }}>🎯 {totalPoints(q)} pts max</span>
+              </div>
+              <div style={{ paddingTop: 12, borderTop: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", fontSize: 12 }}>
+                <span style={{ color: "#64748b" }}>{q.questions.length} question{q.questions.length > 1 ? "s" : ""}</span>
+                <span style={{ color: "#64748b" }}>{sessions.filter(s => s.quiz_id === q.id).length} session{sessions.filter(s => s.quiz_id === q.id).length > 1 ? "s" : ""} jouée{sessions.filter(s => s.quiz_id === q.id).length > 1 ? "s" : ""}</span>
+              </div>
+            </div>
+          ))}
+          {quizzes.length === 0 && <EmptyState icon={Star} title="Aucun quiz" description="Créez votre premier quiz biblique" />}
         </div>
       )}
 
-      <Modal open={showModal} onClose={() => setShowModal(false)} title="Créer un quiz">
-        <FormField label="Titre" required><input style={inputStyle} value={form.title} onChange={e => setForm({...form, title: e.target.value})} placeholder="Ex: Les patriarches de la Bible" /></FormField>
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+      {/* ══ SESSIONS & RÉSULTATS ══ */}
+      {tab === "historique" && (
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+          {sessions.length === 0 && <EmptyState icon={Star} title="Aucune session" description="Les sessions jouées apparaîtront ici" />}
+          {sessions.map(s => (
+            <div key={s.id} style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", overflow: "hidden" }}>
+              <div style={{ padding: "16px 20px", display: "flex", justifyContent: "space-between", alignItems: "center", background: "#f8fafc", borderBottom: "1px solid #f1f5f9" }}>
+                <div>
+                  <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{s.quiz_title}</h3>
+                  <p style={{ margin: 0, fontSize: 12, color: "#94a3b8" }}>{new Date(s.date).toLocaleDateString("fr")} · {s.participants} participant{s.participants > 1 ? "s" : ""}</p>
+                </div>
+                <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+                  {!s.results_revealed ? (
+                    <Btn size="sm" onClick={() => revealResults(s.id)}>
+                      🔓 Révéler les résultats
+                    </Btn>
+                  ) : (
+                    <Badge variant="success">✓ Résultats publiés</Badge>
+                  )}
+                  {canManage && (
+                    <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => { if(confirm("Supprimer cette session ?")) deleteSession(s.id); }} />
+                  )}
+                </div>
+              </div>
+              {s.results_revealed && (
+                <div>
+                  {s.scores.map((sc, i) => (
+                    <div key={i} style={{ padding: "12px 20px", display: "flex", alignItems: "center", gap: 14, borderBottom: "1px solid #f8fafc", background: i === 0 ? "#fffbeb" : "transparent" }}>
+                      <div style={{ width: 28, height: 28, borderRadius: "50%", background: i === 0 ? "#f59e0b" : i === 1 ? "#94a3b8" : i === 2 ? "#cd7f32" : "#f1f5f9", color: i < 3 ? "#fff" : "#64748b", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 12, fontWeight: 800, flexShrink: 0 }}>
+                        {i < 3 ? ["🥇","🥈","🥉"][i] : i + 1}
+                      </div>
+                      <Avatar name={sc.name} size={32} color={i === 0 ? "#f59e0b" : "#0d9488"} />
+                      <div style={{ flex: 1 }}>
+                        <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{sc.name}</p>
+                        <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{sc.dept}</p>
+                      </div>
+                      <div style={{ textAlign: "right" }}>
+                        <p style={{ margin: 0, fontSize: 16, fontWeight: 900, color: i === 0 ? "#f59e0b" : "#0f172a" }}>{sc.score} pts</p>
+                        <p style={{ margin: 0, fontSize: 10, color: "#94a3b8" }}>/ {sc.total} pts</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+              {!s.results_revealed && (
+                <div style={{ padding: "20px", textAlign: "center", color: "#94a3b8" }}>
+                  <p style={{ fontSize: 13 }}>🔒 Résultats en attente de publication par l'administrateur</p>
+                </div>
+              )}
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* ══ CLASSEMENT INDIVIDUEL GÉNÉRAL ══ */}
+      {tab === "classement" && (
+        <div>
+          <div style={{ padding: "12px 16px", background: "#f0fdfa", border: "1px solid #0d948820", borderRadius: 12, marginBottom: 16, fontSize: 12, color: "#0d9488", fontWeight: 600 }}>
+            Classement général — cumul de tous les quiz dont les résultats ont été publiés
+          </div>
+          {globalRanking.length === 0 ? (
+            <EmptyState icon={Star} title="Pas encore de classement" description="Publiez les résultats d'au moins une session" />
+          ) : (
+            <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", overflow: "hidden" }}>
+              <div style={{ padding: "14px 20px", borderBottom: "1px solid #f1f5f9", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <h3 style={{ margin: 0, fontSize: 15, fontWeight: 700, color: "#0f172a" }}>🏆 Classement général individuel</h3>
+                {canManage && <Btn variant="secondary" size="sm" icon={Download} onClick={() => {
+                  const csv = "Rang,Nom,Département,Total pts,Quiz joués\n" + globalRanking.map((r,i) => `${i+1},${r.name},${r.dept},${r.total},${r.quizzes}`).join("\n");
+                  const b = new Blob([csv], {type:"text/csv"}); const u = URL.createObjectURL(b); const a = document.createElement("a"); a.href=u; a.download="classement.csv"; a.click();
+                }}>Exporter</Btn>}
+              </div>
+              {globalRanking.map((r, i) => (
+                <div key={i} style={{ padding: "14px 20px", display: "flex", alignItems: "center", gap: 14, borderBottom: "1px solid #f8fafc", background: i === 0 ? "#fffbeb" : "transparent" }}>
+                  <div style={{ width: 32, height: 32, borderRadius: "50%", display: "flex", alignItems: "center", justifyContent: "center", fontSize: i < 3 ? 18 : 13, fontWeight: 800, background: i < 3 ? `${["#f59e0b","#94a3b8","#cd7f32"][i]}20` : "#f1f5f9", color: i < 3 ? ["#f59e0b","#64748b","#92400e"][i] : "#64748b", flexShrink: 0 }}>
+                    {i < 3 ? ["🥇","🥈","🥉"][i] : i + 1}
+                  </div>
+                  <Avatar name={r.name} size={36} color={i === 0 ? "#f59e0b" : "#0d9488"} />
+                  <div style={{ flex: 1 }}>
+                    <p style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>{r.name}</p>
+                    <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{r.dept} · {r.quizzes} quiz joué{r.quizzes > 1 ? "s" : ""}</p>
+                  </div>
+                  <span style={{ fontSize: 20, fontWeight: 900, color: i === 0 ? "#f59e0b" : "#0f172a" }}>{r.total} pts</span>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
+
+      {/* ══ CLASSEMENT COLLECTIF ══ */}
+      {tab === "collectif" && (
+        <div>
+          <div style={{ padding: "12px 16px", background: "#eff6ff", border: "1px solid #bfdbfe", borderRadius: 12, marginBottom: 16, fontSize: 12, color: "#2563eb", fontWeight: 600 }}>
+            Classement collectif — total des points par département / comité / groupe selon le type de quiz
+          </div>
+          {deptRanking.length === 0 ? (
+            <EmptyState icon={Star} title="Pas encore de classement collectif" description="Publiez les résultats d'au moins une session collective" />
+          ) : (
+            <>
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 12, marginBottom: 20 }}>
+                {deptRanking.slice(0, 3).map((d, i) => (
+                  <div key={i} style={{ background: "#fff", borderRadius: 16, padding: 20, border: "1px solid #f1f5f9", borderTop: `4px solid ${["#f59e0b","#94a3b8","#cd7f32"][i]}`, textAlign: "center" }}>
+                    <div style={{ fontSize: 28, marginBottom: 6 }}>{["🥇","🥈","🥉"][i]}</div>
+                    <h3 style={{ margin: "0 0 4px", fontSize: 15, fontWeight: 800, color: "#0f172a" }}>{d.dept}</h3>
+                    <div style={{ fontSize: 26, fontWeight: 900, color: ["#f59e0b","#94a3b8","#cd7f32"][i], margin: "8px 0" }}>{d.total} pts</div>
+                    <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{d.members} participant{d.members > 1 ? "s" : ""}</p>
+                  </div>
+                ))}
+              </div>
+              <div style={{ background: "#fff", borderRadius: 16, border: "1px solid #f1f5f9", overflow: "hidden" }}>
+                {deptRanking.map((d, i) => (
+                  <div key={i} style={{ padding: "12px 20px", display: "flex", alignItems: "center", gap: 12, borderBottom: "1px solid #f8fafc" }}>
+                    <span style={{ fontSize: 13, fontWeight: 800, color: "#64748b", width: 24 }}>{i + 1}</span>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>{d.dept}</p>
+                      <p style={{ margin: 0, fontSize: 11, color: "#94a3b8" }}>{d.members} participants</p>
+                    </div>
+                    <span style={{ fontSize: 16, fontWeight: 900, color: "#0f172a" }}>{d.total} pts</span>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+        </div>
+      )}
+
+      {/* ══ MODAL CRÉER / ÉDITER QUIZ ══ */}
+      <Modal open={showQuizModal} onClose={() => setShowQuizModal(false)} title={editingQuiz ? "Modifier le quiz" : "Créer un quiz"} width={660}>
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 14 }}>
+          <FormField label="Titre *"><input style={inputStyle} value={quizForm.title} onChange={e => setQuizForm({...quizForm, title: e.target.value})} placeholder="Ex: Les patriarches de la Bible" /></FormField>
           <FormField label="Catégorie">
-            <select style={selectStyle} value={form.category} onChange={e => setForm({...form, category: e.target.value})}>
-              <option>Ancien Testament</option><option>Nouveau Testament</option><option>Culture générale</option><option>Doctrine</option>
+            <select style={selectStyle} value={quizForm.category} onChange={e => setQuizForm({...quizForm, category: e.target.value})}>
+              {["Ancien Testament","Nouveau Testament","Culture générale","Doctrine","Louange","Histoire de l'Église"].map(c => <option key={c}>{c}</option>)}
             </select>
           </FormField>
           <FormField label="Difficulté">
-            <select style={selectStyle} value={form.difficulty} onChange={e => setForm({...form, difficulty: e.target.value})}>
+            <select style={selectStyle} value={quizForm.difficulty} onChange={e => setQuizForm({...quizForm, difficulty: e.target.value})}>
               <option value="facile">Facile</option><option value="moyen">Moyen</option><option value="difficile">Difficile</option>
             </select>
           </FormField>
-          <FormField label="Nb questions"><input style={inputStyle} type="number" value={form.questions} onChange={e => setForm({...form, questions: e.target.value})} /></FormField>
+          <FormField label="⏱ Durée par question (secondes)">
+            <input style={inputStyle} type="number" min="5" max="120" value={quizForm.timer_per_question} onChange={e => setQuizForm({...quizForm, timer_per_question: parseInt(e.target.value)||30})} />
+          </FormField>
+          <FormField label="Type de classement">
+            <select style={selectStyle} value={quizForm.group_type} onChange={e => setQuizForm({...quizForm, group_type: e.target.value})}>
+              <option value="individuel">👤 Individuel</option>
+              <option value="departement">🏢 Par département</option>
+              <option value="comite">💼 Par comité</option>
+              <option value="groupe">🔵 Par groupe</option>
+            </select>
+          </FormField>
         </div>
+
+        {/* Questions */}
+        <div style={{ marginTop: 20, padding: 16, background: "#f8fafc", borderRadius: 12 }}>
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 12 }}>
+            <p style={{ margin: 0, fontSize: 13, fontWeight: 700, color: "#0f172a" }}>Questions ({quizForm.questions.length}) — Total: {quizForm.questions.reduce((s,q) => s+q.points, 0)} pts</p>
+            <Btn size="sm" icon={Plus} onClick={() => setAddingQ(true)}>Ajouter une question</Btn>
+          </div>
+
+          {quizForm.questions.map((q, i) => (
+            <div key={q.id} style={{ background: "#fff", borderRadius: 10, padding: "12px 14px", marginBottom: 8, border: "1px solid #e2e8f0" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start" }}>
+                <div style={{ flex: 1 }}>
+                  <p style={{ margin: "0 0 4px", fontSize: 12, fontWeight: 700, color: "#0f172a" }}>{i+1}. {q.text}</p>
+                  <div style={{ display: "flex", flexWrap: "wrap", gap: 4 }}>
+                    {q.options.map((opt, oi) => (
+                      <span key={oi} style={{ fontSize: 10, padding: "2px 8px", borderRadius: 6, background: oi === q.answer ? "#0d948820" : "#f1f5f9", color: oi === q.answer ? "#0d9488" : "#64748b", fontWeight: oi === q.answer ? 700 : 400 }}>
+                        {oi === q.answer ? "✓ " : ""}{opt}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0, marginLeft: 8 }}>
+                  <Badge variant="warning">{q.points} pts</Badge>
+                  <Btn variant="ghost" size="sm" icon={Trash2} onClick={() => removeQuestion(q.id)} />
+                </div>
+              </div>
+            </div>
+          ))}
+
+          {addingQ && (
+            <div style={{ background: "#fff", borderRadius: 10, padding: 14, border: "2px solid #0d9488", marginTop: 8 }}>
+              <FormField label="Question *"><input style={inputStyle} value={newQ.text} onChange={e => setNewQ({...newQ, text: e.target.value})} placeholder="Ex: Qui fut le premier roi d'Israël ?" /></FormField>
+              <p style={{ fontSize: 11, fontWeight: 700, color: "#475569", margin: "8px 0 6px" }}>Options de réponse (cochez la bonne)</p>
+              {newQ.options.map((opt, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 8, marginBottom: 6 }}>
+                  <input type="radio" name="correct" checked={newQ.answer === i} onChange={() => setNewQ({...newQ, answer: i})} />
+                  <input style={{ ...inputStyle, flex: 1 }} value={opt} onChange={e => { const opts = [...newQ.options]; opts[i] = e.target.value; setNewQ({...newQ, options: opts}); }} placeholder={`Option ${i+1}`} />
+                </div>
+              ))}
+              <FormField label="Points *"><input style={{ ...inputStyle, width: 100 }} type="number" min="1" value={newQ.points} onChange={e => setNewQ({...newQ, points: parseInt(e.target.value)||10})} /></FormField>
+              <div style={{ display: "flex", gap: 8, marginTop: 10 }}>
+                <Btn size="sm" onClick={addQuestion} disabled={!newQ.text.trim() || newQ.options.some(o => !o.trim())}>Ajouter</Btn>
+                <Btn size="sm" variant="secondary" onClick={() => setAddingQ(false)}>Annuler</Btn>
+              </div>
+            </div>
+          )}
+        </div>
+
         <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
-          <Btn variant="secondary" onClick={() => setShowModal(false)}>Annuler</Btn>
-          <Btn onClick={() => { if(form.title) { setQuizzes(prev => [...prev, { ...form, id: Date.now(), questions: parseInt(form.questions)||10, plays: 0, avg_score: 0 }]); setShowModal(false); } }}>Créer</Btn>
+          <Btn variant="secondary" onClick={() => setShowQuizModal(false)}>Annuler</Btn>
+          <Btn onClick={saveQuiz} disabled={!quizForm.title.trim()}>{editingQuiz ? "Enregistrer" : "Créer le quiz"}</Btn>
+        </div>
+      </Modal>
+
+      {/* ══ MODAL SUPPRIMER HISTORIQUE ══ */}
+      <Modal open={showDeleteModal} onClose={() => setShowDeleteModal(false)} title="Effacer l'historique des sessions">
+        <div style={{ padding: "16px", background: "#fff5f5", borderRadius: 12, border: "1px solid #fecaca", marginBottom: 16 }}>
+          <p style={{ margin: 0, fontSize: 13, color: "#dc2626", fontWeight: 600 }}>⚠️ Cette action est irréversible.</p>
+          <p style={{ margin: "4px 0 0", fontSize: 12, color: "#64748b" }}>Toutes les {sessions.length} sessions et leurs résultats seront supprimés définitivement.</p>
+        </div>
+        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+          <Btn variant="secondary" onClick={() => setShowDeleteModal(false)}>Annuler</Btn>
+          <Btn variant="danger" icon={Trash2} onClick={deleteAllHistory}>Supprimer tout l'historique</Btn>
         </div>
       </Modal>
     </div>
@@ -4055,33 +4339,97 @@ const SubscriptionPage = () => {
 // ═══════════════════════════════════════════════════════
 // SUPPORT PAGE
 // ═══════════════════════════════════════════════════════
-const SupportPage = () => (
+const SupportPage = () => {
+  const [form, setForm] = useState({ sujet: "", message: "", email: "", priorite: "normale" });
+  const [sent, setSent] = useState(false);
+  return (
   <div>
     <div style={{ marginBottom: 24 }}>
       <h2 style={{ fontSize: 22, fontWeight: 800, color: "#0f172a", margin: 0 }}>Support</h2>
-      <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Besoin d'aide ? Contactez-nous</p>
+      <p style={{ fontSize: 13, color: "#94a3b8", margin: "4px 0 0" }}>Besoin d'aide ? Envoyez-nous un message</p>
     </div>
-    <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(280px, 1fr))", gap: 16 }}>
+
+    {/* Email contact card only */}
+    <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 24 }}>
+      <div style={{ background: "#fff", borderRadius: 16, padding: 22, border: "1px solid #f1f5f9", display: "flex", alignItems: "center", gap: 14 }}>
+        <div style={{ width: 48, height: 48, borderRadius: 14, background: "#eff6ff", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <Mail size={22} color="#3b82f6" />
+        </div>
+        <div>
+          <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>Email</h3>
+          <p style={{ margin: "2px 0 0", fontSize: 12, color: "#3b82f6", fontWeight: 600 }}>support@lumenchurch.app</p>
+          <p style={{ margin: "2px 0 0", fontSize: 11, color: "#94a3b8" }}>Réponse sous 24h ouvrables</p>
+        </div>
+      </div>
+      <div style={{ background: "#fff", borderRadius: 16, padding: 22, border: "1px solid #f1f5f9", display: "flex", alignItems: "center", gap: 14 }}>
+        <div style={{ width: 48, height: 48, borderRadius: 14, background: "#f0fdfa", display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>
+          <MessageSquare size={22} color="#0d9488" />
+        </div>
+        <div>
+          <h3 style={{ margin: 0, fontSize: 14, fontWeight: 700, color: "#0f172a" }}>Chat en direct</h3>
+          <p style={{ margin: "2px 0 0", fontSize: 12, color: "#0d9488", fontWeight: 600 }}>Disponible Lun–Ven 8h–18h</p>
+          <p style={{ margin: "2px 0 0", fontSize: 11, color: "#94a3b8" }}>Temps de réponse moyen : 2h</p>
+        </div>
+      </div>
+    </div>
+
+    {/* Ticket form */}
+    <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9" }}>
+      <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 20px" }}>📩 Ouvrir un ticket d'assistance</h3>
+      {sent ? (
+        <div style={{ textAlign: "center", padding: "32px 0" }}>
+          <div style={{ fontSize: 48, marginBottom: 12 }}>✅</div>
+          <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 6px" }}>Message envoyé !</h3>
+          <p style={{ fontSize: 13, color: "#64748b", margin: "0 0 20px" }}>Notre équipe vous répondra sous 24h à l'adresse indiquée.</p>
+          <Btn onClick={() => { setSent(false); setForm({ sujet: "", message: "", email: "", priorite: "normale" }); }}>Nouveau message</Btn>
+        </div>
+      ) : (
+        <>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 16, marginBottom: 4 }}>
+            <FormField label="Votre email *">
+              <input style={inputStyle} type="email" value={form.email} onChange={e => setForm({...form, email: e.target.value})} placeholder="votre@email.com" />
+            </FormField>
+            <FormField label="Priorité">
+              <select style={selectStyle} value={form.priorite} onChange={e => setForm({...form, priorite: e.target.value})}>
+                <option value="basse">Basse — question générale</option>
+                <option value="normale">Normale — problème mineur</option>
+                <option value="haute">Haute — problème bloquant</option>
+                <option value="urgente">Urgente — site inaccessible</option>
+              </select>
+            </FormField>
+          </div>
+          <FormField label="Sujet *">
+            <input style={inputStyle} value={form.sujet} onChange={e => setForm({...form, sujet: e.target.value})} placeholder="Ex: Impossible d'ajouter un membre" />
+          </FormField>
+          <FormField label="Description du problème *">
+            <textarea style={{...inputStyle, minHeight: 120, resize: "vertical"}} value={form.message} onChange={e => setForm({...form, message: e.target.value})} placeholder="Décrivez votre problème en détail (étapes pour reproduire, message d'erreur...)" />
+          </FormField>
+          <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+            <Btn icon={Mail} disabled={!form.sujet || !form.message || !form.email} onClick={() => setSent(true)}>Envoyer le ticket</Btn>
+            <span style={{ fontSize: 11, color: "#94a3b8" }}>Réponse sous 24h ouvrables à votre adresse email</span>
+          </div>
+        </>
+      )}
+    </div>
+
+    {/* FAQ rapide */}
+    <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9", marginTop: 16 }}>
+      <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 16px" }}>❓ Questions fréquentes</h3>
       {[
-        { icon: Mail, title: "Email", desc: "support@lumenchurch.com", color: "#3b82f6" },
-        { icon: Phone, title: "WhatsApp / Téléphone", desc: "+225 07 87 45 08 32", color: "#10b981" },
-        { icon: MessageSquare, title: "Chat en direct", desc: "Disponible lun-ven 8h-18h", color: "#8b5cf6" },
-      ].map((s, i) => (
-        <div key={i} style={{ background: "#fff", borderRadius: 16, padding: 24, border: "1px solid #f1f5f9", textAlign: "center" }}>
-          <div style={{ width: 52, height: 52, borderRadius: 16, background: `${s.color}15`, display: "flex", alignItems: "center", justifyContent: "center", margin: "0 auto 14px" }}><s.icon size={24} color={s.color} /></div>
-          <h3 style={{ margin: "0 0 4px", fontSize: 15, fontWeight: 700, color: "#0f172a" }}>{s.title}</h3>
-          <p style={{ margin: 0, fontSize: 13, color: "#64748b" }}>{s.desc}</p>
+        { q: "Comment réinitialiser mon mot de passe ?", r: "Cliquez sur 'Mot de passe oublié' sur la page de connexion, puis suivez les instructions reçues par email." },
+        { q: "Comment importer des membres en masse ?", r: "Allez dans Membres → bouton 'Excel/CSV' → préparez votre fichier selon le modèle, puis importez-le." },
+        { q: "Puis-je utiliser Lumen Church sur mobile ?", r: "Oui ! L'application est une PWA — installez-la depuis votre navigateur mobile via 'Ajouter à l'écran d'accueil'." },
+        { q: "Comment activer la persistance des données ?", r: "Configurez Supabase dans vos variables d'environnement (VITE_SUPABASE_URL et VITE_SUPABASE_ANON_KEY)." },
+      ].map((item, i) => (
+        <div key={i} style={{ padding: "14px 0", borderBottom: i < 3 ? "1px solid #f1f5f9" : "none" }}>
+          <p style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: "#0f172a" }}>— {item.q}</p>
+          <p style={{ margin: 0, fontSize: 12, color: "#64748b" }}>{item.r}</p>
         </div>
       ))}
     </div>
-    <div style={{ background: "#fff", borderRadius: 16, padding: 28, border: "1px solid #f1f5f9", marginTop: 20 }}>
-      <h3 style={{ fontSize: 16, fontWeight: 700, color: "#0f172a", margin: "0 0 16px" }}>Envoyer un message</h3>
-      <FormField label="Sujet"><input style={inputStyle} placeholder="Décrivez votre problème..." /></FormField>
-      <FormField label="Message"><textarea style={{...inputStyle, minHeight: 100, resize: "vertical"}} placeholder="Donnez-nous plus de détails..." /></FormField>
-      <Btn icon={Mail}>Envoyer</Btn>
-    </div>
   </div>
-);
+  );
+};
 
 // ═══════════════════════════════════════════════════════
 // DOCUMENTATION PAGE
@@ -4629,7 +4977,7 @@ const PAGES = {
   committees: { label: "Comités & Services", icon: Briefcase, component: CommitteesPage },
   families: { label: "Familles", icon: Heart, component: FamiliesPage },
   groups: { label: "Groupes", icon: UsersRound, component: GroupsPage },
-  quiz: { label: "Jeux & Quiz", icon: Star, component: QuizPage },
+  quiz: { label: "Jeux & Quiz", icon: Star, component: null }, // needs userRole
   rewards: { label: "Récompenses", icon: Star, component: null }, // needs props
   agenda: { label: "Agenda", icon: Calendar, component: AgendaPage },
   finances: { label: "Finances", icon: DollarSign, component: FinancesPage },
@@ -4815,7 +5163,8 @@ export default function App() {
     ? () => <SettingsPage seasons={seasons} setSeasons={setSeasons} terminology={terminology} setTerminology={setTerminology} carouselSlides={carouselSlides} setCarouselSlides={setCarouselSlides} />
     : page === "rewards"
     ? () => <RewardsPage achievements={achievements} xp={xp} level={level} />
-    : page === "dashboard"
+    : page === "quiz"
+    ? () => <QuizPage userRole={userRole} />
     ? () => <DashboardPage onNavigate={setPage} carouselSlides={carouselSlides} />
     : PAGES[page]?.component || DashboardPage;
 
